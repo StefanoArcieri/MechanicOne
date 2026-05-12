@@ -1,7 +1,6 @@
 <?php
 class Session {
-    //start() è chiamato in header.php, 
-    // quindi non serve chiamarlo in ogni pagina
+    
     public static function start() {
         if (session_status() === PHP_SESSION_NONE) {
             session_start();

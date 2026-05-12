@@ -21,7 +21,6 @@ try {
     error_log("Errore con la connessione al database: " . $e->getMessage());
 }
 
-require_once __DIR__ . '/PersistentManager.php';
 require_once __DIR__ . '/Session.php';
 
-$persistentManager = new PersistentManager($pdo);
+?>
