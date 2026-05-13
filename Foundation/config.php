@@ -21,6 +21,4 @@ try {
     error_log("Errore con la connessione al database: " . $e->getMessage());
 }
 
-require_once __DIR__ . '/Session.php';
-
 ?>

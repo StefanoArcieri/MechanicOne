@@ -5,12 +5,14 @@
 
         public function load($field, $value, $pdo) {
             try {
-                $query = "SELECT * FROM utente WHERE  :$field  =  :$value";
+                $query = "SELECT * FROM utenti WHERE  $field  =  :value";
                 $stmt = $pdo->prepare($query);
-                $stmt->execute();
+                $stmt->execute([
+                    ':value' => $value
+                ]);
                 return $stmt->fetch();
             } catch (PDOException $e) {
-                error_log("Errore nel caricamento dell'utente: " . $e->getMessage());
+                die("Errore nel caricamento dell'utente: " . $e->getMessage());
                 return false;
             }
             
@@ -72,7 +74,7 @@
         }
         public function search($field, $value, $pdo) {
             try {
-                $query = "SELECT * FROM utenti WHERE :field = :value";
+                $query = "SELECT * FROM utenti WHERE :field = :value;";
                 $stmt = $pdo->prepare($query);
                 $stmt->execute([
                     ':field' => $field,
