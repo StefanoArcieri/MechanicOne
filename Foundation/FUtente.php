@@ -39,10 +39,10 @@
         public function update($utente, $pdo) {
             try {
                 $query = "UPDATE utenti SET nome = :nome, cognome = :cognome, email = :email, password = :password, 
-                ruolo = :ruolo, ultimo_accesso = :ultimo_accesso, data_registrazione = :data_registrazione WHERE id = :id;";
+                ruolo = :ruolo, ultimo_accesso = :ultimo_accesso, data_registrazione = :data_registrazione WHERE idU = :idU;";
                 $stmt = $pdo->prepare($query);
                 return $stmt->execute([
-                    ':id' => $utente->getId(),
+                    ':idU' => $utente->getId(),
                     ':nome' => $utente->getNome(),
                     ':cognome' => $utente->getCognome(),
                     ':email' => $utente->getEmail(),

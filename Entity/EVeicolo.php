@@ -1,12 +1,14 @@
 <?
 
     class EVeicolo{
+        private $idV;
         private $targa;
         private $marca;
         private $modello;   
         private $idU;
 
-        public function __construct($targa, $marca, $modello, $idU) {
+        public function __construct($idV, $targa, $marca, $modello, $idU) {
+            $this->idV = $idV;
             $this->targa = $targa;
             $this->marca = $marca;
             $this->modello = $modello;
@@ -14,6 +16,7 @@
         }   
 
         // Getters
+        public function getIdVeicolo() { return $this->idV; }
         public function getTarga() { return $this->targa; }
         public function getMarca() { return $this->marca; }     
         public function getModello() { return $this->modello; }

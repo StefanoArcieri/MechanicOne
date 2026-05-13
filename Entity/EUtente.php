@@ -1,7 +1,7 @@
 <?php
 
     class EUtente{
-        private $id;
+        private $idU;
         private $nome;
         private $cognome;
         private $email;
@@ -10,8 +10,8 @@
         private $ultimo_accesso;
         private $data_registrazione;
 
-        public function __construct($id, $nome, $cognome, $email, $password, $ruolo, $ultimo_accesso, $data_registrazione) {
-            $this->id = $id;
+        public function __construct($idU, $nome, $cognome, $email, $password, $ruolo, $ultimo_accesso, $data_registrazione) {
+            $this->idU = $idU;
             $this->nome = $nome;
             $this->cognome = $cognome;
             $this->email = $email;
@@ -22,7 +22,7 @@
         }
 
         // Getters
-        public function getId() { return $this->id;}
+        public function getId() { return $this->idU;}
         public function getNome() { return $this->nome; }
         public function getCognome() { return $this->cognome; }
         public function getEmail() { return $this->email; }

@@ -1,21 +1,21 @@
 <?
 
     class EPreventivo {
-        private $idP;
+        private $idPrev;
         private $idU;
-        private $targa;
-        private $servizio;
+        private $idV;
+        private $idS;
         private $costo;
         private $stato;
         private $descrizione;
         private $pdf;
         private $data_richiesta;
 
-        public function __construct($idP, $idU, $targa, $servizio, $costo, $stato, $descrizione, $pdf, $data_richiesta) {
-            $this->idP = $idP;
+        public function __construct($idPrev, $idU, $idV, $idS, $costo, $stato, $descrizione, $pdf, $data_richiesta) {
+            $this->idPrev = $idPrev;
             $this->idU = $idU;
-            $this->targa = $targa;
-            $this->servizio = $servizio;
+            $this->idV = $idV;
+            $this->idS = $idS;
             $this->costo = $costo;
             $this->stato = $stato;
             $this->descrizione = $descrizione;
@@ -24,10 +24,10 @@
         }
 
         // Getters
-        public function getIdPreventivo() { return $this->idP; }
+        public function getIdPreventivo() { return $this->idPrev; }
         public function getIdUtente() { return $this->idU; }        
-        public function getTarga() { return $this->targa; }
-        public function getServizio() { return $this->servizio; }
+        public function getIdVeicolo() { return $this->idV; }
+        public function getIdServizio() { return $this->idS; }
         public function getCosto() { return $this->costo; }
         public function getStato() { return $this->stato; }
         public function getDescrizione() { return $this->descrizione; }
@@ -36,8 +36,8 @@
 
         // Setters
         public function setIdUtente($idU) { $this->idU = $idU; }
-        public function setTarga($targa) { $this->targa = $targa; }
-        public function setServizio($servizio) { $this->servizio = $servizio; }
+        public function setIdVeicolo($idV) { $this->idV = $idV; }
+        public function setIdServizio($idS) { $this->idS = $idS; }
         public function setCosto($costo) { $this->costo = $costo; }
         public function setStato($stato) { $this->stato = $stato; }
         public function setDescrizione($descrizione) { $this->descrizione = $descrizione; }
