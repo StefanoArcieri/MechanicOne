@@ -5,9 +5,11 @@ class FPreventivo {
 
     public function load($field, $value, $pdo) {
         try {
-            $query = "SELECT * FROM preventivi WHERE :field = :value";
+            $query = "SELECT * FROM preventivi WHERE $field = :value";
             $stmt = $pdo->prepare($query);
-            $stmt->execute();
+            $stmt->execute([
+                ':value' => $value
+            ]);
             return $stmt->fetch();
         } catch (PDOException $e) {
                 error_log("Errore nel caricamento del preventivo: " . $e->getMessage());
@@ -60,10 +62,9 @@ class FPreventivo {
 
         public function delete($field, $value, $pdo) {
             try {
-                $query = "DELETE FROM preventivi WHERE :field = :value";
+                $query = "DELETE FROM preventivi WHERE $field = :value";
                 $stmt = $pdo->prepare($query);
                 return $stmt->execute([
-                    ':field' => $field,
                     ':value' => $value
                 ]);
             } catch (PDOException $e) {
@@ -75,10 +76,9 @@ class FPreventivo {
 
     public function search($field, $value, $pdo) {
             try {
-                $query = "SELECT * FROM preventivi WHERE :field = :value";
+                $query = "SELECT * FROM preventivi WHERE $field = :value";
                 $stmt = $pdo->prepare($query);
                 $stmt->execute([
-                    ':field' => $field,
                     ':value' => $value
                 ]);
                 return $stmt->fetchAll();
