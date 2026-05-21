@@ -6,7 +6,9 @@ class FServizio {
         try {
             $query = "SELECT * FROM servizi WHERE $field = :value";
             $stmt = $pdo->prepare($query);
-            $stmt->execute();
+            $stmt->execute([
+                ':value' => $value
+            ]);
             return $stmt->fetch();
         } catch (PDOException $e) {
                 error_log("Errore nel caricamento del servizio: " . $e->getMessage());

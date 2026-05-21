@@ -5,9 +5,11 @@ class FVeicolo {
 
     public function load($field, $value, $pdo) {
         try {
-            $query = "SELECT * FROM veicoli WHERE :field = :value";
+            $query = "SELECT * FROM veicoli WHERE $field = :value";
             $stmt = $pdo->prepare($query);
-            $stmt->execute();
+            $stmt->execute([
+                ':value' => $value
+            ]);
             return $stmt->fetch();
         } catch (PDOException $e) {
                 error_log("Errore nel caricamento del veicolo: " . $e->getMessage());
@@ -52,10 +54,9 @@ class FVeicolo {
     
     public function delete($field, $value, $pdo) {
             try {
-                $query = "DELETE FROM veicoli WHERE :field = :value";
+                $query = "DELETE FROM veicoli WHERE $field = :value";
                 $stmt = $pdo->prepare($query);
                 return $stmt->execute([
-                    ':field' => $field,
                     ':value' => $value
                 ]);
             } catch (PDOException $e) {
@@ -67,10 +68,9 @@ class FVeicolo {
 
     public function search($field, $value, $pdo) {
             try {
-                $query = "SELECT * FROM veicoli WHERE :field = :value";
+                $query = "SELECT * FROM veicoli WHERE $field = :value";
                 $stmt = $pdo->prepare($query);
                 $stmt->execute([
-                    ':field' => $field,
                     ':value' => $value
                 ]);
                 return $stmt->fetchAll();

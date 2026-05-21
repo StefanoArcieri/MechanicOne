@@ -7,7 +7,9 @@ class FMeccanico {
         try {
             $query = "SELECT * FROM meccanici WHERE $field = :value";
             $stmt = $pdo->prepare($query);
-            $stmt->execute();
+            $stmt->execute([
+                ':value' => $value
+            ]);
             return $stmt->fetch();
         } catch (PDOException $e) {
                 error_log("Errore nel caricamento del meccanico: " . $e->getMessage());

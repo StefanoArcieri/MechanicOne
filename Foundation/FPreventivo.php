@@ -7,7 +7,9 @@ class FPreventivo {
         try {
             $query = "SELECT * FROM preventivi WHERE $field = :value";
             $stmt = $pdo->prepare($query);
-            $stmt->execute();
+            $stmt->execute([
+                ':value' => $value
+            ]);
             return $stmt->fetch();
         } catch (PDOException $e) {
                 error_log("Errore nel caricamento del preventivo: " . $e->getMessage());

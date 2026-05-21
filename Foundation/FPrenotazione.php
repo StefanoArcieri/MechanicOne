@@ -7,7 +7,9 @@ class FPrenotazione {
         try {
             $query = "SELECT * FROM prenotaioni WHERE $field = :value";
             $stmt = $pdo->prepare($query);
-            $stmt->execute();
+            $stmt->execute([
+                ':value' => $value
+            ]);
             return $stmt->fetch();
         } catch (PDOException $e) {
                 error_log("Errore nel caricamento della prenotazione: " . $e->getMessage());
