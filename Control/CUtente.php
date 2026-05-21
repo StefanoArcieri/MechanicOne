@@ -16,18 +16,18 @@ class CUtente {
             $userData = $fUtente->load('email', $email, $pdo);
 
             if (!$userData) {
-                throw new Exception("Credenziali non valide1. Riprova.");
+                throw new Exception("Credenziali non valide. Riprova.");
             }
 
             $utenteObj = new EUtente(
-                $userData['idU'], 
-                $userData['nome'], 
-                $userData['cognome'], 
-                $userData['email'], 
-                $userData['password'], 
-                $userData['ruolo'], 
-                $userData['ultimo_accesso'], 
-                $userData['data_registrazione']
+                $userData['idU']
+                $userData['nome'],
+                $userData['cognome'],
+                $userData['email'],
+                $userData['password'],
+                $userData['ruolo'],
+                $userData['ultimo_accesso'] ?? null,
+                $userData['data_registrazione'] ?? null
             );
 
             if (!password_verify($password_chiara, $utenteObj->getPassword())) {
@@ -35,14 +35,14 @@ class CUtente {
             }
 
             Session::set('idU', $utenteObj->getId());
-            Session::set('ruolo', $utenteObj->getRuolo());
             Session::set('nome', $utenteObj->getNome());
+            Session::set('ruolo', $utenteObj->getRuolo());
             
             header('Location: ../index.php');
             exit();
 
         } catch (PDOException $e) {
-            error_log("ERRORE CRITICO DATABASE: " . $e->getMessage());
+            error_log("ERRORE CRITICO DB NEL LOGIN: " . $e->getMessage());
             throw new Exception("Servizio momentaneamente non disponibile. Riprova più tardi.");
         } catch (Exception $e) {
             throw $e;
@@ -60,25 +60,17 @@ class CUtente {
             }
 
             $password_sicura = password_hash($password_chiara, PASSWORD_BCRYPT);
-            $nuovoUtente = new EUtente(null, $nome, $cognome, $email, $password_sicura, 'cliente', null, null);
+            $nuovoUtente = new EUtente(null, $nome, $cognome, $email, $password_sicura, 'cliente');
 
             if (!$fUtente->store($nuovoUtente, $pdo)) {
-                throw new Exception("Impossibile completare la registrazione. Riprova.");
+                throw new Exception("Impossibile completare la registrazione al momento. Riprova.");
             }
             
-            $userData = $fUtente->load('email', $email, $pdo);
-            if ($userData) {
-                Session::set('idU', $userData['idU'] ?? $userData['id']); 
-                Session::set('ruolo', $userData['ruolo']);
-                Session::set('nome', $userData['nome']);
-                
-                header('Location: ../index.php');
-                exit();
-            }
+            self::login($email, $password_chiara);
 
         } catch (PDOException $e) {
-            error_log("ERRORE CRITICO DATABASE REGISTRAZIONE: " . $e->getMessage());
-            throw new Exception("Errore di connessione al server. Riprova tra poco.");
+            error_log("ERRORE CRITICO DB NELLA REGISTRAZIONE: " . $e->getMessage());
+            throw new Exception("Errore di connessione al server durante la registrazione. Riprova.");
         } catch (Exception $e) {
             throw $e;
         }
@@ -86,7 +78,7 @@ class CUtente {
 
     public static function logout() {
         Session::destroy();
-        header('Location: ../index.php');
+        header('Location: index.php');
         exit();
     }
 }

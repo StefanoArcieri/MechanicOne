@@ -1,10 +1,10 @@
 <?php
 
-class FRecenzione {
+class FRecensione {
     public function __construct() {}
     public function load($field, $value, $pdo) {
         try {
-            $query = "SELECT * FROM recensioni WHERE :field = :value";
+            $query = "SELECT * FROM recensioni WHERE $field = :value";
             $stmt = $pdo->prepare($query);
             $stmt->execute();
             return $stmt->fetch();
@@ -53,10 +53,9 @@ class FRecenzione {
     
     public function delete($field, $value, $pdo) {
             try {
-                $query = "DELETE FROM recensioni WHERE :field = :value";
+                $query = "DELETE FROM recensioni WHERE $field = :value";
                 $stmt = $pdo->prepare($query);
                 return $stmt->execute([
-                    ':field' => $field,
                     ':value' => $value
                 ]);
             } catch (PDOException $e) {
@@ -68,10 +67,9 @@ class FRecenzione {
 
     public function search($field, $value, $pdo) {
             try {
-                $query = "SELECT * FROM recensioni WHERE :field = :value";
+                $query = "SELECT * FROM recensioni WHERE $field = :value";
                 $stmt = $pdo->prepare($query);
                 $stmt->execute([
-                    ':field' => $field,
                     ':value' => $value
                 ]);
                 return $stmt->fetchAll();
@@ -80,4 +78,21 @@ class FRecenzione {
                 return false;
             }
         }
+
+    public function getAll($pdo) {
+        try {
+
+            $query = "SELECT * FROM recensioni"; 
+            
+            $stmt = $pdo->prepare($query);
+            $stmt->execute();
+            
+            return $stmt->fetchAll(PDO::FETCH_ASSOC); 
+            
+        } catch (PDOException $e) {
+            error_log("Errore critico DB nel recupero delle recensioni: " . $e->getMessage());
+            
+            return false;
+        }
+    }
 }

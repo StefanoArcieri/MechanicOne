@@ -4,7 +4,7 @@ class FServizio {
     public function __construct() {}
     public function load($field, $value, $pdo) {
         try {
-            $query = "SELECT * FROM servizi WHERE :field = :value";
+            $query = "SELECT * FROM servizi WHERE $field = :value";
             $stmt = $pdo->prepare($query);
             $stmt->execute();
             return $stmt->fetch();
@@ -48,10 +48,9 @@ class FServizio {
     
     public function delete($field, $value, $pdo) {
             try {
-                $query = "DELETE FROM servizi WHERE :field = :value";
+                $query = "DELETE FROM servizi WHERE $field = :value";
                 $stmt = $pdo->prepare($query);
                 return $stmt->execute([
-                    ':field' => $field,
                     ':value' => $value
                 ]);
             } catch (PDOException $e) {
@@ -62,10 +61,9 @@ class FServizio {
 
    public function search($field, $value, $pdo) {
             try {
-                $query = "SELECT * FROM servizi WHERE :field = :value";
+                $query = "SELECT * FROM servizi WHERE $field = :value";
                 $stmt = $pdo->prepare($query);
                 $stmt->execute([
-                    ':field' => $field,
                     ':value' => $value
                 ]);
                 return $stmt->fetchAll();
@@ -74,4 +72,21 @@ class FServizio {
                 return false;
             }
         } 
+
+    public function getAll($pdo) {
+        try {
+
+            $query = "SELECT * FROM servizi"; 
+            
+            $stmt = $pdo->prepare($query);
+            $stmt->execute();
+            
+            return $stmt->fetchAll(PDO::FETCH_ASSOC); 
+            
+        } catch (PDOException $e) {
+            error_log("Errore nel caricamento del listino servizi: " . $e->getMessage());
+            
+            return false;
+        }
+    }
 }

@@ -5,7 +5,7 @@ class FPrenotazione {
 
     public function load($field, $value, $pdo) {
         try {
-            $query = "SELECT * FROM prenotaioni WHERE :field = :value";
+            $query = "SELECT * FROM prenotaioni WHERE $field = :value";
             $stmt = $pdo->prepare($query);
             $stmt->execute();
             return $stmt->fetch();
@@ -57,10 +57,9 @@ class FPrenotazione {
 
         public function delete($field, $value, $pdo) {
             try {
-                $query = "DELETE FROM prenotazioni WHERE :field = :value";
+                $query = "DELETE FROM prenotazioni WHERE $field = :value";
                 $stmt = $pdo->prepare($query);
                 return $stmt->execute([
-                    ':field' => $field,
                     ':value' => $value
                 ]);
             } catch (PDOException $e) {
@@ -72,10 +71,9 @@ class FPrenotazione {
 
     public function search($field, $value, $pdo) {
             try {
-                $query = "SELECT * FROM prenotazioni WHERE :field = :value";
+                $query = "SELECT * FROM prenotazioni WHERE $field = :value";
                 $stmt = $pdo->prepare($query);
                 $stmt->execute([
-                    ':field' => $field,
                     ':value' => $value
                 ]);
                 return $stmt->fetchAll();
