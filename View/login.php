@@ -1,15 +1,15 @@
 <?php
-// presentation/login.php
+
 require_once '../control/CUtente.php';
 
 $errore = '';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['login'])) {
     try {
-        // Chiamata al metodo statico del Controller
+
         CUtente::login($_POST['email'], $_POST['password']);
     } catch (Exception $e) {
-        // Catturiamo l'allarme lanciato dal Controller
+        s
         $errore = $e->getMessage();
     }
 }

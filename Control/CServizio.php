@@ -1,102 +1,55 @@
 <?php
 
-require_once __DIR__ . '/../foundation/config.php';
-require_once __DIR__ . '/../foundation/FServizio.php'; 
-require_once __DIR__ . '/../entity/EServizio.php';     
-require_once __DIR__ . '/../foundation/Session.php';
+require_once __DIR__ . '/../Foundation/PersistentManager.php';
+require_once __DIR__ . '/../Entity/EServizio.php';
+require_once __DIR__ . '/../Foundation/Session.php';
 
 class CServizio {
 
-    public static function aggiungiServizio($titolo, $descrizione) {
-        global $pdo;
-
+    public static function aggiungiServizio($titolo, $descrizione, $prezzo) {
         try {
-            if (Session::get('ruolo') !== 'admin') {
-                throw new Exception("Accesso negato: Solo l'amministrazione può modificare il listino.");
+            if (Session::get('ruolo') !== 'admin') throw new Exception("Accesso negato.");
+
+            $pm = PersistentManager::getInstance();
+
+            if ($pm->load('EServizio', 'titolo', $titolo)) {
+                throw new Exception("Un servizio chiamato '$titolo' esiste già nel catalogo.");
             }
 
-            $fServizio = new FServizio();
+            $nuovoServizio = new EServizio(null, $titolo, $descrizione, $prezzo);
 
-            if ($fServizio->load('titolo', $titolo, $pdo)) {
-                throw new Exception("Attenzione: Un servizio chiamato '$titolo' esiste già nel catalogo.");
+            if (!$pm->store($nuovoServizio)) {
+                throw new Exception("Impossibile salvare il servizio.");
             }
 
-            $nuovoServizio = new EServizio(null, $titolo, $descrizione);
-
-            if (!$fServizio->store($nuovoServizio, $pdo)) {
-                throw new Exception("Errore tecnico durante il salvataggio del nuovo servizio.");
-            }
-
-            header('Location: ../admin_dashboard.php?msg=servizio_aggiunto');
+            header('Location: ../catalogo.php?msg=servizio_aggiunto');
             exit();
-
-        } catch (Exception $e) {
-            throw $e;
-        }
-    }
-
-    public static function modificaServizio($idS, $nuovoTitolo, $nuovaDescrizione) {
-        global $pdo;
-
-        try {
-
-            if (Session::get('ruolo') !== 'admin') {
-                throw new Exception("Accesso negato: Solo l'amministrazione può modificare i servizi.");
-            }
-
-            $fServizio = new FServizio();
-
-            $servizioAttuale = $fServizio->load('idS', $idS, $pdo);
-            if (!$servizioAttuale) {
-                throw new Exception("Errore: Il servizio che stai cercando di modificare non esiste.");
-            }
-
-            $servizioAggiornato = new EServizio($idS, $nuovoTitolo, $nuovaDescrizione);
-
-            if (!$fServizio->update($servizioAggiornato, $pdo)) {
-                throw new Exception("Impossibile aggiornare il servizio a causa di un errore di sistema.");
-            }
-
-            header('Location: ../admin_dashboard.php?msg=servizio_modificato');
-            exit();
-
-        } catch (Exception $e) {
-            throw $e;
-        }
-    }
-
-    public static function eliminaServizio($idS) {
-        global $pdo;
-
-        try {
-            if (Session::get('ruolo') !== 'admin') {
-                throw new Exception("Accesso negato: Operazione riservata all'amministratore.");
-            }
-
-            $fServizio = new FServizio();
-
-            if (!$fServizio->delete('idS', $idS, $pdo)) {
-                throw new Exception("Impossibile eliminare il servizio. Potrebbe essere associato a prenotazioni o preventivi esistenti.");
-            }
-
-            header('Location: ../admin_dashboard.php?msg=servizio_eliminato');
-            exit();
-
         } catch (Exception $e) {
             throw $e;
         }
     }
 
     public static function richiediLista() {
-        global $pdo;
-
         try {
-            $fServizio = new FServizio();
-            
-            $servizi = $fServizio->getAll($pdo);
-            
-            return ($servizi === false) ? [] : $servizi;
+            $pm = PersistentManager::getInstance();
+            $servizi = $pm->getAll('EServizio');
+            return $servizi ?: [];
+        } catch (Exception $e) {
+            throw $e;
+        }
+    }
 
+    public static function eliminaServizio($idS) {
+        try {
+            if (Session::get('ruolo') !== 'admin') throw new Exception("Accesso negato.");
+
+            $pm = PersistentManager::getInstance();
+            if (!$pm->delete('EServizio', 'idS', $idS)) {
+                throw new Exception("Impossibile eliminare il servizio.");
+            }
+
+            header('Location: ../catalogo.php?msg=servizio_eliminato');
+            exit();
         } catch (Exception $e) {
             throw $e;
         }

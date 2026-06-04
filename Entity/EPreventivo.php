@@ -1,4 +1,4 @@
-<?
+<?php
 
     class EPreventivo {
         private $idPrev;

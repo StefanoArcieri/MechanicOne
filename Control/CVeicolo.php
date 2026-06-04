@@ -1,35 +1,30 @@
 <?php
 
-require_once __DIR__ . '/../foundation/config.php';
-require_once __DIR__ . '/../foundation/FVeicolo.php';
-require_once __DIR__ . '/../entity/EVeicolo.php';
-require_once __DIR__ . '/../foundation/Session.php';
+require_once __DIR__ . '/../Foundation/PersistentManager.php';
+require_once __DIR__ . '/../Entity/EVeicolo.php';
+require_once __DIR__ . '/../Foundation/Session.php';
 
 class CVeicolo {
 
-    public static function registra($targa, $marca, $modello) {
-        global $pdo;
-
+    public static function aggiungiVeicolo($targa, $marca, $modello) {
         try {
             $idU = Session::get('idU');
-            if (!$idU) {
-                throw new Exception("Accesso negato: effettua il login per registrare un'auto.");
+            if (!$idU) throw new Exception("Accesso negato.");
+
+            $pm = PersistentManager::getInstance();
+
+            // Verifica duplicato targa tramite PM
+            if ($pm->load('EVeicolo', 'targa', strtoupper(trim($targa)))) {
+                throw new Exception("Attenzione: Questo veicolo risulta già registrato.");
             }
 
-            $fVeicolo = new FVeicolo();
-            $targa = strtoupper(trim($targa));
-            
-            if ($fVeicolo->load('targa', $targa, $pdo)) {
-                throw new Exception("Attenzione: Questa targa è già registrata nell'officina.");
+            $nuovoVeicolo = new EVeicolo(null, $idU, strtoupper(trim($targa)), $marca, $modello);
+
+            if (!$pm->store($nuovoVeicolo)) {
+                throw new Exception("Errore tecnico durante il salvataggio del veicolo.");
             }
 
-            $nuovoVeicolo = new EVeicolo(null, $idU, $targa, $marca, $modello);
-
-            if (!$fVeicolo->store($nuovoVeicolo, $pdo)) {
-                throw new Exception("Errore tecnico durante il salvataggio del veicolo. Riprova.");
-            }
-
-            header('Location: ../index.php');
+            header('Location: ../garage.php?msg=veicolo_aggiunto');
             exit();
 
         } catch (Exception $e) {
@@ -38,24 +33,30 @@ class CVeicolo {
     }
 
     public static function getVeicoliPersonali() {
-        global $pdo;
-
         try {
-
             $idU = Session::get('idU');
-            if (!$idU) {
-                throw new Exception("Devi effettuare l'accesso per visualizzare i tuoi veicoli.");
+            if (!$idU) return [];
+
+            $pm = PersistentManager::getInstance();
+            $veicoli = $pm->search('EVeicolo', 'idU', $idU);
+            return $veicoli ?: [];
+        } catch (Exception $e) {
+            throw $e;
+        }
+    }
+
+    public static function eliminaVeicolo($idV) {
+        try {
+            $idU = Session::get('idU');
+            if (!$idU) throw new Exception("Accesso negato.");
+
+            $pm = PersistentManager::getInstance();
+            if (!$pm->delete('EVeicolo', 'idV', $idV)) {
+                throw new Exception("Impossibile eliminare il veicolo.");
             }
 
-            $fVeicolo = new FVeicolo();
-            $veicoli = $fVeicolo->search('idU', $idU, $pdo);
-            
-            if ($veicoli === false) {
-                return [];
-            }
-            
-            return $veicoli;
-
+            header('Location: ../garage.php?msg=veicolo_eliminato');
+            exit();
         } catch (Exception $e) {
             throw $e;
         }

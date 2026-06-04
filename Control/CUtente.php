@@ -1,28 +1,22 @@
 <?php
 
-require_once __DIR__ . '/../foundation/config.php';
-require_once __DIR__ . '/../foundation/FUtente.php';
-require_once __DIR__ . '/../entity/EUtente.php';
-require_once __DIR__ . '/../foundation/Session.php';
+require_once __DIR__ . '/../Foundation/PersistentManager.php';
+require_once __DIR__ . '/../Entity/EUtente.php';
+require_once __DIR__ . '/../Foundation/Session.php';
 
 class CUtente {
 
     public static function login($email, $password_chiara) {
-        global $pdo;
-
         try {
-            $fUtente = new FUtente();
-            
-            $userData = $fUtente->load('email', $email, $pdo);
+            $pm = PersistentManager::getInstance();
+            $userData = $pm->load('EUtente', 'email', $email);
 
             if (!$userData) {
                 throw new Exception("Credenziali non valide. Riprova.");
             }
-            
-            $idCorretto = $userData['idU'] ?? $userData['id'];
 
             $utenteObj = new EUtente(
-                $idCorretto,
+                $userData['idU'] ?? $userData['id'],
                 $userData['nome'],
                 $userData['cognome'],
                 $userData['email'],
@@ -43,47 +37,30 @@ class CUtente {
             header('Location: ../index.php');
             exit();
 
-        } catch (PDOException $e) {
-            error_log("ERRORE CRITICO DB NEL LOGIN: " . $e->getMessage());
-            throw new Exception("Servizio momentaneamente non disponibile. Riprova più tardi.");
         } catch (Exception $e) {
             throw $e;
         }
     }
-    
-    public static function registrazione($nome, $cognome, $email, $password_chiara) {
-        global $pdo;
 
+    public static function registrazione($nome, $cognome, $email, $password_chiara) {
         try {
-            $fUtente = new FUtente();
+            $pm = PersistentManager::getInstance();
             
-            if ($fUtente->load('email', $email, $pdo)) {
+            if ($pm->load('EUtente', 'email', $email)) {
                 throw new Exception("Questa email è già registrata nel sistema.");
             }
 
             $password_sicura = password_hash($password_chiara, PASSWORD_BCRYPT);
-            
-            // 🛠️ RE-PACK CORRETTO: Aggiunti i 2 parametri mancanti alla fine!
             $nuovoUtente = new EUtente(
-                null, 
-                $nome, 
-                $cognome, 
-                $email, 
-                $password_sicura, 
-                'cliente',
-                null,           // <--- ultimo_accesso (null perché non è ancora entrato)
-                date('Y-m-d')   // <--- data_registrazione (la data di oggi)
+                null, $nome, $cognome, $email, $password_sicura, 'cliente', null, date('Y-m-d')
             );
 
-            if (!$fUtente->store($nuovoUtente, $pdo)) {
+            if (!$pm->store($nuovoUtente)) {
                 throw new Exception("Impossibile completare la registrazione al momento. Riprova.");
             }
             
             self::login($email, $password_chiara);
 
-        } catch (PDOException $e) {
-            error_log("ERRORE CRITICO DB NELLA REGISTRAZIONE: " . $e->getMessage());
-            throw new Exception("Errore di connessione al server durante la registrazione. Riprova.");
         } catch (Exception $e) {
             throw $e;
         }
@@ -93,6 +70,13 @@ class CUtente {
         Session::destroy();
         header('Location: index.php');
         exit();
+    }
+
+    public static function home() {
+        require_once __DIR__ . '/../View/VUtente.php';
+
+        $view = new VUtente();
+        $view->mostraHomePubblica();
     }
 }
 ?>

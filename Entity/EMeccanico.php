@@ -1,4 +1,4 @@
-<?
+<?php
 
     class EMeccanico extends EUtente {
         private $idM;

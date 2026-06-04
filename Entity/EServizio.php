@@ -1,4 +1,4 @@
-<?
+<?php
 
     class EServizio{
         private $idS;
