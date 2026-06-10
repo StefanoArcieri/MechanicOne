@@ -1,5 +1,7 @@
 <?php
 
+    require_once __DIR__ . '/EUtente.php';
+
     class EMeccanico extends EUtente {
         private $idM;
         private $specializzazione;

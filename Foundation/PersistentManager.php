@@ -72,5 +72,10 @@ class PersistentManager {
         $fClass = $this->getFoundationClass($entityName);
         return $fClass->delete($field, $value, $this->pdo);
     }
+
+    public function verificaLogin($email, $password) {
+        $fUtente = new FUtente();
+        return $fUtente->verificaLogin($email, $password, $this->pdo);
+    }
 }
 ?>

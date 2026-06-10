@@ -2,19 +2,21 @@
 <html lang="it">
 <head>
     <meta charset="UTF-8">
-    <title>MechanicOne - Benvenuto</title>
+    <title>Home Officina - MechanicOne</title>
 </head>
 <body>
-
-    <div style="text-align: center; margin-top: 80px; font-family: Arial, sans-serif;">
-        <h1>🔧 Benvenuto su MechanicOne!</h1>
-        <p>La piattaforma digitale per la gestione della tua officina di fiducia.</p>
-        <hr style="width: 40%; margin: 20px auto; border-color: #eee;">
+    <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 50px auto; text-align: center;">
+        <h1>Benvenuto nell'Officina MechanicOne! 🔧🏎️</h1>
+        <p>Il motore gira a pieni regimi, l'accesso è stato eseguito con successo.</p>
         
-        <p>Sei già cliente o vuoi registrarti?</p>
-        <a href="utente/mostraLogin" style="display: inline-block; padding: 10px 20px; background-color: #007bff; color: white; text-decoration: none; border-radius: 5px; margin: 5px;">Accedi (Login)</a>
-        <a href="utente/mostraRegistrazione" style="display: inline-block; padding: 10px 20px; background-color: #28a745; color: white; text-decoration: none; border-radius: 5px; margin: 5px;">Registrati</a>
+        <div style="background-color: #e8f8f5; border: 1px solid #a3e4d7; padding: 15px; border-radius: 4px; margin: 20px 0; color: #16a085;">
+            <strong>Il tuo ID di sessione in officina è:</strong> {$idUtente}
+        </div>
+        
+        <p style="color: #27ae60; font-weight: bold; font-size: 18px;">Letsgooo! Stiamo gasicchiando di brutto in MVC puro!</p>
+        
+        <hr style="border: 0; border-top: 1px solid #eee; margin: 30px 0;">
+        <p><a href="/MechanicOne/utente/login" style="color: #e74c3c; text-decoration: none; font-weight: bold;">Esci dall'Officina</a></p>
     </div>
-
 </body>
 </html>

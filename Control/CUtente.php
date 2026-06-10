@@ -1,82 +1,97 @@
 <?php
 
-require_once __DIR__ . '/../Foundation/PersistentManager.php';
-require_once __DIR__ . '/../Entity/EUtente.php';
+require_once __DIR__ . '/../View/VUtente.php';
 require_once __DIR__ . '/../Foundation/Session.php';
+require_once __DIR__ . '/../Foundation/PersistentManager.php';
+// Includiamo il layer Foundation per parlare col Database reale!
+require_once __DIR__ . '/../Foundation/FUtente.php'; 
+require_once __DIR__ . '/../Entity/EUtente.php';
 
 class CUtente {
 
-    public static function login($email, $password_chiara) {
-        try {
-            $pm = PersistentManager::getInstance();
-            $userData = $pm->load('EUtente', 'email', $email);
+    /**
+     * Gestisce la visualizzazione e l'autenticazione del Login tramite Database
+     */
+    public function login() {
+        $vUtente = new VUtente();
+        $errore = '';
 
-            if (!$userData) {
-                throw new Exception("Credenziali non valide. Riprova.");
+        if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['email'], $_POST['password'])) {
+            try {
+                $email = $_POST['email'];
+                $password = $_POST['password'];
+
+                // FASE FOUNDATION: Chiamiamo il PersistentManager!
+                $pm = PersistentManager::getInstance();
+                $utente = $pm->verificaLogin($email, $password);
+
+                if ($utente !== null) {
+                    Session::set('idU', $utente->getId()); 
+                    header('Location: /MechanicOne/utente/home');
+                    exit;
+                } else {
+                    throw new Exception("Email o Password errate! L'officina non ti riconosce.");
+                }
+            } catch (Exception $e) {
+                $errore = $e->getMessage();
             }
+        }
 
-            $utenteObj = new EUtente(
-                $userData['idU'] ?? $userData['id'],
-                $userData['nome'],
-                $userData['cognome'],
-                $userData['email'],
-                $userData['password'],
-                $userData['ruolo'],
-                $userData['ultimo_accesso'] ?? null,
-                $userData['data_registrazione'] ?? null
-            );
+        $vUtente->mostraFormLogin($errore);
+    }
 
-            if (!password_verify($password_chiara, $utenteObj->getPassword())) {
-                throw new Exception("Credenziali non valide. Riprova.");
-            }
-
-            Session::set('idU', $utenteObj->getId());
-            Session::set('nome', $utenteObj->getNome());
-            Session::set('ruolo', $utenteObj->getRuolo());
-            
-            header('Location: ../index.php');
-            exit();
-
-        } catch (Exception $e) {
-            throw $e;
+    /**
+     * Gestisce la pagina principale dell'utente dopo il login
+     */
+    public function home() {
+        // Recuperiamo l'ID utente reale dalla sessione
+        $idUtente = Session::get('idU');
+        
+        if ($idUtente) {
+            // ZERO ECHO! La View gestisce tutto tramite Smarty
+            // (In futuro, potrete usare FUtente::load($idUtente) per caricare 
+            // il nome dell'utente e passarlo alla View per un saluto personalizzato!)
+            $vUtente = new VUtente();
+            $vUtente->mostraHome($idUtente);
+        } else {
+            // Accesso negato, si torna al form
+            header('Location: /MechanicOne/utente/login');
+            exit;
         }
     }
 
-    public static function registrazione($nome, $cognome, $email, $password_chiara) {
-        try {
-            $pm = PersistentManager::getInstance();
-            
-            if ($pm->load('EUtente', 'email', $email)) {
-                throw new Exception("Questa email è già registrata nel sistema.");
+    public function registrazione() {
+        $vUtente = new VUtente();
+        $errore = '';
+
+        if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['nome'], $_POST['cognome'], $_POST['email'], $_POST['password'])) {
+            try {
+                $nome = $_POST['nome'];
+                $cognome = $_POST['cognome'];
+                $email = $_POST['email'];
+                $password = $_POST['password'];
+
+                // CORREZIONE COSTUTTORE: EUtente vuole 8 parametri! 
+                // Passiamo null per l'id (lo genera il DB), 'cliente' di default, e null per le date
+                $nuovoUtente = new EUtente(null, $nome, $cognome, $email, $password, 'cliente', null, date('Y-m-d H:i:s'));
+
+                // Deleghiamo al Persistent Manager il salvataggio (chiama in automatico FUtente->store)
+                $pm = PersistentManager::getInstance();
+                $risultato = $pm->store($nuovoUtente);
+
+                if ($risultato) {
+                    header('Location: /MechanicOne/utente/login');
+                    exit;
+                } else {
+                    throw new Exception("Impossibile registrarsi. Forse questa email è già nel nostro database?");
+                }
+
+            } catch (Exception $e) {
+                $errore = $e->getMessage();
             }
-
-            $password_sicura = password_hash($password_chiara, PASSWORD_BCRYPT);
-            $nuovoUtente = new EUtente(
-                null, $nome, $cognome, $email, $password_sicura, 'cliente', null, date('Y-m-d')
-            );
-
-            if (!$pm->store($nuovoUtente)) {
-                throw new Exception("Impossibile completare la registrazione al momento. Riprova.");
-            }
-            
-            self::login($email, $password_chiara);
-
-        } catch (Exception $e) {
-            throw $e;
         }
-    }
 
-    public static function logout() {
-        Session::destroy();
-        header('Location: index.php');
-        exit();
-    }
-
-    public static function home() {
-        require_once __DIR__ . '/../View/VUtente.php';
-
-        $view = new VUtente();
-        $view->mostraHomePubblica();
+        $vUtente->mostraFormRegistrazione($errore);
     }
 }
 ?>

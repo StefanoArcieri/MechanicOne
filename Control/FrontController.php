@@ -7,6 +7,7 @@ require_once __DIR__ . '/CPreventivo.php';
 require_once __DIR__ . '/CPrenotazione.php';
 require_once __DIR__ . '/CMeccanico.php';
 require_once __DIR__ . '/CRecensione.php';
+require_once __DIR__ . '/CErrori.php'; // Includiamo il nuovo controller degli errori
 
 class FrontController {
 
@@ -29,15 +30,15 @@ class FrontController {
             if ( method_exists($controller, $method ) ) {
                 $real_controller = new $controller();
             } else {
-                header('HTTP/1.1 405 Method Not Allowed');
-                echo "<h1>405 Method Not Allowed</h1><p>L'azione '$method' non esiste nel sistema.</p>";
-                exit;
+                // Sostituito l'echo con la chiamata al controllore degli errori (Metodo non esistente)
+                $errorController = new CErrori();
+                return $errorController->mostraErrore(405, "L'azione '$method' non esiste nel sistema.");
             }
             
         } else {
-            header('HTTP/1.1 404 Not Found');
-            echo "<h1>404 Not Found</h1><p>La risorsa '$controller' non è registrata nell'officina.</p>";
-            exit;
+            // Sostituito l'echo con la chiamata al controllore degli errori (Classe non esistente)
+            $errorController = new CErrori();
+            return $errorController->mostraErrore(404, "La risorsa '$controller' non è registrata nell'officina.");
         }
 
         return $real_controller->$method( $params );
