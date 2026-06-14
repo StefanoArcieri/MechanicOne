@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 5.8.0, created on 2026-06-09 16:49:45
+/* Smarty version 5.8.0, created on 2026-06-14 23:07:18
   from 'file:login.tpl' */
 
 /* @var \Smarty\Template $_smarty_tpl */
 if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
   'version' => '5.8.0',
-  'unifunc' => 'content_6a2828093542e1_68941404',
+  'unifunc' => 'content_6a2f18069262d0_36393220',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     '28489954b99f25bb48b0540a1cf7cd4747411c4e' => 
     array (
       0 => 'login.tpl',
-      1 => 1781016581,
+      1 => 1781471223,
       2 => 'file',
     ),
   ),
@@ -20,7 +20,7 @@ if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
   array (
   ),
 ))) {
-function content_6a2828093542e1_68941404 (\Smarty\Template $_smarty_tpl) {
+function content_6a2f18069262d0_36393220 (\Smarty\Template $_smarty_tpl) {
 $_smarty_current_dir = 'C:\\xampp\\htdocs\\MechanicOne\\templates';
 ?><!DOCTYPE html>
 <html lang="it">
@@ -70,6 +70,9 @@ $_smarty_current_dir = 'C:\\xampp\\htdocs\\MechanicOne\\templates';
                 Non sei registrato? Contatta l'amministratore di MechanicOne.
             </p>
         </div>
+
+        <p>Non hai un account?</p>
+        <a href="/MechanicOne/utente/registrazione" class="btn btn-secondary">Registrati qui</a>
 
     </div>
 

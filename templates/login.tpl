@@ -48,6 +48,9 @@
             </p>
         </div>
 
+        <p>Non hai un account?</p>
+        <a href="/MechanicOne/utente/registrazione" class="btn btn-secondary">Registrati qui</a>
+
     </div>
 
 </body>
