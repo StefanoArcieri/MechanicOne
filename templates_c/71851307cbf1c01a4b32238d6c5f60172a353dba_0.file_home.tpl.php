@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 5.8.0, created on 2026-06-09 15:53:01
+/* Smarty version 5.8.0, created on 2026-06-14 23:26:59
   from 'file:home.tpl' */
 
 /* @var \Smarty\Template $_smarty_tpl */
 if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
   'version' => '5.8.0',
-  'unifunc' => 'content_6a281abdbfe9b1_19268525',
+  'unifunc' => 'content_6a2f1ca3e93f84_34506771',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     '71851307cbf1c01a4b32238d6c5f60172a353dba' => 
     array (
       0 => 'home.tpl',
-      1 => 1780588174,
+      1 => 1781016144,
       2 => 'file',
     ),
   ),
@@ -20,26 +20,29 @@ if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
   array (
   ),
 ))) {
-function content_6a281abdbfe9b1_19268525 (\Smarty\Template $_smarty_tpl) {
+function content_6a2f1ca3e93f84_34506771 (\Smarty\Template $_smarty_tpl) {
 $_smarty_current_dir = 'C:\\xampp\\htdocs\\MechanicOne\\templates';
 ?><!DOCTYPE html>
 <html lang="it">
 <head>
     <meta charset="UTF-8">
-    <title>MechanicOne - Benvenuto</title>
+    <title>Home Officina - MechanicOne</title>
 </head>
 <body>
-
-    <div style="text-align: center; margin-top: 80px; font-family: Arial, sans-serif;">
-        <h1>🔧 Benvenuto su MechanicOne!</h1>
-        <p>La piattaforma digitale per la gestione della tua officina di fiducia.</p>
-        <hr style="width: 40%; margin: 20px auto; border-color: #eee;">
+    <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 50px auto; text-align: center;">
+        <h1>Benvenuto nell'Officina MechanicOne! 🔧🏎️</h1>
+        <p>Il motore gira a pieni regimi, l'accesso è stato eseguito con successo.</p>
         
-        <p>Sei già cliente o vuoi registrarti?</p>
-        <a href="utente/mostraLogin" style="display: inline-block; padding: 10px 20px; background-color: #007bff; color: white; text-decoration: none; border-radius: 5px; margin: 5px;">Accedi (Login)</a>
-        <a href="utente/mostraRegistrazione" style="display: inline-block; padding: 10px 20px; background-color: #28a745; color: white; text-decoration: none; border-radius: 5px; margin: 5px;">Registrati</a>
-    </div>
+        <div style="background-color: #e8f8f5; border: 1px solid #a3e4d7; padding: 15px; border-radius: 4px; margin: 20px 0; color: #16a085;">
+            <strong>Il tuo ID di sessione in officina è:</strong> <?php echo $_smarty_tpl->getValue('idUtente');?>
 
+        </div>
+        
+        <p style="color: #27ae60; font-weight: bold; font-size: 18px;">Letsgooo! Stiamo gasicchiando di brutto in MVC puro!</p>
+        
+        <hr style="border: 0; border-top: 1px solid #eee; margin: 30px 0;">
+        <p><a href="/MechanicOne/utente/login" style="color: #e74c3c; text-decoration: none; font-weight: bold;">Esci dall'Officina</a></p>
+    </div>
 </body>
 </html><?php }
 }

@@ -26,7 +26,9 @@ class CUtente {
                 $utente = $pm->verificaLogin($email, $password);
 
                 if ($utente !== null) {
-                    Session::set('idU', $utente->getId()); 
+                    Session::set('idU', $utente->getId());
+                    Session::set('nome', $utente->getNome());
+                    Session::set('ruolo', $utente->getRuolo());
                     header('Location: /MechanicOne/utente/home');
                     exit;
                 } else {
@@ -43,20 +45,36 @@ class CUtente {
     /**
      * Gestisce la pagina principale dell'utente dopo il login
      */
-    public function home() {
-        // Recuperiamo l'ID utente reale dalla sessione
-        $idUtente = Session::get('idU');
-        
-        if ($idUtente) {
-            // ZERO ECHO! La View gestisce tutto tramite Smarty
-            // (In futuro, potrete usare FUtente::load($idUtente) per caricare 
-            // il nome dell'utente e passarlo alla View per un saluto personalizzato!)
-            $vUtente = new VUtente();
-            $vUtente->mostraHome($idUtente);
+    public static function home() {
+        require_once __DIR__ . '/../View/VUtente.php';
+        $view = new VUtente();
+
+        // 1. Recuperiamo le informazioni di controllo dallo strato Sessione
+        $idU = Session::get('idU');
+        $nome = Session::get('nome');
+        $ruolo = Session::get('ruolo');
+
+        // 2. Controllo di flusso: l'utente ha una sessione attiva?
+        if (!$idU) {
+            // Se l'utente è un ospite anonimo, vede la vetrina pubblica dell'officina
+            $view->mostraHomePubblica();
         } else {
-            // Accesso negato, si torna al form
-            header('Location: /MechanicOne/utente/login');
-            exit;
+            // Se l'utente è autenticato, lo smistiamo sulla sua plancia di comando specifica
+            switch ($ruolo) {
+                case 'cliente':
+                    $view->mostraDashboardCliente($nome);
+                    break;
+                case 'meccanico':
+                    $view->mostraDashboardMeccanico($nome);
+                    break;
+                case 'admin':
+                    $view->mostraDashboardAdmin($nome);
+                    break;
+                default:
+                    // Failsafe: se il ruolo non è riconosciuto, lo trattiamo come ospite
+                    $view->mostraHomePubblica();
+                    break;
+            }
         }
     }
 
@@ -92,6 +110,15 @@ class CUtente {
         }
 
         $vUtente->mostraFormRegistrazione($errore);
+    }
+
+    /**
+     * Gestisce la disconnessione dell'utente (Logout)
+     */
+    public function logout() {
+        Session::destroy();
+        header('Location: /MechanicOne/utente/login');
+        exit;
     }
 }
 ?>

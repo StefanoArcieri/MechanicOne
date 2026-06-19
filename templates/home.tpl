@@ -2,21 +2,15 @@
 <html lang="it">
 <head>
     <meta charset="UTF-8">
-    <title>Home Officina - MechanicOne</title>
+    <title>Benvenuto - MechanicOne</title>
 </head>
-<body>
-    <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 50px auto; text-align: center;">
-        <h1>Benvenuto nell'Officina MechanicOne! 🔧🏎️</h1>
-        <p>Il motore gira a pieni regimi, l'accesso è stato eseguito con successo.</p>
-        
-        <div style="background-color: #e8f8f5; border: 1px solid #a3e4d7; padding: 15px; border-radius: 4px; margin: 20px 0; color: #16a085;">
-            <strong>Il tuo ID di sessione in officina è:</strong> {$idUtente}
-        </div>
-        
-        <p style="color: #27ae60; font-weight: bold; font-size: 18px;">Letsgooo! Stiamo gasicchiando di brutto in MVC puro!</p>
-        
-        <hr style="border: 0; border-top: 1px solid #eee; margin: 30px 0;">
-        <p><a href="/MechanicOne/utente/login" style="color: #e74c3c; text-decoration: none; font-weight: bold;">Esci dall'Officina</a></p>
+<body style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #fafaf9; padding: 20px; text-align: center;">
+    <div style="max-width: 800px; margin: 60px auto; background: white; padding: 40px; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); border-top: 5px solid #27ae60;">
+        <h1 style="color: #2c3e50; margin-bottom: 10px;">🔧 Officina MechanicOne</h1>
+        <p style="color: #7f8c8d; font-size: 16px;">Benvenuto nella nostra officina virtuale. Accedi o registrati per prenotare i nostri servizi o richiedere preventivi!</p>
+        <hr style="border: 0; height: 1px; background: #ecf0f1; margin: 30px 0;">
+        <a href="/MechanicOne/utente/login" style="display: inline-block; padding: 12px 25px; background-color: #2980b9; color: white; text-decoration: none; border-radius: 4px; font-weight: bold; margin-right: 15px;">Accedi</a>
+        <a href="/MechanicOne/utente/registrazione" style="display: inline-block; padding: 12px 25px; background-color: #27ae60; color: white; text-decoration: none; border-radius: 4px; font-weight: bold;">Registrati</a>
     </div>
 </body>
 </html>

@@ -8,7 +8,7 @@ DROP TABLE IF EXISTS `servizi`;
 
 -- 1. Creazione Tabelle Indipendenti
 CREATE TABLE `servizi` (
-   'idS' int(11) NOT NULL AUTO_INCREMENT,
+   `idS` int(11) NOT NULL AUTO_INCREMENT,
    `titolo` varchar(50) NOT NULL,
    `descrizione` varchar(300) DEFAULT NULL,
    PRIMARY KEY (`idS`)
