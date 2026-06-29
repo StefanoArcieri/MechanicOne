@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 5.8.0, created on 2026-06-14 23:26:59
+/* Smarty version 5.8.0, created on 2026-06-29 17:38:10
   from 'file:home.tpl' */
 
 /* @var \Smarty\Template $_smarty_tpl */
 if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
   'version' => '5.8.0',
-  'unifunc' => 'content_6a2f1ca3e93f84_34506771',
+  'unifunc' => 'content_6a429162693505_38076914',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     '71851307cbf1c01a4b32238d6c5f60172a353dba' => 
     array (
       0 => 'home.tpl',
-      1 => 1781016144,
+      1 => 1782680837,
       2 => 'file',
     ),
   ),
@@ -20,29 +20,56 @@ if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
   array (
   ),
 ))) {
-function content_6a2f1ca3e93f84_34506771 (\Smarty\Template $_smarty_tpl) {
+function content_6a429162693505_38076914 (\Smarty\Template $_smarty_tpl) {
 $_smarty_current_dir = 'C:\\xampp\\htdocs\\MechanicOne\\templates';
-?><!DOCTYPE html>
-<html lang="it">
-<head>
-    <meta charset="UTF-8">
-    <title>Home Officina - MechanicOne</title>
-</head>
-<body>
-    <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 50px auto; text-align: center;">
-        <h1>Benvenuto nell'Officina MechanicOne! 🔧🏎️</h1>
-        <p>Il motore gira a pieni regimi, l'accesso è stato eseguito con successo.</p>
-        
-        <div style="background-color: #e8f8f5; border: 1px solid #a3e4d7; padding: 15px; border-radius: 4px; margin: 20px 0; color: #16a085;">
-            <strong>Il tuo ID di sessione in officina è:</strong> <?php echo $_smarty_tpl->getValue('idUtente');?>
+$_smarty_tpl->getInheritance()->init($_smarty_tpl, true);
+?>
 
-        </div>
-        
-        <p style="color: #27ae60; font-weight: bold; font-size: 18px;">Letsgooo! Stiamo gasicchiando di brutto in MVC puro!</p>
-        
-        <hr style="border: 0; border-top: 1px solid #eee; margin: 30px 0;">
-        <p><a href="/MechanicOne/utente/login" style="color: #e74c3c; text-decoration: none; font-weight: bold;">Esci dall'Officina</a></p>
+
+<?php 
+$_smarty_tpl->getInheritance()->instanceBlock($_smarty_tpl, 'Block_14626843196a429162686932_35935164', 'title');
+?>
+
+
+<?php 
+$_smarty_tpl->getInheritance()->instanceBlock($_smarty_tpl, 'Block_10340209016a4291626925a2_10438248', 'content');
+$_smarty_tpl->getInheritance()->endChild($_smarty_tpl, 'layouts/base.tpl', $_smarty_current_dir);
+}
+/* {block 'title'} */
+class Block_14626843196a429162686932_35935164 extends \Smarty\Runtime\Block
+{
+public function callBlock(\Smarty\Template $_smarty_tpl) {
+$_smarty_current_dir = 'C:\\xampp\\htdocs\\MechanicOne\\templates';
+?>
+Home - MechanicOne<?php
+}
+}
+/* {/block 'title'} */
+/* {block 'content'} */
+class Block_10340209016a4291626925a2_10438248 extends \Smarty\Runtime\Block
+{
+public function callBlock(\Smarty\Template $_smarty_tpl) {
+$_smarty_current_dir = 'C:\\xampp\\htdocs\\MechanicOne\\templates';
+?>
+
+<section class="hero-card">
+    <div class="hero-content">
+        <p class="hero-eyebrow">Benvenuto</p>
+        <h1>MechanicOne</h1>
+        <p class="hero-text">La tua officina online per prenotare interventi, richiedere preventivi e seguire i servizi di assistenza.</p>
     </div>
-</body>
-</html><?php }
+
+    <div class="hero-services">
+        <h2>I nostri servizi</h2>
+        <ul class="services-list">
+            <li>Manutenzione ordinaria e straordinaria</li>
+            <li>Riparazioni veicoli e controlli di sicurezza</li>
+            <li>Preventivi rapidi e prenotazioni online</li>
+        </ul>
+    </div>
+</section>
+<?php
+}
+}
+/* {/block 'content'} */
 }

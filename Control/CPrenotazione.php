@@ -3,6 +3,7 @@
 require_once __DIR__ . '/../Foundation/PersistentManager.php';
 require_once __DIR__ . '/../Entity/EPrenotazione.php';
 require_once __DIR__ . '/../Foundation/Session.php';
+require_once __DIR__ . '/../View/VPrenotazione.php';
 
 class CPrenotazione {
 
@@ -12,17 +13,30 @@ class CPrenotazione {
             if (!$idU) throw new Exception("Effettua il login per prenotare.");
 
             $pm = PersistentManager::getInstance();
-            $nuovaPrenotazione = new EPrenotazione(null, $idU, $idV, $idS, null, $data, $ora, 'confermata');
+            $nuovaPrenotazione = new EPrenotazione(null, null, null, $idV, $data, 'confermata', $ora);
 
             if (!$pm->store($nuovaPrenotazione)) {
                 throw new Exception("Errore durante il salvataggio della prenotazione.");
             }
 
-            header('Location: ../prenotazioni.php?msg=prenotazione_effettuata');
+            header('Location: /MechanicOne/prenotazione/lista?msg=prenotazione_effettuata');
             exit();
         } catch (Exception $e) {
             throw $e;
         }
+    }
+
+    public function lista($params = []) {
+        $view = new VPrenotazione();
+        $ruolo = Session::get('ruolo');
+
+        if ($ruolo === 'admin' || $ruolo === 'meccanico') {
+            $prenotazioni = self::richiediLista();
+        } else {
+            $prenotazioni = self::getPrenotazioniUtente();
+        }
+
+        $view->mostraLista($prenotazioni);
     }
 
     public static function getPrenotazioniUtente() {
@@ -59,7 +73,7 @@ class CPrenotazione {
                 throw new Exception("Impossibile annullare la prenotazione.");
             }
 
-            header('Location: ../prenotazioni.php?msg=prenotazione_annullata');
+            header('Location: /MechanicOne/prenotazione/lista?msg=prenotazione_annullata');
             exit();
         } catch (Exception $e) {
             throw $e;

@@ -26,6 +26,7 @@
         public function setMarca($marca) { $this->marca = $marca; }
         public function setModello($modello) { $this->modello = $modello; }
         public function setIdUtente($idU) { $this->idU = $idU; }
+        public function setTarga($targa) {$this->targa = $targa; }
 
     }
 ?>

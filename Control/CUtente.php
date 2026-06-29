@@ -62,7 +62,7 @@ class CUtente {
             // Se l'utente è autenticato, lo smistiamo sulla sua plancia di comando specifica
             switch ($ruolo) {
                 case 'cliente':
-                    $view->mostraDashboardCliente($nome);
+                    $view->mostraDashboardUtente($nome);
                     break;
                 case 'meccanico':
                     $view->mostraDashboardMeccanico($nome);

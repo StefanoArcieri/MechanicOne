@@ -12,8 +12,8 @@ class FPreventivo {
             ]);
             return $stmt->fetch();
         } catch (PDOException $e) {
-                error_log("Errore nel caricamento del preventivo: " . $e->getMessage());
-                return false;
+                error_log($e->getMessage());
+                throw new Exception("Errore nel caricamento del preventivo.");
             }
             
     }
@@ -34,8 +34,8 @@ class FPreventivo {
                 ]);
 
         } catch (PDOException $e) {
-                error_log("Errore nello store del preventivo: " . $e->getMessage());
-                return false;
+                error_log($e->getMessage());
+                throw new Exception("Errore nello store del preventivo.");
             }
     }
 
@@ -55,8 +55,8 @@ class FPreventivo {
                     ':data_richiesta' => $preventivo->getDataRichiesta(),
                 ]);
             } catch (PDOException $e) {
-                error_log("Errore nell'update del preventivo: " . $e->getMessage());
-                return false;
+                error_log($e->getMessage());
+                throw new Exception("Errore nell'update del preventivo.");
             }
         }
 
@@ -68,8 +68,8 @@ class FPreventivo {
                     ':value' => $value
                 ]);
             } catch (PDOException $e) {
-                error_log("Errore nella cancellazione del preventivo: " . $e->getMessage());
-                return false;
+                error_log($e->getMessage());
+                throw new Exception("Errore nella cancellazione del preventivo.");
             }
         }
 
@@ -83,8 +83,8 @@ class FPreventivo {
                 ]);
                 return $stmt->fetchAll();
             } catch (PDOException $e) {
-                error_log("Errore nella ricerca del preventivo: " . $e->getMessage());
-                return false;
+                error_log($e->getMessage());
+                throw new Exception("Errore nella ricerca del preventivo.");
             }
         }
     
@@ -99,9 +99,8 @@ class FPreventivo {
             return $stmt->fetchAll(PDO::FETCH_ASSOC); 
             
         } catch (PDOException $e) {
-            error_log("Errore nel recupero di tutti i preventivi: " . $e->getMessage());
-            
-            return false;
+            error_log($e->getMessage());
+            throw new Exception("Errore nel recupero di tutti i preventivi.");
         }
     }
 }

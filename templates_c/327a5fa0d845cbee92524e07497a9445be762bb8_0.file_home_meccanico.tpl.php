@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 5.8.0, created on 2026-06-14 23:52:08
+/* Smarty version 5.8.0, created on 2026-06-28 17:40:30
   from 'file:home_meccanico.tpl' */
 
 /* @var \Smarty\Template $_smarty_tpl */
 if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
   'version' => '5.8.0',
-  'unifunc' => 'content_6a2f2288c70299_27721612',
+  'unifunc' => 'content_6a41406eab1276_13731088',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     '327a5fa0d845cbee92524e07497a9445be762bb8' => 
     array (
       0 => 'home_meccanico.tpl',
-      1 => 1781473890,
+      1 => 1782659087,
       2 => 'file',
     ),
   ),
@@ -20,22 +20,66 @@ if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
   array (
   ),
 ))) {
-function content_6a2f2288c70299_27721612 (\Smarty\Template $_smarty_tpl) {
+function content_6a41406eab1276_13731088 (\Smarty\Template $_smarty_tpl) {
 $_smarty_current_dir = 'C:\\xampp\\htdocs\\MechanicOne\\templates';
-?><!DOCTYPE html>
-<html lang="it">
-<head>
-    <meta charset="UTF-8">
-    <title>Dashboard Meccanico - MechanicOne</title>
-</head>
-<body style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #fafaf9; padding: 20px;">
-    <div style="max-width: 800px; margin: 40px auto; background: white; padding: 30px; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); border-top: 5px solid #f39c12;">
-        <h2 style="color: #2c3e50;">Benvenuto, <?php echo $_smarty_tpl->getValue('nome');?>
+$_smarty_tpl->getInheritance()->init($_smarty_tpl, true);
+?>
+
+
+<?php 
+$_smarty_tpl->getInheritance()->instanceBlock($_smarty_tpl, 'Block_5774349576a41406eaaa433_05290714', 'title');
+?>
+
+
+<?php 
+$_smarty_tpl->getInheritance()->instanceBlock($_smarty_tpl, 'Block_12097911556a41406eab0364_56288550', 'content');
+$_smarty_tpl->getInheritance()->endChild($_smarty_tpl, 'layouts/base.tpl', $_smarty_current_dir);
+}
+/* {block 'title'} */
+class Block_5774349576a41406eaaa433_05290714 extends \Smarty\Runtime\Block
+{
+public function callBlock(\Smarty\Template $_smarty_tpl) {
+$_smarty_current_dir = 'C:\\xampp\\htdocs\\MechanicOne\\templates';
+?>
+Dashboard Meccanico - MechanicOne<?php
+}
+}
+/* {/block 'title'} */
+/* {block 'content'} */
+class Block_12097911556a41406eab0364_56288550 extends \Smarty\Runtime\Block
+{
+public function callBlock(\Smarty\Template $_smarty_tpl) {
+$_smarty_current_dir = 'C:\\xampp\\htdocs\\MechanicOne\\templates';
+?>
+
+<div class="auth-panel auth-panel--mechanic">
+    <h2 class="auth-title auth-title--small">Benvenuto, <?php echo $_smarty_tpl->getValue('nome');?>
 !</h2>
-        <p style="color: #7f8c8d;">Questa è la tua area di lavoro come <strong>Meccanico</strong>. Da qui potrai visualizzare gli appuntamenti e i preventivi in attesa di approvazione.</p>
-        <hr style="border: 0; height: 1px; background: #ecf0f1; margin: 20px 0;">
-        <a href="/MechanicOne/utente/logout" style="display: inline-block; padding: 10px 20px; background-color: #e74c3c; color: white; text-decoration: none; border-radius: 4px; font-weight: bold;">Esci / Logout</a>
+    <p class="auth-text">Questa è la tua area di lavoro come <strong>Meccanico</strong>. Qui puoi gestire preventivi, appuntamenti e il tuo profilo.</p>
+
+    <div class="home-grid">
+        <div class="home-card">
+            <h3>Il mio profilo</h3>
+            <p>Verifica i tuoi dati e lo stato del tuo account.</p>
+            <a class="home-link home-link--orange" href="/MechanicOne/meccanico/profilo">Vedi profilo</a>
+        </div>
+        <div class="home-card">
+            <h3>Preventivi</h3>
+            <p>Visualizza i preventivi assegnati e le richieste aperte.</p>
+            <a class="home-link home-link--blue" href="/MechanicOne/preventivo/lista">Vedi preventivi</a>
+        </div>
+        <div class="home-card">
+            <h3>Prenotazioni</h3>
+            <p>Gestisci gli appuntamenti e l'agenda del tuo lavoro.</p>
+            <a class="home-link home-link--green" href="/MechanicOne/prenotazione/lista">Vedi prenotazioni</a>
+        </div>
     </div>
-</body>
-</html><?php }
+
+    <hr class="auth-divider">
+    <a class="btn btn--danger" href="/MechanicOne/utente/logout">Esci / Logout</a>
+</div>
+<?php
+}
+}
+/* {/block 'content'} */
 }

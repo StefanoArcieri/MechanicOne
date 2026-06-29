@@ -1,15 +1,31 @@
-<!DOCTYPE html>
-<html lang="it">
-<head>
-    <meta charset="UTF-8">
-    <title>Dashboard Meccanico - MechanicOne</title>
-</head>
-<body style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #fafaf9; padding: 20px;">
-    <div style="max-width: 800px; margin: 40px auto; background: white; padding: 30px; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); border-top: 5px solid #f39c12;">
-        <h2 style="color: #2c3e50;">Benvenuto, {$nome}!</h2>
-        <p style="color: #7f8c8d;">Questa è la tua area di lavoro come <strong>Meccanico</strong>. Da qui potrai visualizzare gli appuntamenti e i preventivi in attesa di approvazione.</p>
-        <hr style="border: 0; height: 1px; background: #ecf0f1; margin: 20px 0;">
-        <a href="/MechanicOne/utente/logout" style="display: inline-block; padding: 10px 20px; background-color: #e74c3c; color: white; text-decoration: none; border-radius: 4px; font-weight: bold;">Esci / Logout</a>
+{extends file='layouts/base.tpl'}
+
+{block name='title'}Dashboard Meccanico - MechanicOne{/block}
+
+{block name='content'}
+<div class="auth-panel auth-panel--mechanic">
+    <h2 class="auth-title auth-title--small">Benvenuto, {$nome}!</h2>
+    <p class="auth-text">Questa è la tua area di lavoro come <strong>Meccanico</strong>. Qui puoi gestire preventivi, appuntamenti e il tuo profilo.</p>
+
+    <div class="home-grid">
+        <div class="home-card">
+            <h3>Il mio profilo</h3>
+            <p>Verifica i tuoi dati e lo stato del tuo account.</p>
+            <a class="home-link home-link--orange" href="/MechanicOne/meccanico/profilo">Vedi profilo</a>
+        </div>
+        <div class="home-card">
+            <h3>Preventivi</h3>
+            <p>Visualizza i preventivi assegnati e le richieste aperte.</p>
+            <a class="home-link home-link--blue" href="/MechanicOne/preventivo/lista">Vedi preventivi</a>
+        </div>
+        <div class="home-card">
+            <h3>Prenotazioni</h3>
+            <p>Gestisci gli appuntamenti e l'agenda del tuo lavoro.</p>
+            <a class="home-link home-link--green" href="/MechanicOne/prenotazione/lista">Vedi prenotazioni</a>
+        </div>
     </div>
-</body>
-</html>
+
+    <hr class="auth-divider">
+    <a class="btn btn--danger" href="/MechanicOne/utente/logout">Esci / Logout</a>
+</div>
+{/block}

@@ -6,12 +6,20 @@ class FUtente {
     public function __construct() {}
 
     public function load($field, $value, $pdo) {
-        // ... (lascialo invariato, come lo avevi scritto tu) ...
+        try {
+            $query = "SELECT * FROM utenti WHERE $field = :value";
+            $stmt = $pdo->prepare($query);
+            $stmt->execute([
+                ':value' => $value
+            ]);
+            return $stmt->fetch();
+        } catch (PDOException $e) {
+            error_log($e->getMessage());
+            throw new Exception("Errore nel caricamento dell'utente.");
+        }
     }
 
-    /**
-     * Equivalente del vecchio "registraUtente"
-     */
+    
     public function store($utente, $pdo) {
         try {
             $query = "INSERT INTO utenti (nome, cognome, email, password, ruolo, ultimo_accesso, data_registrazione)
@@ -28,8 +36,8 @@ class FUtente {
                 ':data_registrazione' => $utente->getDataRegistrazione()
             ]);
         } catch (PDOException $e) {
-            error_log("Errore nello store dell'utente: " . $e->getMessage());
-            return false;
+            error_log($e->getMessage());
+            throw new Exception("Errore nello store dell'utente.");
         }
     }
 
@@ -49,8 +57,8 @@ class FUtente {
                     ':data_registrazione' => $utente->getDataRegistrazione()
                 ]);
             } catch (PDOException $e) {
-                error_log("Errore nell'update dell'utente: " . $e->getMessage());
-                return false;
+                error_log($e->getMessage());
+                throw new Exception("Errore nell'update dell'utente.");
             }
         }
 
@@ -62,8 +70,8 @@ class FUtente {
                     ':value' => $value
                 ]);
             } catch (PDOException $e) {
-                error_log("Errore nella cancellazione dell'utente: " . $e->getMessage());
-                return false;
+                error_log($e->getMessage());
+                throw new Exception("Errore nella cancellazione dell'utente.");
             }
         }
         public function search($field, $value, $pdo) {
@@ -75,8 +83,8 @@ class FUtente {
                 ]);
                 return $stmt->fetchAll();
             } catch (PDOException $e) {
-                error_log("Errore nella ricerca degli utenti: " . $e->getMessage());
-                return false;
+                error_log($e->getMessage());
+                throw new Exception("Errore nella ricerca degli utenti.");
             }
         }
 
@@ -104,8 +112,8 @@ class FUtente {
             }
             return null; // Credenziali errate
         } catch (PDOException $e) {
-            error_log("Errore nel verificaLogin: " . $e->getMessage());
-            return null;
+            error_log($e->getMessage());
+            throw new Exception("Errore nel verificaLogin.");
         }
     }
 }

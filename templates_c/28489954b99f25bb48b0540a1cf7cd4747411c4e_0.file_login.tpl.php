@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 5.8.0, created on 2026-06-14 23:07:18
+/* Smarty version 5.8.0, created on 2026-06-28 16:17:41
   from 'file:login.tpl' */
 
 /* @var \Smarty\Template $_smarty_tpl */
 if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
   'version' => '5.8.0',
-  'unifunc' => 'content_6a2f18069262d0_36393220',
+  'unifunc' => 'content_6a412d05242444_40412585',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     '28489954b99f25bb48b0540a1cf7cd4747411c4e' => 
     array (
       0 => 'login.tpl',
-      1 => 1781471223,
+      1 => 1782654050,
       2 => 'file',
     ),
   ),
@@ -20,62 +20,78 @@ if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
   array (
   ),
 ))) {
-function content_6a2f18069262d0_36393220 (\Smarty\Template $_smarty_tpl) {
+function content_6a412d05242444_40412585 (\Smarty\Template $_smarty_tpl) {
 $_smarty_current_dir = 'C:\\xampp\\htdocs\\MechanicOne\\templates';
-?><!DOCTYPE html>
-<html lang="it">
-<head>
-    <meta charset="UTF-8">
-    <title>Login - MechanicOne</title>
-</head>
-<body style="background-color: #fafaf9; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; padding: 0;">
+$_smarty_tpl->getInheritance()->init($_smarty_tpl, true);
+?>
 
-    <div style="max-width: 450px; margin: 80px auto; background: #ffffff; padding: 30px; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); border-top: 5px solid #e67e22;">
-        
-        <div style="text-align: center; margin-bottom: 25px;">
-            <h2 style="color: #2c3e50; margin: 0 0 10px 0; font-size: 24px;">🔧 Officina MechanicOne</h2>
-            <p style="color: #7f8c8d; margin: 0; font-size: 14px;">Inserisci le tue credenziali per accedere al sistema</p>
-        </div>
 
-                <?php if ($_smarty_tpl->getValue('errore')) {?>
-            <div style="background-color: #fadbd8; border: 1px solid #f5b7b1; color: #78281f; padding: 12px; margin-bottom: 20px; border-radius: 4px; font-size: 14px; display: block;">
-                <strong>❌ Errore:</strong> <?php echo $_smarty_tpl->getValue('errore');?>
+<?php 
+$_smarty_tpl->getInheritance()->instanceBlock($_smarty_tpl, 'Block_12493345636a412d0522ba38_95723030', 'title');
+?>
 
-            </div>
-        <?php }?>
 
-                <form action="/MechanicOne/utente/login" method="POST">
-            
-            <div style="margin-bottom: 15px;">
-                <label for="email" style="display: block; color: #34495e; font-weight: 600; margin-bottom: 5px; font-size: 14px;">Indirizzo Email</label>
-                <input type="email" id="email" name="email" required placeholder="esempio@meccanico.it" 
-                       style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; font-size: 14px; outline: none;">
-            </div>
+<?php 
+$_smarty_tpl->getInheritance()->instanceBlock($_smarty_tpl, 'Block_13000389926a412d052349c2_42152534', 'content');
+$_smarty_tpl->getInheritance()->endChild($_smarty_tpl, 'layouts/base.tpl', $_smarty_current_dir);
+}
+/* {block 'title'} */
+class Block_12493345636a412d0522ba38_95723030 extends \Smarty\Runtime\Block
+{
+public function callBlock(\Smarty\Template $_smarty_tpl) {
+$_smarty_current_dir = 'C:\\xampp\\htdocs\\MechanicOne\\templates';
+?>
+Login - MechanicOne<?php
+}
+}
+/* {/block 'title'} */
+/* {block 'content'} */
+class Block_13000389926a412d052349c2_42152534 extends \Smarty\Runtime\Block
+{
+public function callBlock(\Smarty\Template $_smarty_tpl) {
+$_smarty_current_dir = 'C:\\xampp\\htdocs\\MechanicOne\\templates';
+?>
 
-            <div style="margin-bottom: 25px;">
-                <label for="password" style="display: block; color: #34495e; font-weight: 600; margin-bottom: 5px; font-size: 14px;">Password</label>
-                <input type="password" id="password" name="password" required placeholder="••••••••" 
-                       style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; font-size: 14px; outline: none;">
-            </div>
-
-            <button type="submit" name="login" 
-                    style="width: 100%; background-color: #e67e22; color: white; border: none; padding: 12px; font-size: 16px; font-weight: bold; border-radius: 4px; cursor: pointer; transition: background 0.2s;">
-                Entra in Officina
-            </button>
-            
-        </form>
-
-        <div style="margin-top: 20px; text-align: center; border-top: 1px solid #ecf0f1; padding-top: 15px;">
-            <p style="margin: 0; font-size: 13px; color: #95a5a6;">
-                Non sei registrato? Contatta l'amministratore di MechanicOne.
-            </p>
-        </div>
-
-        <p>Non hai un account?</p>
-        <a href="/MechanicOne/utente/registrazione" class="btn btn-secondary">Registrati qui</a>
-
+<div class="form-panel form-panel--login">
+    <div class="form-header">
+        <h2 class="form-title">🔧 Officina MechanicOne</h2>
+        <p class="form-subtitle">Inserisci le tue credenziali per accedere al sistema</p>
     </div>
 
-</body>
-</html><?php }
+        <?php if ($_smarty_tpl->getValue('errore')) {?>
+        <div class="form-alert">
+            <strong>❌ Errore:</strong> <?php echo $_smarty_tpl->getValue('errore');?>
+
+        </div>
+    <?php }?>
+
+        <form action="/MechanicOne/utente/login" method="POST" class="form">
+        <div class="form-field">
+            <label for="email" class="form-label">Indirizzo Email</label>
+            <input type="email" id="email" name="email" required placeholder="esempio@meccanico.it" class="form-input">
+        </div>
+
+        <div class="form-field form-field--last">
+            <label for="password" class="form-label">Password</label>
+            <input type="password" id="password" name="password" required placeholder="••••••••" class="form-input">
+        </div>
+
+        <button type="submit" name="login" class="form-submit">
+            Entra in Officina
+        </button>
+    </form>
+
+    <div class="form-footer">
+        <p class="form-help">
+            Non sei registrato? Contatta l'amministratore di MechanicOne.
+        </p>
+    </div>
+
+    <p class="form-link-text">Non hai un account?</p>
+    <a href="/MechanicOne/utente/registrazione" class="btn btn--secondary">Registrati qui</a>
+</div>
+<?php
+}
+}
+/* {/block 'content'} */
 }

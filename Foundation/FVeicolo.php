@@ -12,8 +12,8 @@ class FVeicolo {
             ]);
             return $stmt->fetch();
         } catch (PDOException $e) {
-                error_log("Errore nel caricamento del veicolo: " . $e->getMessage());
-                return false;
+                error_log($e->getMessage());
+                throw new Exception("Errore nel caricamento del veicolo.");
             }
             
     }
@@ -30,8 +30,8 @@ class FVeicolo {
                 ]);
 
         } catch (PDOException $e) {
-                error_log("Errore nello store del veicolo: " . $e->getMessage());
-                return false;
+                error_log($e->getMessage());
+                throw new Exception("Errore nello store del veicolo.");
             }
     }
 
@@ -47,8 +47,8 @@ class FVeicolo {
                     ':modello' => $veicolo->getModello()
                 ]);
             } catch (PDOException $e) {
-                error_log("Errore nell'update del veicolo: " . $e->getMessage());
-                return false;
+                error_log($e->getMessage());
+                throw new Exception("Errore nell'update del veicolo.");
             }
         }
     
@@ -60,8 +60,8 @@ class FVeicolo {
                     ':value' => $value
                 ]);
             } catch (PDOException $e) {
-                error_log("Errore nella cancellazione del veicolo: " . $e->getMessage());
-                return false;
+                error_log($e->getMessage());
+                throw new Exception("Errore nella cancellazione del veicolo.");
             }
         }
 
@@ -75,8 +75,8 @@ class FVeicolo {
                 ]);
                 return $stmt->fetchAll();
             } catch (PDOException $e) {
-                error_log("Errore nella ricerca del veicolo: " . $e->getMessage());
-                return false;
+                error_log($e->getMessage());
+                throw new Exception("Errore nella ricerca del veicolo.");
             }
         }
 

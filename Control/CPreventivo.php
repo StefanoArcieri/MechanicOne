@@ -3,6 +3,7 @@
 require_once __DIR__ . '/../Foundation/PersistentManager.php';
 require_once __DIR__ . '/../Entity/EPreventivo.php';     
 require_once __DIR__ . '/../Foundation/Session.php';
+require_once __DIR__ . '/../View/VPreventivo.php';
 
 class CPreventivo {
 
@@ -20,11 +21,24 @@ class CPreventivo {
                 throw new Exception("Problema tecnico durante l'invio della richiesta.");
             }
 
-            header('Location: ../index.php?msg=preventivo_inviato');
+            header('Location: /MechanicOne/preventivo/lista?msg=preventivo_inviato');
             exit();
         } catch (Exception $e) {
             throw $e;
         }
+    }
+
+    public function lista($params = []) {
+        $view = new VPreventivo();
+        $ruolo = Session::get('ruolo');
+
+        if ($ruolo === 'admin') {
+            $preventivi = self::richiediLista();
+        } else {
+            $preventivi = self::getPreventiviUtente();
+        }
+
+        $view->mostraLista($preventivi);
     }
 
     public static function getPreventiviUtente() {
@@ -69,7 +83,7 @@ class CPreventivo {
                 throw new Exception("Impossibile salvare il prezzo.");
             }
 
-            header('Location: ../admin_dashboard.php?msg=preventivo_prezzato');
+            header('Location: /MechanicOne/preventivo/lista?msg=preventivo_prezzato');
             exit();
         } catch (Exception $e) {
             throw $e;
@@ -93,7 +107,7 @@ class CPreventivo {
                 throw new Exception("Impossibile rifiutare il preventivo.");
             }
 
-            header('Location: ../admin_dashboard.php?msg=preventivo_rifiutato');
+            header('Location: /MechanicOne/preventivo/lista?msg=preventivo_rifiutato');
             exit();
         } catch (Exception $e) {
             throw $e;

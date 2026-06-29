@@ -3,6 +3,7 @@
 require_once __DIR__ . '/../Foundation/PersistentManager.php';
 require_once __DIR__ . '/../Entity/EServizio.php';
 require_once __DIR__ . '/../Foundation/Session.php';
+require_once __DIR__ . '/../View/VServizio.php';
 
 class CServizio {
 

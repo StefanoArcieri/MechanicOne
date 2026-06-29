@@ -3,13 +3,15 @@
 require_once __DIR__ . '/../Foundation/PersistentManager.php';
 require_once __DIR__ . '/../Entity/EMeccanico.php';
 require_once __DIR__ . '/../Foundation/Session.php';
+require_once __DIR__ . '/../View/VMeccanico.php';
 
 class CMeccanico {
 
     public static function getProfilo() {
         try {
             $idM = Session::get('idU');
-            if (!$idM || Session::get('ruolo') !== 'meccanico') {
+            $ruolo = strtolower((string) Session::get('ruolo'));
+            if (!$idM || !in_array($ruolo, ['meccanico', 'admin'], true)) {
                 throw new Exception("Accesso negato.");
             }
 
@@ -21,6 +23,37 @@ class CMeccanico {
         } catch (Exception $e) {
             throw $e;
         }
+    }
+
+    public function area($params = []) {
+        $view = new VMeccanico();
+        $ruolo = strtolower((string) Session::get('ruolo'));
+
+        if ($ruolo === 'meccanico') {
+            $profilo = self::getProfilo();
+            $view->mostraProfilo($profilo);
+            return;
+        }
+
+        if ($ruolo === 'admin') {
+            $meccanici = self::richiediLista();
+            $view->mostraLista($meccanici);
+            return;
+        }
+
+        $view->mostraAreaTeam();
+    }
+
+    public function profilo($params = []) {
+        $view = new VMeccanico();
+        $profilo = self::getProfilo();
+        $view->mostraProfilo($profilo);
+    }
+
+    public function lista($params = []) {
+        $view = new VMeccanico();
+        $meccanici = self::richiediLista();
+        $view->mostraLista($meccanici);
     }
 
     public static function aggiornaProfilo($nuovaSpecializzazione, $nuovaFoto) {
@@ -41,7 +74,7 @@ class CMeccanico {
                 throw new Exception("Impossibile aggiornare il profilo.");
             }
 
-            header('Location: ../profilo_meccanico.php?msg=profilo_aggiornato');
+            header('Location: /MechanicOne/meccanico/profilo?msg=profilo_aggiornato');
             exit();
         } catch (Exception $e) {
             throw $e;
@@ -50,7 +83,10 @@ class CMeccanico {
 
     public static function richiediLista() {
         try {
-            if (Session::get('ruolo') !== 'admin') throw new Exception("Accesso negato.");
+            $ruolo = strtolower((string) Session::get('ruolo'));
+            if (!in_array($ruolo, ['admin', 'meccanico', 'cliente'], true)) {
+                throw new Exception("Accesso negato.");
+            }
 
             $pm = PersistentManager::getInstance();
             $lista = $pm->getAll('EMeccanico');
@@ -77,7 +113,7 @@ class CMeccanico {
                 throw new Exception("Impossibile approvare il meccanico.");
             }
 
-            header('Location: ../admin_dashboard.php?msg=meccanico_approvato');
+            header('Location: /MechanicOne/meccanico/lista?msg=meccanico_approvato');
             exit();
         } catch (Exception $e) {
             throw $e;
@@ -93,7 +129,7 @@ class CMeccanico {
                 throw new Exception("Impossibile eliminare il meccanico.");
             }
 
-            header('Location: ../admin_dashboard.php?msg=meccanico_eliminato');
+            header('Location: /MechanicOne/meccanico/lista?msg=meccanico_eliminato');
             exit();
         } catch (Exception $e) {
             throw $e;

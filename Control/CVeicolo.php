@@ -3,6 +3,7 @@
 require_once __DIR__ . '/../Foundation/PersistentManager.php';
 require_once __DIR__ . '/../Entity/EVeicolo.php';
 require_once __DIR__ . '/../Foundation/Session.php';
+require_once __DIR__ . '/../View/VVeicolo.php';
 
 class CVeicolo {
 
@@ -24,7 +25,7 @@ class CVeicolo {
                 throw new Exception("Errore tecnico durante il salvataggio del veicolo.");
             }
 
-            header('Location: ../garage.php?msg=veicolo_aggiunto');
+            header('Location: /MechanicOne/veicolo/lista?msg=veicolo_aggiunto');
             exit();
 
         } catch (Exception $e) {
@@ -55,11 +56,21 @@ class CVeicolo {
                 throw new Exception("Impossibile eliminare il veicolo.");
             }
 
-            header('Location: ../garage.php?msg=veicolo_eliminato');
+            header('Location: /MechanicOne/veicolo/lista?msg=veicolo_eliminato');
             exit();
         } catch (Exception $e) {
             throw $e;
         }
+    }
+
+    public function nuovo($params = []) {
+        return $this->lista($params);
+    }
+
+    public function lista($params = []) {
+        $view = new VVeicolo();
+        $veicoli = self::getVeicoliPersonali();
+        $view->mostraLista($veicoli);
     }
 }
 ?>

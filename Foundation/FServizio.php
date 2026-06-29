@@ -11,8 +11,8 @@ class FServizio {
             ]);
             return $stmt->fetch();
         } catch (PDOException $e) {
-                error_log("Errore nel caricamento del servizio: " . $e->getMessage());
-                return false;
+                error_log($e->getMessage());
+                throw new Exception("Errore nel caricamento del servizio.");
             }
             
     }
@@ -28,8 +28,8 @@ class FServizio {
                 ]);
 
         } catch (PDOException $e) {
-                error_log("Errore nello store del servizio: " . $e->getMessage());
-                return false;
+                error_log($e->getMessage());
+                throw new Exception("Errore nello store del servizio.");
             }
     }
 
@@ -43,8 +43,8 @@ class FServizio {
                     ':descrizione' => $servizio->getDescrizione(),
                 ]);
             } catch (PDOException $e) {
-                error_log("Errore nell'update del servizio: " . $e->getMessage());
-                return false;
+                error_log($e->getMessage());
+                throw new Exception("Errore nell'update del servizio.");
             }
         }
     
@@ -56,8 +56,8 @@ class FServizio {
                     ':value' => $value
                 ]);
             } catch (PDOException $e) {
-                error_log("Errore nella cancellazione del servizio: " . $e->getMessage());
-                return false;
+                error_log($e->getMessage());
+                throw new Exception("Errore nella cancellazione del servizio.");
             }
         }
 
@@ -70,8 +70,8 @@ class FServizio {
                 ]);
                 return $stmt->fetchAll();
             } catch (PDOException $e) {
-                error_log("Errore nella ricerca del servizio: " . $e->getMessage());
-                return false;
+                error_log($e->getMessage());
+                throw new Exception("Errore nella ricerca del servizio.");
             }
         } 
 
@@ -86,9 +86,8 @@ class FServizio {
             return $stmt->fetchAll(PDO::FETCH_ASSOC); 
             
         } catch (PDOException $e) {
-            error_log("Errore nel caricamento del listino servizi: " . $e->getMessage());
-            
-            return false;
+            error_log($e->getMessage());
+            throw new Exception("Errore nel caricamento del listino servizi.");
         }
     }
 }

@@ -18,7 +18,8 @@ $options = [
 try {
     $pdo = new PDO($dsn, $user, $pass, $options); //connessione al database
 } catch (PDOException $e) {
-    error_log("Errore con la connessione al database: " . $e->getMessage());
+    error_log($e->getMessage());
+    throw new Exception("Sito momentaneamente non disponibile. Riprova più tardi.");
 }
 
 ?>

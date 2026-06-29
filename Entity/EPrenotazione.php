@@ -29,7 +29,6 @@
         public function getOra() { return $this->ora; }
 
         // Setters
-        public function setIdPrenotazione($idPren) { $this->idPren = $idPren; }
         public function setIdPreventivo($idPrev) { $this->idPrev = $idPrev; }
         public function setIdMeccanico($idM) { $this->idM = $idM; }
         public function setIdVeicolo($idV) { $this->idV = $idV; }

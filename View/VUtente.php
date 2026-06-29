@@ -52,6 +52,14 @@ class VUtente extends View {
     }
 
     /**
+     * Renderizza l'area riservata dell'utente cliente
+     */
+    public function mostraDashboardUtente($nome) {
+        $this->smarty->assign('nome', $nome);
+        $this->smarty->display('home_utente.tpl');
+    }
+
+    /**
      * Renderizza il pannello di controllo dell'amministratore generale
      */
     public function mostraDashboardAdmin($nome) {

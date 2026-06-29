@@ -12,8 +12,8 @@ class FMeccanico {
             ]);
             return $stmt->fetch();
         } catch (PDOException $e) {
-                error_log("Errore nel caricamento del meccanico: " . $e->getMessage());
-                return false;
+                error_log($e->getMessage());
+                throw new Exception("Errore nel caricamento del meccanico.");
             }
             
     }
@@ -30,8 +30,8 @@ class FMeccanico {
                 ]);
 
         } catch (PDOException $e) {
-                error_log("Errore nello store del meccanico: " . $e->getMessage());
-                return false;
+                error_log($e->getMessage());
+                throw new Exception("Errore nello store del meccanico.");
             }
     } 
 
@@ -47,8 +47,8 @@ class FMeccanico {
                     
                 ]);
             } catch (PDOException $e) {
-                error_log("Errore nell'update del veicolo: " . $e->getMessage());
-                return false;
+                error_log($e->getMessage());
+                throw new Exception("Errore nell'update del meccanico.");
             }
         }
     
@@ -60,8 +60,8 @@ class FMeccanico {
                     ':value' => $value
                 ]);
             } catch (PDOException $e) {
-                error_log("Errore nella cancellazione del meccanico: " . $e->getMessage());
-                return false;
+                error_log($e->getMessage());
+                throw new Exception("Errore nella cancellazione del meccanico.");
             }
         }
 
@@ -75,8 +75,8 @@ class FMeccanico {
                 ]);
                 return $stmt->fetchAll();
             } catch (PDOException $e) {
-                error_log("Errore nella ricerca del meccanico: " . $e->getMessage());
-                return false;
+                error_log($e->getMessage());
+                throw new Exception("Errore nella ricerca del meccanico.");
             }
         }
 
@@ -90,8 +90,8 @@ class FMeccanico {
             return $stmt->fetchAll(PDO::FETCH_ASSOC); 
             
         } catch (PDOException $e) {
-            error_log("Errore critico DB nel recupero della lista meccanici: " . $e->getMessage());
-            return false; 
+            error_log($e->getMessage());
+            throw new Exception("Errore critico DB nel recupero della lista meccanici.");
         }
     }
 }

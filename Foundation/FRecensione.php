@@ -11,8 +11,8 @@ class FRecensione {
             ]);
             return $stmt->fetch();
         } catch (PDOException $e) {
-                error_log("Errore nel caricamento della recensione: " . $e->getMessage());
-                return false;
+                error_log($e->getMessage());
+                throw new Exception("Errore nel caricamento della recensione.");
             }
             
     }
@@ -30,8 +30,8 @@ class FRecensione {
                 ]);
 
         } catch (PDOException $e) {
-                error_log("Errore nello store della prenotazione: " . $e->getMessage());
-                return false;
+                error_log($e->getMessage());
+                throw new Exception("Errore nello store della recensione.");
             }
     }
 
@@ -48,8 +48,8 @@ class FRecensione {
                     ':data_recensione' => $recensione->getDataRecensione(),
                 ]);
             } catch (PDOException $e) {
-                error_log("Errore nell'update della recensione: " . $e->getMessage());
-                return false;
+                error_log($e->getMessage());
+                throw new Exception("Errore nell'update della recensione.");
             }
         }
     
@@ -61,8 +61,8 @@ class FRecensione {
                     ':value' => $value
                 ]);
             } catch (PDOException $e) {
-                error_log("Errore nella cancellazione della recensione: " . $e->getMessage());
-                return false;
+                error_log($e->getMessage());
+                throw new Exception("Errore nella cancellazione della recensione.");
             }
         }
 
@@ -76,8 +76,8 @@ class FRecensione {
                 ]);
                 return $stmt->fetchAll();
             } catch (PDOException $e) {
-                error_log("Errore nella ricerca della recensione: " . $e->getMessage());
-                return false;
+                error_log($e->getMessage());
+                throw new Exception("Errore nella ricerca della recensione.");
             }
         }
 
@@ -92,9 +92,8 @@ class FRecensione {
             return $stmt->fetchAll(PDO::FETCH_ASSOC); 
             
         } catch (PDOException $e) {
-            error_log("Errore critico DB nel recupero delle recensioni: " . $e->getMessage());
-            
-            return false;
+            error_log($e->getMessage());
+            throw new Exception("Errore critico DB nel recupero delle recensioni.");
         }
     }
 }
