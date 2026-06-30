@@ -80,6 +80,7 @@ CREATE TABLE `prenotazioni` (
    `idPren` int(11) NOT NULL AUTO_INCREMENT,
    `idPrev` int(11) DEFAULT NULL,
    `idM` int(11) DEFAULT NULL,
+   `idU` int(11) NOT NULL,
    `idV` int(11) NOT NULL,
    `data` date NOT NULL,
    `ora` time NOT NULL,
@@ -87,5 +88,6 @@ CREATE TABLE `prenotazioni` (
    PRIMARY KEY (`idPren`),
    CONSTRAINT `fk_prenotazioni_preventivi` FOREIGN KEY (`idPrev`) REFERENCES `preventivi` (`idPrev`) ON DELETE CASCADE,
    CONSTRAINT `fk_prenotazioni_meccanico` FOREIGN KEY (`idM`) REFERENCES `meccanici` (`idM`) ON DELETE SET NULL,
+   CONSTRAINT `fk_prenotazioni_utente` FOREIGN KEY (`idU`) REFERENCES `utenti` (`idU`) ON DELETE CASCADE,
    CONSTRAINT `fk_prenotazioni_veicolo` FOREIGN KEY (`idV`) REFERENCES `veicoli` (`idV`) ON DELETE CASCADE
 );

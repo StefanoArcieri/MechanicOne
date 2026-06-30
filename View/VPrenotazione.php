@@ -21,11 +21,12 @@ class VPrenotazione extends View {
         }, $prenotazioni);
     }
 
-    public function mostraLista($prenotazioni) {
+    public function mostraLista($prenotazioni, $errore = '') {
         $this->renderTemplate('prenotazione.tpl', [
-            'titolo' => 'Prenotazioni',
+            'titolo'       => 'Prenotazioni',
             'prenotazioni' => $this->formatPrenotazioni($prenotazioni),
-            'tipo' => 'lista'
+            'tipo'         => 'lista',
+            'errore'       => $errore,
         ]);
     }
 

@@ -25,16 +25,16 @@ class FUtente {
             $query = "INSERT INTO utenti (nome, cognome, email, password, ruolo, ultimo_accesso, data_registrazione)
                     VALUES (:nome, :cognome, :email, :password, :ruolo, :ultimo_accesso, :data_registrazione);";
             $stmt = $pdo->prepare($query);
-            return $stmt->execute([
+            $stmt->execute([
                 ':nome' => $utente->getNome(),
                 ':cognome' => $utente->getCognome(),
                 ':email' => $utente->getEmail(),
-                // GAS! Criptiamo la password prima di salvarla nel Database
                 ':password' => password_hash($utente->getPassword(), PASSWORD_DEFAULT),
                 ':ruolo' => $utente->getRuolo(),
                 ':ultimo_accesso' => $utente->getUltimoAccesso(),
                 ':data_registrazione' => $utente->getDataRegistrazione()
             ]);
+            return (int) $pdo->lastInsertId();
         } catch (PDOException $e) {
             error_log($e->getMessage());
             throw new Exception("Errore nello store dell'utente.");

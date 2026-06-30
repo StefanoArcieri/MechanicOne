@@ -21,11 +21,12 @@ class VVeicolo extends View {
         }, $veicoli);
     }
 
-    public function mostraLista($veicoli) {
+    public function mostraLista($veicoli, $errore = '') {
         $this->renderTemplate('veicolo.tpl', [
-            'titolo' => 'Garage utente',
+            'titolo'  => 'Garage utente',
             'veicoli' => $this->formatVeicoli($veicoli),
-            'tipo' => 'lista'
+            'tipo'    => 'lista',
+            'errore'  => $errore,
         ]);
     }
 }

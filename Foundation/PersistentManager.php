@@ -42,7 +42,7 @@ class PersistentManager {
     }
 
     public function store($obj) {
-        $entityName = get_class($obj); 
+        $entityName = get_class($obj);
         $fClass = $this->getFoundationClass($entityName);
         return $fClass->store($obj, $this->pdo);
     }

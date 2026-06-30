@@ -7,53 +7,40 @@ require_once __DIR__ . '/../View/VServizio.php';
 
 class CServizio {
 
-    public static function aggiungiServizio($titolo, $descrizione, $prezzo) {
-        try {
-            if (Session::get('ruolo') !== 'admin') throw new Exception("Accesso negato.");
+    public static function aggiungiServizio($titolo, $descrizione) {
+        if (Session::get('ruolo') !== 'admin') throw new Exception("Accesso negato.");
 
-            $pm = PersistentManager::getInstance();
+        $pm = PersistentManager::getInstance();
 
-            if ($pm->load('EServizio', 'titolo', $titolo)) {
-                throw new Exception("Un servizio chiamato '$titolo' esiste già nel catalogo.");
-            }
-
-            $nuovoServizio = new EServizio(null, $titolo, $descrizione, $prezzo);
-
-            if (!$pm->store($nuovoServizio)) {
-                throw new Exception("Impossibile salvare il servizio.");
-            }
-
-            header('Location: ../catalogo.php?msg=servizio_aggiunto');
-            exit();
-        } catch (Exception $e) {
-            throw $e;
+        if ($pm->load('EServizio', 'titolo', $titolo)) {
+            throw new Exception("Un servizio chiamato '$titolo' esiste già nel catalogo.");
         }
+
+        $nuovoServizio = new EServizio(null, $titolo, $descrizione);
+
+        if (!$pm->store($nuovoServizio)) {
+            throw new Exception("Impossibile salvare il servizio.");
+        }
+
+        header('Location: /MechanicOne/servizio/lista?msg=servizio_aggiunto');
+        exit();
     }
 
     public static function richiediLista() {
-        try {
-            $pm = PersistentManager::getInstance();
-            $servizi = $pm->getAll('EServizio');
-            return $servizi ?: [];
-        } catch (Exception $e) {
-            throw $e;
-        }
+        $pm = PersistentManager::getInstance();
+        return $pm->getAll('EServizio') ?: [];
     }
 
     public static function eliminaServizio($idS) {
-        try {
-            if (Session::get('ruolo') !== 'admin') throw new Exception("Accesso negato.");
+        if (Session::get('ruolo') !== 'admin') throw new Exception("Accesso negato.");
 
-            $pm = PersistentManager::getInstance();
-            if (!$pm->delete('EServizio', 'idS', $idS)) {
-                throw new Exception("Impossibile eliminare il servizio.");
-            }
-
-            header('Location: ../catalogo.php?msg=servizio_eliminato');
-            exit();
-        } catch (Exception $e) {
-            throw $e;
+        $pm = PersistentManager::getInstance();
+        if (!$pm->delete('EServizio', 'idS', $idS)) {
+            throw new Exception("Impossibile eliminare il servizio.");
         }
+
+        header('Location: /MechanicOne/servizio/lista?msg=servizio_eliminato');
+        exit();
     }
 }
 ?>

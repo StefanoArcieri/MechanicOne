@@ -20,31 +20,30 @@ class FMeccanico {
 
     public function store($meccanico, $pdo) {
         try {
-            $query = "INSERT INTO meccanici (specializzazione, status) VALUES (:specializzazione, :status)";
+            $query = "INSERT INTO meccanici (idM, specializzazione, foto_profilo, status) VALUES (:idM, :specializzazione, :foto_profilo, :status)";
             $stmt = $pdo->prepare($query);
                 return $stmt->execute([
-
+                    ':idM' => $meccanico->getIdMeccanico(),
                     ':specializzazione' => $meccanico->getSpecializzazione(),
+                    ':foto_profilo' => $meccanico->getFotoProfilo(),
                     ':status' => $meccanico->getStatus(),
-                    ':fotoprofilo' => $meccanico->getFotoProfilo()  
                 ]);
 
         } catch (PDOException $e) {
                 error_log($e->getMessage());
                 throw new Exception("Errore nello store del meccanico.");
             }
-    } 
+    }
 
     public function update($meccanico, $pdo) {
             try {
-                $query = "UPDATE meccanici SET specializzazione = :specializzazione, status = :status, fotoprofilo = :fotoprofilo WHERE idM = :idM;";
+                $query = "UPDATE meccanici SET specializzazione = :specializzazione, status = :status, foto_profilo = :foto_profilo WHERE idM = :idM";
                 $stmt = $pdo->prepare($query);
                 return $stmt->execute([
                     ':idM' => $meccanico->getIdMeccanico(),
                     ':specializzazione' => $meccanico->getSpecializzazione(),
                     ':status' => $meccanico->getStatus(),
-                    ':fotoprofilo' => $meccanico->getFotoProfilo()
-                    
+                    ':foto_profilo' => $meccanico->getFotoProfilo(),
                 ]);
             } catch (PDOException $e) {
                 error_log($e->getMessage());

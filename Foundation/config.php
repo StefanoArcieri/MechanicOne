@@ -1,7 +1,7 @@
 <?php
 
 $host    = 'localhost';
-$db      = 'mechanicone';
+$db      = 'mechnicone';
 $user    = 'root';
 $pass    = ''; 
 $charset = 'utf8mb4';

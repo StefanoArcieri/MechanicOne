@@ -7,9 +7,7 @@ class FPrenotazione {
         try {
             $query = "SELECT * FROM prenotazioni WHERE $field = :value";
             $stmt = $pdo->prepare($query);
-            $stmt->execute([
-                ':value' => $value
-            ]);
+            $stmt->execute([':value' => $value]);
             return $stmt->fetch();
         } catch (PDOException $e) {
             error_log($e->getMessage());
@@ -19,15 +17,17 @@ class FPrenotazione {
 
     public function store($prenotazione, $pdo) {
         try {
-            $query = "INSERT INTO prenotazioni (idPrev, idM, idV, data, ora, stato) VALUES (:idPrev, :idM, :idV, :data, :ora, :stato)";
+            $query = "INSERT INTO prenotazioni (idPrev, idM, idU, idV, data, ora, stato)
+                      VALUES (:idPrev, :idM, :idU, :idV, :data, :ora, :stato)";
             $stmt = $pdo->prepare($query);
             return $stmt->execute([
                 ':idPrev' => $prenotazione->getIdPreventivo(),
-                ':idM' => $prenotazione->getIdMeccanico(),
-                ':idV' => $prenotazione->getIdVeicolo(),
-                ':data' => $prenotazione->getDataPrenotazione(),
-                ':ora' => $prenotazione->getOra(),
-                ':stato' => $prenotazione->getStato(),
+                ':idM'    => $prenotazione->getIdMeccanico(),
+                ':idU'    => $prenotazione->getIdUtente(),
+                ':idV'    => $prenotazione->getIdVeicolo(),
+                ':data'   => $prenotazione->getDataPrenotazione(),
+                ':ora'    => $prenotazione->getOra(),
+                ':stato'  => $prenotazione->getStato(),
             ]);
         } catch (PDOException $e) {
             error_log($e->getMessage());
@@ -37,16 +37,18 @@ class FPrenotazione {
 
     public function update($prenotazione, $pdo) {
         try {
-            $query = "UPDATE prenotazioni SET idPrev = :idPrev, idM = :idM, idV = :idV, data = :data, ora = :ora, stato = :stato WHERE idPren = :idPren";
+            $query = "UPDATE prenotazioni SET idPrev = :idPrev, idM = :idM, idU = :idU,
+                      idV = :idV, data = :data, ora = :ora, stato = :stato WHERE idPren = :idPren";
             $stmt = $pdo->prepare($query);
             return $stmt->execute([
-                ':idPrev' => $prenotazione->getIdPreventivo(),
-                ':idM' => $prenotazione->getIdMeccanico(),
-                ':idV' => $prenotazione->getIdVeicolo(),
-                ':data' => $prenotazione->getDataPrenotazione(),
-                ':ora' => $prenotazione->getOra(),
-                ':stato' => $prenotazione->getStato(),
                 ':idPren' => $prenotazione->getIdPrenotazione(),
+                ':idPrev' => $prenotazione->getIdPreventivo(),
+                ':idM'    => $prenotazione->getIdMeccanico(),
+                ':idU'    => $prenotazione->getIdUtente(),
+                ':idV'    => $prenotazione->getIdVeicolo(),
+                ':data'   => $prenotazione->getDataPrenotazione(),
+                ':ora'    => $prenotazione->getOra(),
+                ':stato'  => $prenotazione->getStato(),
             ]);
         } catch (PDOException $e) {
             error_log($e->getMessage());
@@ -58,9 +60,7 @@ class FPrenotazione {
         try {
             $query = "DELETE FROM prenotazioni WHERE $field = :value";
             $stmt = $pdo->prepare($query);
-            return $stmt->execute([
-                ':value' => $value
-            ]);
+            return $stmt->execute([':value' => $value]);
         } catch (PDOException $e) {
             error_log($e->getMessage());
             throw new Exception("Errore nella cancellazione della prenotazione.");
@@ -71,9 +71,7 @@ class FPrenotazione {
         try {
             $query = "SELECT * FROM prenotazioni WHERE $field = :value";
             $stmt = $pdo->prepare($query);
-            $stmt->execute([
-                ':value' => $value
-            ]);
+            $stmt->execute([':value' => $value]);
             return $stmt->fetchAll();
         } catch (PDOException $e) {
             error_log($e->getMessage());
@@ -83,9 +81,8 @@ class FPrenotazione {
 
     public function getAll($pdo) {
         try {
-            $query = "SELECT * FROM prenotazioni";
-            $stmt = $pdo->query($query);
-            return $stmt->fetchAll();
+            $stmt = $pdo->query("SELECT * FROM prenotazioni");
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
         } catch (PDOException $e) {
             error_log($e->getMessage());
             throw new Exception("Errore critico DB nel recupero della lista prenotazioni.");

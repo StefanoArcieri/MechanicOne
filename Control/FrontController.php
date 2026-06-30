@@ -51,7 +51,12 @@ class FrontController {
             return $errorController->mostraErrore(404, "La risorsa '$controller' non è registrata nell'officina.");
         }
 
-        return $real_controller->$method(...$params);
+        try {
+            return $real_controller->$method(...$params);
+        } catch (Exception $e) {
+            $errorController = new CErrori();
+            return $errorController->mostraErrore(500, $e->getMessage());
+        }
     }
 
     private function requiresAuth($controllerInput, $method) {

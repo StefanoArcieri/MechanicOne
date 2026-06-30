@@ -33,9 +33,22 @@
             <input type="email" id="email" name="email" required placeholder="esempio@email.it" class="form-input">
         </div>
 
-        <div class="form-field form-field--last">
+        <div class="form-field">
             <label for="password" class="form-label">Password</label>
             <input type="password" id="password" name="password" required placeholder="Scegli una password sicura" class="form-input">
+        </div>
+
+        <div class="form-field">
+            <label for="ruolo" class="form-label">Tipo di account</label>
+            <select id="ruolo" name="ruolo" class="form-input" onchange="toggleSpecializzazione(this.value)">
+                <option value="cliente">Cliente</option>
+                <option value="meccanico">Meccanico</option>
+            </select>
+        </div>
+
+        <div class="form-field form-field--last" id="campo-specializzazione" style="display:none;">
+            <label for="specializzazione" class="form-label">Specializzazione</label>
+            <input type="text" id="specializzazione" name="specializzazione" placeholder="Es. Elettrauto, Carrozzeria..." class="form-input">
         </div>
 
         <button type="submit" class="form-submit form-submit--primary">
@@ -49,4 +62,10 @@
         </p>
     </div>
 </div>
+<script>
+function toggleSpecializzazione(ruolo) {
+    var campo = document.getElementById('campo-specializzazione');
+    campo.style.display = ruolo === 'meccanico' ? 'block' : 'none';
+}
+</script>
 {/block}

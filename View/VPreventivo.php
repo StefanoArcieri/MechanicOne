@@ -21,11 +21,12 @@ class VPreventivo extends View {
         }, $preventivi);
     }
 
-    public function mostraLista($preventivi) {
+    public function mostraLista($preventivi, $errore = '') {
         $this->renderTemplate('preventivo.tpl', [
-            'titolo' => 'Preventivi',
+            'titolo'     => 'Preventivi',
             'preventivi' => $this->formatPreventivi($preventivi),
-            'tipo' => 'lista'
+            'tipo'       => 'lista',
+            'errore'     => $errore,
         ]);
     }
 

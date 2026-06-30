@@ -5,6 +5,9 @@
 {block name='content'}
 <div class="auth-panel">
     <h1 class="auth-title">{$titolo|default:'Meccanico'}</h1>
+    {if $errore}
+        <div class="form-alert"><strong>Errore:</strong> {$errore}</div>
+    {/if}
     <p class="auth-text">Questa vista è dedicata al controller meccanico.</p>
 
     {if $tipo == 'profilo'}

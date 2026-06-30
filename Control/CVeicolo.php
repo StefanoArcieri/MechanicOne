@@ -8,59 +8,44 @@ require_once __DIR__ . '/../View/VVeicolo.php';
 class CVeicolo {
 
     public static function aggiungiVeicolo($targa, $marca, $modello) {
-        try {
-            $idU = Session::get('idU');
-            if (!$idU) throw new Exception("Accesso negato.");
+        $idU = Session::get('idU');
+        if (!$idU) throw new Exception("Accesso negato.");
 
-            $pm = PersistentManager::getInstance();
+        $pm = PersistentManager::getInstance();
 
-            // Verifica duplicato targa tramite PM
-            if ($pm->load('EVeicolo', 'targa', strtoupper(trim($targa)))) {
-                throw new Exception("Attenzione: Questo veicolo risulta già registrato.");
-            }
-
-            $nuovoVeicolo = new EVeicolo(null, $idU, strtoupper(trim($targa)), $marca, $modello);
-
-            if (!$pm->store($nuovoVeicolo)) {
-                throw new Exception("Errore tecnico durante il salvataggio del veicolo.");
-            }
-
-            header('Location: /MechanicOne/veicolo/lista?msg=veicolo_aggiunto');
-            exit();
-
-        } catch (Exception $e) {
-            throw $e;
+        if ($pm->load('EVeicolo', 'targa', strtoupper(trim($targa)))) {
+            throw new Exception("Questo veicolo è già registrato nel sistema.");
         }
+
+        $nuovoVeicolo = new EVeicolo(null, strtoupper(trim($targa)), $marca, $modello, $idU);
+
+        if (!$pm->store($nuovoVeicolo)) {
+            throw new Exception("Errore tecnico durante il salvataggio del veicolo.");
+        }
+
+        header('Location: /MechanicOne/veicolo/lista?msg=veicolo_aggiunto');
+        exit();
     }
 
     public static function getVeicoliPersonali() {
-        try {
-            $idU = Session::get('idU');
-            if (!$idU) return [];
+        $idU = Session::get('idU');
+        if (!$idU) throw new Exception("Accesso negato.");
 
-            $pm = PersistentManager::getInstance();
-            $veicoli = $pm->search('EVeicolo', 'idU', $idU);
-            return $veicoli ?: [];
-        } catch (Exception $e) {
-            throw $e;
-        }
+        $pm = PersistentManager::getInstance();
+        return $pm->search('EVeicolo', 'idU', $idU) ?: [];
     }
 
     public static function eliminaVeicolo($idV) {
-        try {
-            $idU = Session::get('idU');
-            if (!$idU) throw new Exception("Accesso negato.");
+        $idU = Session::get('idU');
+        if (!$idU) throw new Exception("Accesso negato.");
 
-            $pm = PersistentManager::getInstance();
-            if (!$pm->delete('EVeicolo', 'idV', $idV)) {
-                throw new Exception("Impossibile eliminare il veicolo.");
-            }
-
-            header('Location: /MechanicOne/veicolo/lista?msg=veicolo_eliminato');
-            exit();
-        } catch (Exception $e) {
-            throw $e;
+        $pm = PersistentManager::getInstance();
+        if (!$pm->delete('EVeicolo', 'idV', $idV)) {
+            throw new Exception("Impossibile eliminare il veicolo.");
         }
+
+        header('Location: /MechanicOne/veicolo/lista?msg=veicolo_eliminato');
+        exit();
     }
 
     public function nuovo($params = []) {
@@ -69,8 +54,14 @@ class CVeicolo {
 
     public function lista($params = []) {
         $view = new VVeicolo();
-        $veicoli = self::getVeicoliPersonali();
-        $view->mostraLista($veicoli);
+        $errore = '';
+        try {
+            $veicoli = self::getVeicoliPersonali();
+        } catch (Exception $e) {
+            $errore = $e->getMessage();
+            $veicoli = [];
+        }
+        $view->mostraLista($veicoli, $errore);
     }
 }
 ?>

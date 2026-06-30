@@ -45,20 +45,22 @@ class VMeccanico extends View {
         }, $meccanici);
     }
 
-    public function mostraProfilo($profilo) {
+    public function mostraProfilo($profilo, $errore = '') {
         $this->renderTemplate('meccanico.tpl', [
-            'titolo' => 'Profilo meccanico',
-            'profilo' => $profilo,
-            'dettaglioProfilo' => $this->formatProfilo($profilo),
-            'tipo' => 'profilo'
+            'titolo'          => 'Profilo meccanico',
+            'profilo'         => $profilo,
+            'dettaglioProfilo' => $profilo ? $this->formatProfilo($profilo) : '',
+            'tipo'            => 'profilo',
+            'errore'          => $errore,
         ]);
     }
 
-    public function mostraLista($meccanici) {
+    public function mostraLista($meccanici, $errore = '') {
         $this->renderTemplate('meccanico.tpl', [
-            'titolo' => 'Elenco meccanici',
+            'titolo'    => 'Elenco meccanici',
             'meccanici' => $this->formatMeccanici($meccanici),
-            'tipo' => 'lista'
+            'tipo'      => 'lista',
+            'errore'    => $errore,
         ]);
     }
 

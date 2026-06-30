@@ -25,7 +25,7 @@
 
         // Getters
         public function getIdPreventivo() { return $this->idPrev; }
-        public function getIdUtente() { return $this->idU; }        
+        public function getIdUtente() { return $this->idU; }
         public function getIdVeicolo() { return $this->idV; }
         public function getIdServizio() { return $this->idS; }
         public function getCosto() { return $this->costo; }
@@ -44,6 +44,4 @@
         public function setPdf($pdf) { $this->pdf = $pdf; }
         public function setDataRichiesta($data_richiesta) { $this->data_richiesta = $data_richiesta; }
     }
-?>  
-
-
+?>

@@ -79,30 +79,38 @@ class CUtente {
     }
 
     public function registrazione() {
+        require_once __DIR__ . '/../Entity/EMeccanico.php';
         $vUtente = new VUtente();
         $errore = '';
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['nome'], $_POST['cognome'], $_POST['email'], $_POST['password'])) {
             try {
-                $nome = $_POST['nome'];
-                $cognome = $_POST['cognome'];
-                $email = $_POST['email'];
-                $password = $_POST['password'];
+                $nome           = trim($_POST['nome']);
+                $cognome        = trim($_POST['cognome']);
+                $email          = trim($_POST['email']);
+                $password       = $_POST['password'];
+                $ruolo          = isset($_POST['ruolo']) && $_POST['ruolo'] === 'meccanico' ? 'meccanico' : 'cliente';
+                $specializzazione = $ruolo === 'meccanico' ? trim($_POST['specializzazione'] ?? '') : null;
 
-                // CORREZIONE COSTUTTORE: EUtente vuole 8 parametri! 
-                // Passiamo null per l'id (lo genera il DB), 'cliente' di default, e null per le date
-                $nuovoUtente = new EUtente(null, $nome, $cognome, $email, $password, 'cliente', null, date('Y-m-d H:i:s'));
+                $nuovoUtente = new EUtente(null, $nome, $cognome, $email, $password, $ruolo, null, date('Y-m-d H:i:s'));
 
-                // Deleghiamo al Persistent Manager il salvataggio (chiama in automatico FUtente->store)
                 $pm = PersistentManager::getInstance();
-                $risultato = $pm->store($nuovoUtente);
+                $nuovoId = $pm->store($nuovoUtente);
 
-                if ($risultato) {
-                    header('Location: /MechanicOne/utente/login');
-                    exit;
-                } else {
+                if (!$nuovoId) {
                     throw new Exception("Impossibile registrarsi. Forse questa email è già nel nostro database?");
                 }
+
+                if ($ruolo === 'meccanico') {
+                    $nuovoMeccanico = new EMeccanico(
+                        null, $nome, $cognome, $email, $password, 'meccanico', null, null,
+                        $nuovoId, $specializzazione, null, 'in attesa'
+                    );
+                    $pm->store($nuovoMeccanico);
+                }
+
+                header('Location: /MechanicOne/utente/login');
+                exit;
 
             } catch (Exception $e) {
                 $errore = $e->getMessage();

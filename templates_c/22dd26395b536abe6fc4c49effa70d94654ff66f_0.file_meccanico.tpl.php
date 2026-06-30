@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 5.8.0, created on 2026-06-28 23:40:26
+/* Smarty version 5.8.0, created on 2026-06-30 23:57:36
   from 'file:meccanico.tpl' */
 
 /* @var \Smarty\Template $_smarty_tpl */
 if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
   'version' => '5.8.0',
-  'unifunc' => 'content_6a4194cac3e833_42517366',
+  'unifunc' => 'content_6a443bd0c01019_91195749',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     '22dd26395b536abe6fc4c49effa70d94654ff66f' => 
     array (
       0 => 'meccanico.tpl',
-      1 => 1782682578,
+      1 => 1782856333,
       2 => 'file',
     ),
   ),
@@ -20,23 +20,23 @@ if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
   array (
   ),
 ))) {
-function content_6a4194cac3e833_42517366 (\Smarty\Template $_smarty_tpl) {
+function content_6a443bd0c01019_91195749 (\Smarty\Template $_smarty_tpl) {
 $_smarty_current_dir = 'C:\\xampp\\htdocs\\MechanicOne\\templates';
 $_smarty_tpl->getInheritance()->init($_smarty_tpl, true);
 ?>
 
 
 <?php 
-$_smarty_tpl->getInheritance()->instanceBlock($_smarty_tpl, 'Block_8623547666a4194cabe00b7_62910324', 'title');
+$_smarty_tpl->getInheritance()->instanceBlock($_smarty_tpl, 'Block_1698826806a443bd095fdb0_18743021', 'title');
 ?>
 
 
 <?php 
-$_smarty_tpl->getInheritance()->instanceBlock($_smarty_tpl, 'Block_8096367606a4194cabfaac9_78782882', 'content');
+$_smarty_tpl->getInheritance()->instanceBlock($_smarty_tpl, 'Block_3800295416a443bd0a7d669_77154691', 'content');
 $_smarty_tpl->getInheritance()->endChild($_smarty_tpl, 'layouts/base.tpl', $_smarty_current_dir);
 }
 /* {block 'title'} */
-class Block_8623547666a4194cabe00b7_62910324 extends \Smarty\Runtime\Block
+class Block_1698826806a443bd095fdb0_18743021 extends \Smarty\Runtime\Block
 {
 public function callBlock(\Smarty\Template $_smarty_tpl) {
 $_smarty_current_dir = 'C:\\xampp\\htdocs\\MechanicOne\\templates';
@@ -45,7 +45,7 @@ echo (($tmp = $_smarty_tpl->getValue('titolo') ?? null)===null||$tmp==='' ? 'Mec
 }
 /* {/block 'title'} */
 /* {block 'content'} */
-class Block_8096367606a4194cabfaac9_78782882 extends \Smarty\Runtime\Block
+class Block_3800295416a443bd0a7d669_77154691 extends \Smarty\Runtime\Block
 {
 public function callBlock(\Smarty\Template $_smarty_tpl) {
 $_smarty_current_dir = 'C:\\xampp\\htdocs\\MechanicOne\\templates';
@@ -54,6 +54,10 @@ $_smarty_current_dir = 'C:\\xampp\\htdocs\\MechanicOne\\templates';
 <div class="auth-panel">
     <h1 class="auth-title"><?php echo (($tmp = $_smarty_tpl->getValue('titolo') ?? null)===null||$tmp==='' ? 'Meccanico' ?? null : $tmp);?>
 </h1>
+    <?php if ($_smarty_tpl->getValue('errore')) {?>
+        <div class="form-alert"><strong>Errore:</strong> <?php echo $_smarty_tpl->getValue('errore');?>
+</div>
+    <?php }?>
     <p class="auth-text">Questa vista è dedicata al controller meccanico.</p>
 
     <?php if ($_smarty_tpl->getValue('tipo') == 'profilo') {?>

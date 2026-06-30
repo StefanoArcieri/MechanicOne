@@ -22,9 +22,8 @@ class FServizio {
             $query = "INSERT INTO servizi (titolo, descrizione) VALUES (:titolo, :descrizione)";
             $stmt = $pdo->prepare($query);
                 return $stmt->execute([
-
-                    ':titolo' => $servizio->getTitolo(),
-                    ':descrizione' => $servizio->getDescrizione(),  
+                    ':titolo'      => $servizio->getTitolo(),
+                    ':descrizione' => $servizio->getDescrizione(),
                 ]);
 
         } catch (PDOException $e) {
@@ -35,7 +34,7 @@ class FServizio {
 
     public function update($servizio, $pdo) {
             try {
-                $query = "UPDATE servizi SET  titolo = :titolo, descrizione = :descrizione WHERE idS = :idS;";
+                $query = "UPDATE servizi SET titolo = :titolo, descrizione = :descrizione WHERE idS = :idS";
                 $stmt = $pdo->prepare($query);
                 return $stmt->execute([
                     ':idS' => $servizio->getIdServizio(),
