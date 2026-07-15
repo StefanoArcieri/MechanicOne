@@ -11,17 +11,17 @@
         <div class="home-card">
             <h3>Il mio profilo</h3>
             <p>Verifica i tuoi dati e lo stato del tuo account.</p>
-            <a class="home-link home-link--orange" href="/MechanicOne/meccanico/profilo">Vedi profilo</a>
+            <a class="home-link home-link--orange" href="/MechanicOne/profilomeccanico/profilo">Vedi profilo</a>
         </div>
         <div class="home-card">
             <h3>Preventivi</h3>
             <p>Visualizza i preventivi assegnati e le richieste aperte.</p>
-            <a class="home-link home-link--blue" href="/MechanicOne/preventivo/lista">Vedi preventivi</a>
+            <a class="home-link home-link--blue" href="/MechanicOne/visualizzapreventivi/lista">Vedi preventivi</a>
         </div>
         <div class="home-card">
             <h3>Prenotazioni</h3>
             <p>Gestisci gli appuntamenti e l'agenda del tuo lavoro.</p>
-            <a class="home-link home-link--green" href="/MechanicOne/prenotazione/lista">Vedi prenotazioni</a>
+            <a class="home-link home-link--green" href="/MechanicOne/visualizzaprenotazioni/lista">Vedi prenotazioni</a>
         </div>
     </div>
 

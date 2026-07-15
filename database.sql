@@ -11,7 +11,8 @@ CREATE TABLE `servizi` (
    `idS` int(11) NOT NULL AUTO_INCREMENT,
    `titolo` varchar(50) NOT NULL,
    `descrizione` varchar(300) DEFAULT NULL,
-   PRIMARY KEY (`idS`)
+   PRIMARY KEY (`idS`),
+   UNIQUE KEY `titolo_unique` (`titolo`)
 );
 
 -- Spostata qui: deve esistere PRIMA dei veicoli!
@@ -36,6 +37,7 @@ CREATE TABLE `veicoli` (
    `marca` varchar(30) NOT NULL,
    `modello` varchar(50) NOT NULL,
    PRIMARY KEY (`idV`),
+   UNIQUE KEY `targa_unique` (`targa`),
    CONSTRAINT `fk_veicoli_utente` FOREIGN KEY (`idU`) REFERENCES `utenti` (`idU`) ON DELETE CASCADE -- AGGIUNTO: Il collegamento
 );
 
@@ -66,8 +68,9 @@ CREATE TABLE `preventivi` (
    `idV` int(11) NOT NULL,
    `idS` int(11) NOT NULL,
    `descrizione` varchar(200) NOT NULL,
+   `descrizione_proposta` varchar(200) DEFAULT NULL,
    `costo` int(11) DEFAULT NULL,
-   `stato` enum('inviato','accettato') DEFAULT 'inviato',
+   `stato` enum('inviato','accettato','rifiutato','svolto') DEFAULT 'inviato',
    `pdf` varchar(50) DEFAULT NULL,
    `data_richiesta` timestamp DEFAULT CURRENT_TIMESTAMP,
    PRIMARY KEY (`idPrev`),
@@ -83,8 +86,10 @@ CREATE TABLE `prenotazioni` (
    `idU` int(11) NOT NULL,
    `idV` int(11) NOT NULL,
    `data` date NOT NULL,
+   `data_proposta` date DEFAULT NULL,
    `ora` time NOT NULL,
-   `stato` enum('in attesa','accettata', 'cancellata') DEFAULT 'in attesa',
+   `ora_proposta` time DEFAULT NULL,
+   `stato` enum('in attesa','accettata','conclusa','cancellata') DEFAULT 'in attesa',
    PRIMARY KEY (`idPren`),
    CONSTRAINT `fk_prenotazioni_preventivi` FOREIGN KEY (`idPrev`) REFERENCES `preventivi` (`idPrev`) ON DELETE CASCADE,
    CONSTRAINT `fk_prenotazioni_meccanico` FOREIGN KEY (`idM`) REFERENCES `meccanici` (`idM`) ON DELETE SET NULL,

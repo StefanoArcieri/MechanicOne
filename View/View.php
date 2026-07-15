@@ -2,20 +2,17 @@
 // View/View.php
 
 require_once __DIR__ . '/../Foundation/Session.php';
+require_once __DIR__ . '/../smarty/src/functions.php';
 
-// 1. Registriamo un autoloader per il namespace "Smarty"
+// autoloader manuale per Smarty: non usiamo composer, quindi le classi Smarty\* le carichiamo a mano dal path
 spl_autoload_register(function ($class) {
-    // Se la classe non inizia con "Smarty\", ignorala
     if (strpos($class, 'Smarty\\') !== 0) {
         return;
     }
 
-    // Trasformiamo "Smarty\TemplateBase" in un percorso file
-    // Sostituiamo il namespace con la cartella src
-    $relative_class = substr($class, 7); // Rimuove "Smarty\"
+    $relative_class = substr($class, 7); // rimuove "Smarty\"
     $file = __DIR__ . '/../smarty/src/' . str_replace('\\', '/', $relative_class) . '.php';
 
-    // Se il file esiste, caricalo
     if (file_exists($file)) {
         require_once $file;
     }

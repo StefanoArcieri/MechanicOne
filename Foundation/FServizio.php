@@ -1,7 +1,15 @@
 <?php
 
+require_once __DIR__ . '/../Entity/EServizio.php';
+
 class FServizio {
     public function __construct() {}
+
+    private function mapRowToEntity($row) {
+        if (!$row) return null;
+        return new EServizio($row['idS'], $row['titolo'], $row['descrizione']);
+    }
+
     public function load($field, $value, $pdo) {
         try {
             $query = "SELECT * FROM servizi WHERE $field = :value";
@@ -9,12 +17,12 @@ class FServizio {
             $stmt->execute([
                 ':value' => $value
             ]);
-            return $stmt->fetch();
+            return $this->mapRowToEntity($stmt->fetch());
         } catch (PDOException $e) {
                 error_log($e->getMessage());
                 throw new Exception("Errore nel caricamento del servizio.");
             }
-            
+
     }
 
     public function store($servizio, $pdo) {
@@ -46,7 +54,7 @@ class FServizio {
                 throw new Exception("Errore nell'update del servizio.");
             }
         }
-    
+
     public function delete($field, $value, $pdo) {
             try {
                 $query = "DELETE FROM servizi WHERE $field = :value";
@@ -67,23 +75,23 @@ class FServizio {
                 $stmt->execute([
                     ':value' => $value
                 ]);
-                return $stmt->fetchAll();
+                return array_map([$this, 'mapRowToEntity'], $stmt->fetchAll());
             } catch (PDOException $e) {
                 error_log($e->getMessage());
                 throw new Exception("Errore nella ricerca del servizio.");
             }
-        } 
+        }
 
     public function getAll($pdo) {
         try {
 
-            $query = "SELECT * FROM servizi"; 
-            
+            $query = "SELECT * FROM servizi";
+
             $stmt = $pdo->prepare($query);
             $stmt->execute();
-            
-            return $stmt->fetchAll(PDO::FETCH_ASSOC); 
-            
+
+            return array_map([$this, 'mapRowToEntity'], $stmt->fetchAll(PDO::FETCH_ASSOC));
+
         } catch (PDOException $e) {
             error_log($e->getMessage());
             throw new Exception("Errore nel caricamento del listino servizi.");

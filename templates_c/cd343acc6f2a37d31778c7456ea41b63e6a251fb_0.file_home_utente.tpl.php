@@ -1,42 +1,44 @@
 <?php
-/* Smarty version 5.8.0, created on 2026-06-28 16:17:23
+/* Smarty version 5.8.0, created on 2026-07-14 23:14:14
   from 'file:home_utente.tpl' */
 
 /* @var \Smarty\Template $_smarty_tpl */
 if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
   'version' => '5.8.0',
-  'unifunc' => 'content_6a412cf332a1b4_71058056',
+  'unifunc' => 'content_6a56a6a615c291_60439403',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     'cd343acc6f2a37d31778c7456ea41b63e6a251fb' => 
     array (
       0 => 'home_utente.tpl',
-      1 => 1782656134,
+      1 => 1784063557,
       2 => 'file',
     ),
   ),
   'includes' => 
   array (
+    'file:scrivirecensione.tpl' => 1,
+    'file:visualizzarecensioni.tpl' => 1,
   ),
 ))) {
-function content_6a412cf332a1b4_71058056 (\Smarty\Template $_smarty_tpl) {
+function content_6a56a6a615c291_60439403 (\Smarty\Template $_smarty_tpl) {
 $_smarty_current_dir = 'C:\\xampp\\htdocs\\MechanicOne\\templates';
 $_smarty_tpl->getInheritance()->init($_smarty_tpl, true);
 ?>
 
 
 <?php 
-$_smarty_tpl->getInheritance()->instanceBlock($_smarty_tpl, 'Block_318787186a412cf3320c99_42468029', 'title');
+$_smarty_tpl->getInheritance()->instanceBlock($_smarty_tpl, 'Block_5102977166a56a6a6136803_06203781', 'title');
 ?>
 
 
 <?php 
-$_smarty_tpl->getInheritance()->instanceBlock($_smarty_tpl, 'Block_9088986916a412cf3328fd0_30461448', 'content');
+$_smarty_tpl->getInheritance()->instanceBlock($_smarty_tpl, 'Block_10843290246a56a6a614dc32_26508408', 'content');
 $_smarty_tpl->getInheritance()->endChild($_smarty_tpl, 'layouts/base.tpl', $_smarty_current_dir);
 }
 /* {block 'title'} */
-class Block_318787186a412cf3320c99_42468029 extends \Smarty\Runtime\Block
+class Block_5102977166a56a6a6136803_06203781 extends \Smarty\Runtime\Block
 {
 public function callBlock(\Smarty\Template $_smarty_tpl) {
 $_smarty_current_dir = 'C:\\xampp\\htdocs\\MechanicOne\\templates';
@@ -46,7 +48,7 @@ Area Cliente - MechanicOne<?php
 }
 /* {/block 'title'} */
 /* {block 'content'} */
-class Block_9088986916a412cf3328fd0_30461448 extends \Smarty\Runtime\Block
+class Block_10843290246a56a6a614dc32_26508408 extends \Smarty\Runtime\Block
 {
 public function callBlock(\Smarty\Template $_smarty_tpl) {
 $_smarty_current_dir = 'C:\\xampp\\htdocs\\MechanicOne\\templates';
@@ -61,17 +63,22 @@ $_smarty_current_dir = 'C:\\xampp\\htdocs\\MechanicOne\\templates';
         <div class="home-card">
             <h3>Garage Personale 🛠️</h3>
             <p>Visualizza le auto che hai registrato nell'officina o aggiungi un nuovo veicolo.</p>
-            <a class="home-link home-link--orange" href="/MechanicOne/veicolo/lista">Gestisci Veicoli &rarr;</a>
+            <a class="home-link home-link--orange" href="/MechanicOne/garage/lista">Gestisci Veicoli &rarr;</a>
         </div>
         <div class="home-card">
             <h3>Preventivi e Prenotazioni 📝</h3>
             <p>Controlla lo stato dei tuoi preventivi o prenota un appuntamento sul ponte.</p>
-            <a class="home-link home-link--blue" href="/MechanicOne/preventivo/lista">Vedi Richieste &rarr;</a>
+            <a class="home-link home-link--blue" href="/MechanicOne/visualizzapreventivi/lista">Vedi Richieste &rarr;</a>
         </div>
     </div>
 
     <hr class="auth-divider">
     <a class="home-link home-link--danger" href="/MechanicOne/utente/logout">Esci dall'Officina</a>
+
+    <?php $_smarty_tpl->renderSubTemplate('file:scrivirecensione.tpl', $_smarty_tpl->cache_id, $_smarty_tpl->compile_id, 0, $_smarty_tpl->cache_lifetime, array(), (int) 0, $_smarty_current_dir);
+?>
+    <?php $_smarty_tpl->renderSubTemplate('file:visualizzarecensioni.tpl', $_smarty_tpl->cache_id, $_smarty_tpl->compile_id, 0, $_smarty_tpl->cache_lifetime, array(), (int) 0, $_smarty_current_dir);
+?>
 </div>
 <?php
 }

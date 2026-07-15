@@ -9,14 +9,12 @@
         <p class="form-subtitle">Inserisci le tue credenziali per accedere al sistema</p>
     </div>
 
-    {* Gestione degli errori nativa in Smarty: se la variabile $errore non è vuota, mostra il box *}
     {if $errore}
         <div class="form-alert">
             <strong>❌ Errore:</strong> {$errore}
         </div>
     {/if}
 
-    {* L'azione del form punta direttamente alla rotta del Front Controller *}
     <form action="/MechanicOne/utente/login" method="POST" class="form">
         <div class="form-field">
             <label for="email" class="form-label">Indirizzo Email</label>

@@ -11,16 +11,19 @@
         <div class="home-card">
             <h3>Garage Personale 🛠️</h3>
             <p>Visualizza le auto che hai registrato nell'officina o aggiungi un nuovo veicolo.</p>
-            <a class="home-link home-link--orange" href="/MechanicOne/veicolo/lista">Gestisci Veicoli &rarr;</a>
+            <a class="home-link home-link--orange" href="/MechanicOne/garage/lista">Gestisci Veicoli &rarr;</a>
         </div>
         <div class="home-card">
             <h3>Preventivi e Prenotazioni 📝</h3>
             <p>Controlla lo stato dei tuoi preventivi o prenota un appuntamento sul ponte.</p>
-            <a class="home-link home-link--blue" href="/MechanicOne/preventivo/lista">Vedi Richieste &rarr;</a>
+            <a class="home-link home-link--blue" href="/MechanicOne/visualizzapreventivi/lista">Vedi Richieste &rarr;</a>
         </div>
     </div>
 
     <hr class="auth-divider">
     <a class="home-link home-link--danger" href="/MechanicOne/utente/logout">Esci dall'Officina</a>
+
+    {include file='scrivirecensione.tpl'}
+    {include file='visualizzarecensioni.tpl'}
 </div>
 {/block}

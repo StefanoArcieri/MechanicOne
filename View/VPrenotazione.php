@@ -3,38 +3,34 @@
 require_once __DIR__ . '/View.php';
 
 class VPrenotazione extends View {
-    private function formatPrenotazioni(array $prenotazioni): array {
-        return array_map(function ($prenotazione) {
-            if (is_array($prenotazione)) {
-                $id = $prenotazione['idPren'] ?? '';
-                $data = $prenotazione['data'] ?? '';
-                $ora = $prenotazione['ora'] ?? '';
-            } elseif (is_object($prenotazione)) {
-                $id = method_exists($prenotazione, 'getIdPren') ? $prenotazione->getIdPren() : '';
-                $data = method_exists($prenotazione, 'getData') ? $prenotazione->getData() : '';
-                $ora = method_exists($prenotazione, 'getOra') ? $prenotazione->getOra() : '';
-            } else {
-                return (string) $prenotazione;
-            }
 
-            return trim(sprintf('#%s: %s %s', $id, $data, $ora));
-        }, $prenotazioni);
-    }
-
-    public function mostraLista($prenotazioni, $errore = '') {
-        $this->renderTemplate('prenotazione.tpl', [
-            'titolo'       => 'Prenotazioni',
-            'prenotazioni' => $this->formatPrenotazioni($prenotazioni),
-            'tipo'         => 'lista',
-            'errore'       => $errore,
+    public function mostraForm($veicoli, $preventiviAccettati, $errore = '') {
+        $this->renderTemplate('richiediprenotazione.tpl', [
+            'titolo' => 'Richiedi una prenotazione',
+            'veicoli' => array_map(function ($v) { return $v->toArray(); }, $veicoli),
+            'preventiviAccettati' => array_map(function ($p) { return $p->toArray(); }, $preventiviAccettati),
+            'errore' => $errore,
         ]);
     }
 
-    public function mostraDettaglio($prenotazione) {
-        $this->renderTemplate('prenotazione.tpl', [
-            'titolo' => 'Dettaglio prenotazione',
-            'prenotazione' => $prenotazione,
-            'tipo' => 'dettaglio'
+    public function mostraLista($prenotazioni, $errore = '') {
+        $categorie = ['in attesa' => [], 'accettata' => [], 'conclusa' => [], 'cancellata' => []];
+        foreach ($prenotazioni as $pEntity) {
+            $p = $pEntity->toArray();
+            $stato = $p['stato'] ?? 'in attesa';
+            if (!isset($categorie[$stato])) {
+                $categorie[$stato] = [];
+            }
+            $categorie[$stato][] = $p;
+        }
+
+        $this->renderTemplate('visualizzaprenotazioni.tpl', [
+            'titolo' => 'Le tue prenotazioni',
+            'prenotazioniInAttesa' => $categorie['in attesa'],
+            'prenotazioniConfermate' => $categorie['accettata'],
+            'prenotazioniConcluse' => $categorie['conclusa'],
+            'prenotazioniCancellate' => $categorie['cancellata'],
+            'errore' => $errore,
         ]);
     }
 }

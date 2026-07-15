@@ -3,38 +3,35 @@
 require_once __DIR__ . '/View.php';
 
 class VPreventivo extends View {
-    private function formatPreventivi(array $preventivi): array {
-        return array_map(function ($preventivo) {
-            if (is_array($preventivo)) {
-                $id = $preventivo['idPrev'] ?? '';
-                $stato = $preventivo['stato'] ?? '';
-                $descrizione = $preventivo['descrizione'] ?? '';
-            } elseif (is_object($preventivo)) {
-                $id = method_exists($preventivo, 'getIdPrev') ? $preventivo->getIdPrev() : '';
-                $stato = method_exists($preventivo, 'getStato') ? $preventivo->getStato() : '';
-                $descrizione = method_exists($preventivo, 'getDescrizione') ? $preventivo->getDescrizione() : '';
-            } else {
-                return (string) $preventivo;
-            }
 
-            return trim(sprintf('#%s: %s - %s', $id, $stato, $descrizione));
-        }, $preventivi);
-    }
-
-    public function mostraLista($preventivi, $errore = '') {
-        $this->renderTemplate('preventivo.tpl', [
-            'titolo'     => 'Preventivi',
-            'preventivi' => $this->formatPreventivi($preventivi),
-            'tipo'       => 'lista',
-            'errore'     => $errore,
+    public function mostraForm($veicoli, $servizi, $errore = '') {
+        // riconvertiamo in array qui perché i tpl usano ancora {$v.campo}, non {$v->getCampo()}
+        $this->renderTemplate('richiedipreventivo.tpl', [
+            'titolo' => 'Richiedi un preventivo',
+            'veicoli' => array_map(function ($v) { return $v->toArray(); }, $veicoli),
+            'servizi' => array_map(function ($s) { return $s->toArray(); }, $servizi),
+            'errore' => $errore,
         ]);
     }
 
-    public function mostraDettaglio($preventivo) {
-        $this->renderTemplate('preventivo.tpl', [
-            'titolo' => 'Dettaglio preventivo',
-            'preventivo' => $preventivo,
-            'tipo' => 'dettaglio'
+    public function mostraLista($preventivi, $errore = '') {
+        $categorie = ['inviato' => [], 'accettato' => [], 'rifiutato' => [], 'svolto' => []];
+        foreach ($preventivi as $pEntity) {
+            $p = $pEntity->toArray();
+            $stato = $p['stato'] ?? 'inviato';
+            if (!isset($categorie[$stato])) {
+                $categorie[$stato] = [];
+            }
+            $categorie[$stato][] = $p;
+        }
+
+        $this->renderTemplate('visualizzapreventivi.tpl', [
+            'titolo' => 'I tuoi preventivi',
+            'preventiviInviati' => $categorie['inviato'],
+            'preventiviAccettati' => $categorie['accettato'],
+            'preventiviRifiutati' => $categorie['rifiutato'],
+            'preventiviSvolti' => $categorie['svolto'],
+            'errore' => $errore,
         ]);
     }
 }

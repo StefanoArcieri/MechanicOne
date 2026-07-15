@@ -30,6 +30,17 @@
         public function setIdUtente($idU) { $this->idU = $idU; }
         public function setValutazione($valutazione) { $this->valutazione = $valutazione; }
         public function setCommento($commento) { $this->commento = $commento; }
-        public function setDataRecensione($data_recensione) { $this->data_recensione = $data_recensione; }  
+        public function setDataRecensione($data_recensione) { $this->data_recensione = $data_recensione; }
+
+        public function toArray() {
+            return [
+                'idR' => $this->idR,
+                'idM' => $this->idM,
+                'idU' => $this->idU,
+                'valutazione' => $this->valutazione,
+                'commento' => $this->commento,
+                'data_recensione' => $this->data_recensione,
+            ];
+        }
     }
 ?>

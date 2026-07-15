@@ -1,7 +1,15 @@
 <?php
 
+require_once __DIR__ . '/../Entity/ERecensione.php';
+
 class FRecensione {
     public function __construct() {}
+
+    private function mapRowToEntity($row) {
+        if (!$row) return null;
+        return new ERecensione($row['idR'], $row['idM'], $row['idU'], $row['valutazione'], $row['commento'], $row['data_recensione']);
+    }
+
     public function load($field, $value, $pdo) {
         try {
             $query = "SELECT * FROM recensioni WHERE $field = :value";
@@ -9,24 +17,24 @@ class FRecensione {
             $stmt->execute([
                 ':value' => $value
             ]);
-            return $stmt->fetch();
+            return $this->mapRowToEntity($stmt->fetch());
         } catch (PDOException $e) {
                 error_log($e->getMessage());
                 throw new Exception("Errore nel caricamento della recensione.");
             }
-            
+
     }
 
     public function store($recensione, $pdo) {
         try {
-            $query = "INSERT INTO recensioni (idR, idM, idU, valutazione, commento, data_recensione) VALUES (:idR, :idM, :idU, :valutazione, :commento, :data_recensione)";
+            $query = "INSERT INTO recensioni (idM, idU, valutazione, commento, data_recensione) VALUES (:idM, :idU, :valutazione, :commento, :data_recensione)";
             $stmt = $pdo->prepare($query);
                 return $stmt->execute([
                     ':idM' => $recensione->getIdMeccanico(),
                     ':idU' => $recensione->getIdUtente(),
-                    ':valutazione' => $recensione->getValutazione(), 
+                    ':valutazione' => $recensione->getValutazione(),
                     ':commento' => $recensione->getCommento(),
-                    ':data_recensione' => $recensione->getDataRecensione(),   
+                    ':data_recensione' => $recensione->getDataRecensione(),
                 ]);
 
         } catch (PDOException $e) {
@@ -37,13 +45,13 @@ class FRecensione {
 
     public function update($recensione, $pdo) {
             try {
-                $query = "UPDATE recensioni SET idM = idM, idU = :idU, valutazione = :valutazione, commento = :commento, data_recensione = :data_recensione WHERE idR = :idR;";
+                $query = "UPDATE recensioni SET idM = :idM, idU = :idU, valutazione = :valutazione, commento = :commento, data_recensione = :data_recensione WHERE idR = :idR;";
                 $stmt = $pdo->prepare($query);
                 return $stmt->execute([
                     ':idR' => $recensione->getIdRecensione(),
                     ':idM' => $recensione->getIdMeccanico(),
                     ':idU' => $recensione->getIdUtente(),
-                    ':valutazione' => $recensione->getValutazione(), 
+                    ':valutazione' => $recensione->getValutazione(),
                     ':commento' => $recensione->getCommento(),
                     ':data_recensione' => $recensione->getDataRecensione(),
                 ]);
@@ -52,7 +60,7 @@ class FRecensione {
                 throw new Exception("Errore nell'update della recensione.");
             }
         }
-    
+
     public function delete($field, $value, $pdo) {
             try {
                 $query = "DELETE FROM recensioni WHERE $field = :value";
@@ -74,7 +82,7 @@ class FRecensione {
                 $stmt->execute([
                     ':value' => $value
                 ]);
-                return $stmt->fetchAll();
+                return array_map([$this, 'mapRowToEntity'], $stmt->fetchAll());
             } catch (PDOException $e) {
                 error_log($e->getMessage());
                 throw new Exception("Errore nella ricerca della recensione.");
@@ -84,13 +92,13 @@ class FRecensione {
     public function getAll($pdo) {
         try {
 
-            $query = "SELECT * FROM recensioni"; 
-            
+            $query = "SELECT * FROM recensioni";
+
             $stmt = $pdo->prepare($query);
             $stmt->execute();
-            
-            return $stmt->fetchAll(PDO::FETCH_ASSOC); 
-            
+
+            return array_map([$this, 'mapRowToEntity'], $stmt->fetchAll(PDO::FETCH_ASSOC));
+
         } catch (PDOException $e) {
             error_log($e->getMessage());
             throw new Exception("Errore critico DB nel recupero delle recensioni.");

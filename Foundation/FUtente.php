@@ -5,6 +5,14 @@ require_once __DIR__ . '/../Entity/EUtente.php';
 class FUtente {
     public function __construct() {}
 
+    private function mapRowToEntity($row) {
+        if (!$row) return null;
+        return new EUtente(
+            $row['idU'], $row['nome'], $row['cognome'], $row['email'], $row['password'],
+            $row['ruolo'], $row['ultimo_accesso'], $row['data_registrazione']
+        );
+    }
+
     public function load($field, $value, $pdo) {
         try {
             $query = "SELECT * FROM utenti WHERE $field = :value";
@@ -12,7 +20,7 @@ class FUtente {
             $stmt->execute([
                 ':value' => $value
             ]);
-            return $stmt->fetch();
+            return $this->mapRowToEntity($stmt->fetch());
         } catch (PDOException $e) {
             error_log($e->getMessage());
             throw new Exception("Errore nel caricamento dell'utente.");
@@ -81,7 +89,7 @@ class FUtente {
                 $stmt->execute([
                     ':value' => $value
                 ]);
-                return $stmt->fetchAll();
+                return array_map([$this, 'mapRowToEntity'], $stmt->fetchAll());
             } catch (PDOException $e) {
                 error_log($e->getMessage());
                 throw new Exception("Errore nella ricerca degli utenti.");
@@ -90,15 +98,13 @@ class FUtente {
 
         public function verificaLogin($email, $password, $pdo) {
         try {
-            // Cerchiamo l'utente tramite l'email
             $query = "SELECT * FROM utenti WHERE email = :email";
             $stmt = $pdo->prepare($query);
             $stmt->execute([':email' => $email]);
             $row = $stmt->fetch(PDO::FETCH_ASSOC);
 
-            // Se l'email esiste e la password inserita corrisponde all'hash salvato nel DB
+            // niente hash lato client: il confronto vero è qui, con l'hash salvato nel DB
             if ($row && password_verify($password, $row['password'])) {
-                // Restituiamo l'Entity EUtente popolata coi dati del DB
                 return new EUtente(
                     $row['idU'],
                     $row['nome'],
@@ -110,7 +116,7 @@ class FUtente {
                     $row['data_registrazione']
                 );
             }
-            return null; // Credenziali errate
+            return null;
         } catch (PDOException $e) {
             error_log($e->getMessage());
             throw new Exception("Errore nel verificaLogin.");

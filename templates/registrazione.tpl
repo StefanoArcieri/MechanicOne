@@ -9,14 +9,12 @@
         <p class="form-subtitle">Crea il tuo profilo per gestire i tuoi veicoli e richiedere preventivi</p>
     </div>
 
-    {* Se il controllore CUtente ci passa un messaggio d'errore via Smarty, lo stampiamo qui *}
     {if $errore}
         <div class="form-alert">
             <strong>❌ Errore:</strong> {$errore}
         </div>
     {/if}
 
-    {* L'azione punta dritta alla rotta del Front Controller gestita dal metodo 'registrazione' *}
     <form action="/MechanicOne/utente/registrazione" method="POST" class="form">
         <div class="form-field">
             <label for="nome" class="form-label">Nome</label>

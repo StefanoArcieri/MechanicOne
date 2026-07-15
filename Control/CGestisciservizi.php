@@ -5,10 +5,11 @@ require_once __DIR__ . '/../Entity/EServizio.php';
 require_once __DIR__ . '/../Foundation/Session.php';
 require_once __DIR__ . '/../View/VServizio.php';
 
-class CServizio {
+class CGestisciservizi {
 
-    public static function aggiungiServizio($titolo, $descrizione) {
-        if (Session::get('ruolo') !== 'admin') throw new Exception("Accesso negato.");
+    public function aggiungiServizio() {
+        $titolo = trim($_POST['titolo'] ?? '');
+        $descrizione = trim($_POST['descrizione'] ?? '');
 
         $pm = PersistentManager::getInstance();
 
@@ -22,24 +23,22 @@ class CServizio {
             throw new Exception("Impossibile salvare il servizio.");
         }
 
-        header('Location: /MechanicOne/servizio/lista?msg=servizio_aggiunto');
+        header('Location: /MechanicOne/gestisciservizi/lista?msg=servizio_aggiunto');
         exit();
     }
 
-    public static function richiediLista() {
+    public function richiediLista() {
         $pm = PersistentManager::getInstance();
         return $pm->getAll('EServizio') ?: [];
     }
 
-    public static function eliminaServizio($idS) {
-        if (Session::get('ruolo') !== 'admin') throw new Exception("Accesso negato.");
-
+    public function eliminaServizio($idS) {
         $pm = PersistentManager::getInstance();
         if (!$pm->delete('EServizio', 'idS', $idS)) {
             throw new Exception("Impossibile eliminare il servizio.");
         }
 
-        header('Location: /MechanicOne/servizio/lista?msg=servizio_eliminato');
+        header('Location: /MechanicOne/gestisciservizi/lista?msg=servizio_eliminato');
         exit();
     }
 }

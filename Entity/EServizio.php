@@ -18,7 +18,14 @@
 
         // Setters
         public function setTitolo($titolo) { $this->titolo = $titolo; }
-        public function setDescrizione($descrizione) { $this->descrizione = $descrizione; } 
-    
+        public function setDescrizione($descrizione) { $this->descrizione = $descrizione; }
+
+        public function toArray() {
+            return [
+                'idS' => $this->idS,
+                'titolo' => $this->titolo,
+                'descrizione' => $this->descrizione,
+            ];
+        }
     }
 ?>

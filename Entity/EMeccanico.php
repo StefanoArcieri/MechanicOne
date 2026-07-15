@@ -25,6 +25,15 @@
         // Setters
         public function setSpecializzazione($specializzazione) { $this->specializzazione = $specializzazione; }
         public function setFotoProfilo($foto_profilo) { $this->foto_profilo = $foto_profilo; }
-        public function setStatus($status) { $this->status = $status; }     
+        public function setStatus($status) { $this->status = $status; }
+
+        public function toArray() {
+            return array_merge(parent::toArray(), [
+                'idM' => $this->idM,
+                'specializzazione' => $this->specializzazione,
+                'foto_profilo' => $this->foto_profilo,
+                'status' => $this->status,
+            ]);
+        }
     }
 ?>

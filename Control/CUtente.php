@@ -3,15 +3,64 @@
 require_once __DIR__ . '/../View/VUtente.php';
 require_once __DIR__ . '/../Foundation/Session.php';
 require_once __DIR__ . '/../Foundation/PersistentManager.php';
-// Includiamo il layer Foundation per parlare col Database reale!
-require_once __DIR__ . '/../Foundation/FUtente.php'; 
+require_once __DIR__ . '/../Foundation/FUtente.php';
 require_once __DIR__ . '/../Entity/EUtente.php';
+require_once __DIR__ . '/CVisualizzarecensioni.php';
+require_once __DIR__ . '/CGestiscimeccanici.php';
 
 class CUtente {
 
-    /**
-     * Gestisce la visualizzazione e l'autenticazione del Login tramite Database
-     */
+    // dati per la sezione recensioni in home: lista, media stelle e meccanici tra cui scegliere
+    private function datiRecensioni() {
+        $pm = PersistentManager::getInstance();
+
+        $recensioniEntities = (new CVisualizzarecensioni())->richiediLista();
+
+        $recensioni = [];
+        foreach ($recensioniEntities as $rEntity) {
+            $r = $rEntity->toArray();
+
+            $autore = $pm->load('EUtente', 'idU', $r['idU']);
+            $r['nomeAutore'] = $autore ? $autore->getNome() : 'Cliente';
+
+            $meccanico = $pm->load('EUtente', 'idU', $r['idM']);
+            $r['nomeMeccanico'] = $meccanico ? trim($meccanico->getNome() . ' ' . $meccanico->getCognome()) : 'Meccanico';
+
+            $voto = (int) $r['valutazione'];
+            $r['stelleVoto'] = str_repeat('★', $voto) . str_repeat('☆', 5 - $voto);
+
+            $recensioni[] = $r;
+        }
+
+        $numero = count($recensioni);
+        $media = $numero > 0
+            ? round(array_sum(array_column($recensioni, 'valutazione')) / $numero, 1)
+            : 0;
+        $mediaArrotondata = (int) round($media);
+        $stelleMedia = str_repeat('★', $mediaArrotondata) . str_repeat('☆', 5 - $mediaArrotondata);
+
+        $meccaniciEntities = array_values(array_filter(
+            (new CGestiscimeccanici())->richiediLista(),
+            function ($m) { return $m->getStatus() === 'approvato'; }
+        ));
+
+        $meccaniciApprovati = [];
+        foreach ($meccaniciEntities as $mEntity) {
+            $m = $mEntity->toArray();
+            $u = $pm->load('EUtente', 'idU', $m['idM']);
+            $m['nomeCompleto'] = $u ? trim($u->getNome() . ' ' . $u->getCognome()) : ('Meccanico #' . $m['idM']);
+            $meccaniciApprovati[] = $m;
+        }
+
+        return [
+            'recensioni' => $recensioni,
+            'mediaStelle' => $media,
+            'stelleMedia' => $stelleMedia,
+            'numeroRecensioni' => $numero,
+            'meccaniciApprovati' => $meccaniciApprovati,
+        ];
+    }
+
     public function login() {
         $vUtente = new VUtente();
         $errore = '';
@@ -21,7 +70,6 @@ class CUtente {
                 $email = $_POST['email'];
                 $password = $_POST['password'];
 
-                // FASE FOUNDATION: Chiamiamo il PersistentManager!
                 $pm = PersistentManager::getInstance();
                 $utente = $pm->verificaLogin($email, $password);
 
@@ -42,27 +90,22 @@ class CUtente {
         $vUtente->mostraFormLogin($errore);
     }
 
-    /**
-     * Gestisce la pagina principale dell'utente dopo il login
-     */
-    public static function home() {
+    public function home() {
         require_once __DIR__ . '/../View/VUtente.php';
         $view = new VUtente();
 
-        // 1. Recuperiamo le informazioni di controllo dallo strato Sessione
         $idU = Session::get('idU');
         $nome = Session::get('nome');
         $ruolo = Session::get('ruolo');
 
-        // 2. Controllo di flusso: l'utente ha una sessione attiva?
+        $datiRecensioni = $this->datiRecensioni();
+
         if (!$idU) {
-            // Se l'utente è un ospite anonimo, vede la vetrina pubblica dell'officina
-            $view->mostraHomePubblica();
+            $view->mostraHomePubblica($datiRecensioni);
         } else {
-            // Se l'utente è autenticato, lo smistiamo sulla sua plancia di comando specifica
             switch ($ruolo) {
                 case 'cliente':
-                    $view->mostraDashboardUtente($nome);
+                    $view->mostraDashboardUtente($nome, $datiRecensioni);
                     break;
                 case 'meccanico':
                     $view->mostraDashboardMeccanico($nome);
@@ -120,9 +163,6 @@ class CUtente {
         $vUtente->mostraFormRegistrazione($errore);
     }
 
-    /**
-     * Gestisce la disconnessione dell'utente (Logout)
-     */
     public function logout() {
         Session::destroy();
         header('Location: /MechanicOne/utente/login');

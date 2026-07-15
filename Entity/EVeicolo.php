@@ -27,5 +27,15 @@
         public function setMarca($marca) { $this->marca = $marca; }
         public function setModello($modello) { $this->modello = $modello; }
         public function setIdUtente($idU) { $this->idU = $idU; }
+
+        public function toArray() {
+            return [
+                'idV' => $this->idV,
+                'targa' => $this->targa,
+                'marca' => $this->marca,
+                'modello' => $this->modello,
+                'idU' => $this->idU,
+            ];
+        }
     }
 ?>

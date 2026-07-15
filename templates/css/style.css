@@ -518,3 +518,140 @@ body {
 .button--danger:hover {
     background: #a93226;
 }
+
+/* Sezioni per stato (preventivi/prenotazioni) */
+.status-section {
+    margin-top: 32px;
+}
+
+.status-section__title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: #2c3e50;
+}
+
+.status-count {
+    background: #ecf0f1;
+    color: #2c3e50;
+    font-size: 0.8rem;
+    font-weight: 700;
+    padding: 2px 10px;
+    border-radius: 999px;
+}
+
+.status-card {
+    border-top: 4px solid #bdc3c7;
+}
+
+.status-card--inviato,
+.status-card--in-attesa {
+    border-top-color: #e67e22;
+}
+
+.status-card--accettato,
+.status-card--accettata {
+    border-top-color: #27ae60;
+}
+
+.status-card--svolto,
+.status-card--conclusa {
+    border-top-color: #2980b9;
+}
+
+.status-card--rifiutato,
+.status-card--cancellata {
+    border-top-color: #c0392b;
+    opacity: 0.85;
+}
+
+.status-note {
+    font-size: 0.9rem;
+    color: #7f8c8d;
+}
+
+.edit-toggle {
+    margin-top: 12px;
+}
+
+.edit-toggle summary {
+    cursor: pointer;
+    color: #2980b9;
+    font-weight: 600;
+}
+
+.edit-toggle .form {
+    margin-top: 10px;
+    gap: 10px;
+}
+
+.btn--secondary {
+    background: #e67e22;
+}
+
+/* Step indicator per il form di prenotazione */
+.step-indicator {
+    display: flex;
+    justify-content: space-between;
+    gap: 8px;
+    margin-bottom: 24px;
+}
+
+.step-dot {
+    flex: 1;
+    text-align: center;
+    padding: 8px 4px;
+    border-radius: 6px;
+    background: #ecf0f1;
+    color: #95a5a6;
+    font-size: 0.8rem;
+    font-weight: 700;
+}
+
+.step-dot--active {
+    background: #2980b9;
+    color: #ffffff;
+}
+
+/* Stelle e recensioni */
+.stars {
+    color: #f39c12;
+    font-size: 1.4rem;
+    letter-spacing: 2px;
+}
+
+.rating-summary {
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.rating-summary__value {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #2c3e50;
+}
+
+.review-card {
+    padding: 16px;
+    border: 1px solid #eee;
+    border-radius: 8px;
+    background: #fcfcfc;
+}
+
+.review-card__meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 6px;
+    font-size: 0.85rem;
+    color: #7f8c8d;
+}
+
+.review-write,
+.review-list {
+    margin-top: 32px;
+    padding-top: 24px;
+    border-top: 1px solid #ecf0f1;
+}

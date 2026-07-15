@@ -1,14 +1,22 @@
 <?php
 
+require_once __DIR__ . '/../Entity/EVeicolo.php';
+
 class FVeicolo {
     public function __construct() {}
+
+    // qui trasformiamo la riga grezza del DB in un oggetto vero, così i controller non toccano mai array associativi
+    private function mapRowToEntity($row) {
+        if (!$row) return null;
+        return new EVeicolo($row['idV'], $row['targa'], $row['marca'], $row['modello'], $row['idU']);
+    }
 
     public function load($field, $value, $pdo) {
         try {
             $query = "SELECT * FROM veicoli WHERE $field = :value";
             $stmt = $pdo->prepare($query);
             $stmt->execute([':value' => $value]);
-            return $stmt->fetch();
+            return $this->mapRowToEntity($stmt->fetch());
         } catch (PDOException $e) {
             error_log($e->getMessage());
             throw new Exception("Errore nel caricamento del veicolo.");
@@ -64,7 +72,7 @@ class FVeicolo {
             $query = "SELECT * FROM veicoli WHERE $field = :value";
             $stmt = $pdo->prepare($query);
             $stmt->execute([':value' => $value]);
-            return $stmt->fetchAll();
+            return array_map([$this, 'mapRowToEntity'], $stmt->fetchAll());
         } catch (PDOException $e) {
             error_log($e->getMessage());
             throw new Exception("Errore nella ricerca del veicolo.");
@@ -74,7 +82,7 @@ class FVeicolo {
     public function getAll($pdo) {
         try {
             $stmt = $pdo->query("SELECT * FROM veicoli");
-            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+            return array_map([$this, 'mapRowToEntity'], $stmt->fetchAll(PDO::FETCH_ASSOC));
         } catch (PDOException $e) {
             error_log($e->getMessage());
             throw new Exception("Errore nel recupero dei veicoli.");

@@ -18,5 +18,8 @@
             <li>Preventivi rapidi e prenotazioni online</li>
         </ul>
     </div>
+
+    {include file='scrivirecensione.tpl'}
+    {include file='visualizzarecensioni.tpl'}
 </section>
 {/block}

@@ -8,10 +8,11 @@
         private $costo;
         private $stato;
         private $descrizione;
+        private $descrizioneProposta;
         private $pdf;
         private $data_richiesta;
 
-        public function __construct($idPrev, $idU, $idV, $idS, $costo, $stato, $descrizione, $pdf, $data_richiesta) {
+        public function __construct($idPrev, $idU, $idV, $idS, $costo, $stato, $descrizione, $pdf, $data_richiesta, $descrizioneProposta = null) {
             $this->idPrev = $idPrev;
             $this->idU = $idU;
             $this->idV = $idV;
@@ -21,6 +22,7 @@
             $this->descrizione = $descrizione;
             $this->pdf = $pdf;
             $this->data_richiesta = $data_richiesta;
+            $this->descrizioneProposta = $descrizioneProposta;
         }
 
         // Getters
@@ -31,6 +33,7 @@
         public function getCosto() { return $this->costo; }
         public function getStato() { return $this->stato; }
         public function getDescrizione() { return $this->descrizione; }
+        public function getDescrizioneProposta() { return $this->descrizioneProposta; }
         public function getPdf() { return $this->pdf; }
         public function getDataRichiesta() { return $this->data_richiesta; }
 
@@ -41,7 +44,23 @@
         public function setCosto($costo) { $this->costo = $costo; }
         public function setStato($stato) { $this->stato = $stato; }
         public function setDescrizione($descrizione) { $this->descrizione = $descrizione; }
+        public function setDescrizioneProposta($descrizioneProposta) { $this->descrizioneProposta = $descrizioneProposta; }
         public function setPdf($pdf) { $this->pdf = $pdf; }
         public function setDataRichiesta($data_richiesta) { $this->data_richiesta = $data_richiesta; }
+
+        public function toArray() {
+            return [
+                'idPrev' => $this->idPrev,
+                'idU' => $this->idU,
+                'idV' => $this->idV,
+                'idS' => $this->idS,
+                'costo' => $this->costo,
+                'stato' => $this->stato,
+                'descrizione' => $this->descrizione,
+                'descrizione_proposta' => $this->descrizioneProposta,
+                'pdf' => $this->pdf,
+                'data_richiesta' => $this->data_richiesta,
+            ];
+        }
     }
 ?>

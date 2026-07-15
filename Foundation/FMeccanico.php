@@ -1,7 +1,17 @@
 <?php
 
+require_once __DIR__ . '/../Entity/EMeccanico.php';
+
 class FMeccanico {
     public function __construct() {}
+
+    private function mapRowToEntity($row) {
+        if (!$row) return null;
+        return new EMeccanico(
+            null, null, null, null, null, null, null, null,
+            $row['idM'], $row['specializzazione'], $row['foto_profilo'], $row['status']
+        );
+    }
 
    public function load($field, $value, $pdo) {
         try {
@@ -10,12 +20,12 @@ class FMeccanico {
             $stmt->execute([
                 ':value' => $value
             ]);
-            return $stmt->fetch();
+            return $this->mapRowToEntity($stmt->fetch());
         } catch (PDOException $e) {
                 error_log($e->getMessage());
                 throw new Exception("Errore nel caricamento del meccanico.");
             }
-            
+
     }
 
     public function store($meccanico, $pdo) {
@@ -72,7 +82,7 @@ class FMeccanico {
                 $stmt->execute([
                     ':value' => $value
                 ]);
-                return $stmt->fetchAll();
+                return array_map([$this, 'mapRowToEntity'], $stmt->fetchAll());
             } catch (PDOException $e) {
                 error_log($e->getMessage());
                 throw new Exception("Errore nella ricerca del meccanico.");
@@ -81,13 +91,13 @@ class FMeccanico {
 
     public function getAll($pdo) {
         try {
-            $query = "SELECT * FROM meccanici"; 
-            
+            $query = "SELECT * FROM meccanici";
+
             $stmt = $pdo->prepare($query);
             $stmt->execute();
-            
-            return $stmt->fetchAll(PDO::FETCH_ASSOC); 
-            
+
+            return array_map([$this, 'mapRowToEntity'], $stmt->fetchAll(PDO::FETCH_ASSOC));
+
         } catch (PDOException $e) {
             error_log($e->getMessage());
             throw new Exception("Errore critico DB nel recupero della lista meccanici.");

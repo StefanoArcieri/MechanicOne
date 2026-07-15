@@ -38,5 +38,18 @@
         public function setRuolo($ruolo) { $this->ruolo = $ruolo; }
         public function setUltimoAccesso($ultimo_accesso) { $this->ultimo_accesso = $ultimo_accesso; }
         public function setDataRegistrazione($data_registrazione) { $this->data_registrazione = $data_registrazione; }
+
+        public function toArray() {
+            return [
+                'idU' => $this->idU,
+                'nome' => $this->nome,
+                'cognome' => $this->cognome,
+                'email' => $this->email,
+                'password' => $this->password,
+                'ruolo' => $this->ruolo,
+                'ultimo_accesso' => $this->ultimo_accesso,
+                'data_registrazione' => $this->data_registrazione,
+            ];
+        }
     }
 ?>

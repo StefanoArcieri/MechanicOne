@@ -21,13 +21,13 @@
                 <details class="profile-menu">
                     <summary class="profile-menu__trigger" aria-label="Menu profilo">👤</summary>
                     <div class="profile-menu__panel">
-                        <a href="/MechanicOne/meccanico/area">Area Meccanico</a>
-                        <a href="/MechanicOne/preventivo/richiedi"> Richiedi un preventivo</a>
-                        <a href="/MechanicOne/preventivo/lista"> Visualizza i tuoi preventivi</a>
-                        <a href="/MechanicOne/prenotazione/prenota"> Richiedi una prenotazione</a>
-                        <a href="/MechanicOne/prenotazione/lista"> Visualizza le tue prenotazioni</a>
-                        <a href="/MechanicOne/veicolo/aggiungiVeicolo"> Aggiungi un veicolo</a>
-                        <a href="/MechanicOne/veicolo/getVeicoliPersonali"> Visualizza il tuo garage</a>
+                        <a href="/MechanicOne/profilomeccanico/area">Area Meccanico</a>
+                        <a href="/MechanicOne/richiedipreventivo/nuovo">Richiedi un preventivo</a>
+                        <a href="/MechanicOne/visualizzapreventivi/lista">Visualizza i tuoi preventivi</a>
+                        <a href="/MechanicOne/richiediprenotazione/nuovo">Richiedi una prenotazione</a>
+                        <a href="/MechanicOne/visualizzaprenotazioni/lista">Visualizza le tue prenotazioni</a>
+                        <a href="/MechanicOne/aggiungiveicolo/nuovo">Aggiungi un veicolo</a>
+                        <a href="/MechanicOne/garage/lista">Visualizza il tuo garage</a>
                     </div>
                 </details>
             </div>
