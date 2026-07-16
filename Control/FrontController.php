@@ -66,7 +66,7 @@ class FrontController {
 
         try {
             return $real_controller->$method(...$params);
-        } catch (Exception $e) {
+        } catch (Throwable $e) {
             $errorController = new CErrori();
             return $errorController->mostraErrore(500, $e->getMessage());
         }

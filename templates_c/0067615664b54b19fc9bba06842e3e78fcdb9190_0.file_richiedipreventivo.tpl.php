@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 5.8.0, created on 2026-07-14 13:59:30
+/* Smarty version 5.8.0, created on 2026-07-16 13:42:57
   from 'file:richiedipreventivo.tpl' */
 
 /* @var \Smarty\Template $_smarty_tpl */
 if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
   'version' => '5.8.0',
-  'unifunc' => 'content_6a5624a2233527_72989256',
+  'unifunc' => 'content_6a58c3c1286fd9_97337096',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     '0067615664b54b19fc9bba06842e3e78fcdb9190' => 
     array (
       0 => 'richiedipreventivo.tpl',
-      1 => 1784023734,
+      1 => 1784063557,
       2 => 'file',
     ),
   ),
@@ -20,25 +20,25 @@ if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
   array (
   ),
 ))) {
-function content_6a5624a2233527_72989256 (\Smarty\Template $_smarty_tpl) {
+function content_6a58c3c1286fd9_97337096 (\Smarty\Template $_smarty_tpl) {
 $_smarty_current_dir = 'C:\\xampp\\htdocs\\MechanicOne\\templates';
 $_smarty_tpl->getInheritance()->init($_smarty_tpl, true);
 ?>
 
 
 <?php 
-$_smarty_tpl->getInheritance()->instanceBlock($_smarty_tpl, 'Block_2760532166a5624a21dc224_45374117', 'title');
+$_smarty_tpl->getInheritance()->instanceBlock($_smarty_tpl, 'Block_4533043366a58c3c1055211_02471093', 'title');
 ?>
 
 
 <?php 
-$_smarty_tpl->getInheritance()->instanceBlock($_smarty_tpl, 'Block_11841521826a5624a21e5f12_50783606', 'content');
+$_smarty_tpl->getInheritance()->instanceBlock($_smarty_tpl, 'Block_18848462186a58c3c105ff91_33894079', 'content');
 ?>
 
 <?php $_smarty_tpl->getInheritance()->endChild($_smarty_tpl, 'layouts/base.tpl', $_smarty_current_dir);
 }
 /* {block 'title'} */
-class Block_2760532166a5624a21dc224_45374117 extends \Smarty\Runtime\Block
+class Block_4533043366a58c3c1055211_02471093 extends \Smarty\Runtime\Block
 {
 public function callBlock(\Smarty\Template $_smarty_tpl) {
 $_smarty_current_dir = 'C:\\xampp\\htdocs\\MechanicOne\\templates';
@@ -48,7 +48,7 @@ Richiedi un preventivo - MechanicOne<?php
 }
 /* {/block 'title'} */
 /* {block 'content'} */
-class Block_11841521826a5624a21e5f12_50783606 extends \Smarty\Runtime\Block
+class Block_18848462186a58c3c105ff91_33894079 extends \Smarty\Runtime\Block
 {
 public function callBlock(\Smarty\Template $_smarty_tpl) {
 $_smarty_current_dir = 'C:\\xampp\\htdocs\\MechanicOne\\templates';
@@ -67,11 +67,11 @@ $_smarty_current_dir = 'C:\\xampp\\htdocs\\MechanicOne\\templates';
     <?php }?>
 
     <?php if ($_smarty_tpl->getSmarty()->getModifierCallback('count')($_smarty_tpl->getValue('veicoli')) == 0) {?>
-        <p class="auth-text">Devi prima aggiungere un veicolo al tuo <a class="form-link" href="/MechanicOne/veicolo/lista">garage</a>.</p>
+        <p class="auth-text">Devi prima aggiungere un veicolo al tuo <a class="form-link" href="/MechanicOne/garage/lista">garage</a>.</p>
     <?php } elseif ($_smarty_tpl->getSmarty()->getModifierCallback('count')($_smarty_tpl->getValue('servizi')) == 0) {?>
         <p class="auth-text">Al momento non ci sono servizi disponibili a catalogo.</p>
     <?php } else { ?>
-        <form class="form" action="/MechanicOne/preventivo/richiedi" method="post">
+        <form class="form" action="/MechanicOne/richiedipreventivo/richiedi" method="post">
             <div class="form-field">
                 <label class="form-label" for="idV">Veicolo</label>
                 <select class="form-input" id="idV" name="idV" required>
@@ -117,7 +117,7 @@ $_smarty_tpl->getSmarty()->getRuntime('Foreach')->restore($_smarty_tpl, 1);?>
     <?php }?>
 
     <div class="form-footer">
-        <a class="form-link" href="/MechanicOne/preventivo/lista">&larr; I tuoi preventivi</a>
+        <a class="form-link" href="/MechanicOne/visualizzapreventivi/lista">&larr; I tuoi preventivi</a>
     </div>
 </div>
 <?php

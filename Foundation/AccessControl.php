@@ -63,17 +63,24 @@ class AccessControl {
             'eliminaMeccanico' => ['admin'],
         ],
         'gestisciservizi' => [
+            'lista' => 'auth',
             'aggiungiServizio' => ['admin'],
             'richiediLista' => 'auth',
             'eliminaServizio' => ['admin'],
         ],
         'gestiscipreventivi' => [
-            'richiediLista' => ['admin'],
+            'lista' => ['admin', 'meccanico'],
+            'richiediLista' => ['admin', 'meccanico'],
             'updateCosto' => ['admin'],
             'rifiuta' => ['admin'],
+            'segnaSvolto' => ['admin', 'meccanico'],
         ],
         'gestisciprenotazioni' => [
+            'lista' => ['admin', 'meccanico'],
             'richiediLista' => ['admin', 'meccanico'],
+            'accetta' => ['admin', 'meccanico'],
+            'concludi' => ['admin', 'meccanico'],
+            'cancella' => ['admin', 'meccanico'],
         ],
     ];
 

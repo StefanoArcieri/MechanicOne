@@ -16,12 +16,12 @@
         <div class="home-card">
             <h3>Preventivi</h3>
             <p>Visualizza i preventivi assegnati e le richieste aperte.</p>
-            <a class="home-link home-link--blue" href="/MechanicOne/visualizzapreventivi/lista">Vedi preventivi</a>
+            <a class="home-link home-link--blue" href="/MechanicOne/gestiscipreventivi/lista">Vedi preventivi</a>
         </div>
         <div class="home-card">
             <h3>Prenotazioni</h3>
             <p>Gestisci gli appuntamenti e l'agenda del tuo lavoro.</p>
-            <a class="home-link home-link--green" href="/MechanicOne/visualizzaprenotazioni/lista">Vedi prenotazioni</a>
+            <a class="home-link home-link--green" href="/MechanicOne/gestisciprenotazioni/lista">Vedi prenotazioni</a>
         </div>
     </div>
 

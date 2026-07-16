@@ -16,17 +16,17 @@
         <div class="home-card">
             <h3>Preventivi</h3>
             <p>Visualizza le richieste e i preventivi da gestire.</p>
-            <a class="home-link home-link--blue" href="/MechanicOne/visualizzapreventivi/lista">Apri preventivi</a>
+            <a class="home-link home-link--blue" href="/MechanicOne/gestiscipreventivi/lista">Apri preventivi</a>
         </div>
         <div class="home-card">
             <h3>Prenotazioni</h3>
             <p>Controlla gli appuntamenti in programma e lo stato delle prenotazioni.</p>
-            <a class="home-link home-link--green" href="/MechanicOne/visualizzaprenotazioni/lista">Apri prenotazioni</a>
+            <a class="home-link home-link--green" href="/MechanicOne/gestisciprenotazioni/lista">Apri prenotazioni</a>
         </div>
         <div class="home-card">
-            <h3>Veicoli</h3>
-            <p>Consulta i veicoli registrati dai clienti.</p>
-            <a class="home-link home-link--purple" href="/MechanicOne/garage/lista">Apri garage veicoli</a>
+            <h3>Servizi</h3>
+            <p>Gestisci il catalogo dei servizi offerti dall'officina.</p>
+            <a class="home-link home-link--purple" href="/MechanicOne/gestisciservizi/lista">Apri catalogo servizi</a>
         </div>
     </div>
 

@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 5.8.0, created on 2026-07-14 13:58:40
+/* Smarty version 5.8.0, created on 2026-07-16 13:42:52
   from 'file:aggiungiveicolo.tpl' */
 
 /* @var \Smarty\Template $_smarty_tpl */
 if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
   'version' => '5.8.0',
-  'unifunc' => 'content_6a562470bc3644_82590190',
+  'unifunc' => 'content_6a58c3bc7c4a97_35406484',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     '4cc4d1a299202d5fa40e0fe7bd3bad5384216237' => 
     array (
       0 => 'aggiungiveicolo.tpl',
-      1 => 1784023716,
+      1 => 1784063556,
       2 => 'file',
     ),
   ),
@@ -20,25 +20,25 @@ if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
   array (
   ),
 ))) {
-function content_6a562470bc3644_82590190 (\Smarty\Template $_smarty_tpl) {
+function content_6a58c3bc7c4a97_35406484 (\Smarty\Template $_smarty_tpl) {
 $_smarty_current_dir = 'C:\\xampp\\htdocs\\MechanicOne\\templates';
 $_smarty_tpl->getInheritance()->init($_smarty_tpl, true);
 ?>
 
 
 <?php 
-$_smarty_tpl->getInheritance()->instanceBlock($_smarty_tpl, 'Block_1714320796a562470ba7d08_88456266', 'title');
+$_smarty_tpl->getInheritance()->instanceBlock($_smarty_tpl, 'Block_6821061216a58c3bc5dae27_22238873', 'title');
 ?>
 
 
 <?php 
-$_smarty_tpl->getInheritance()->instanceBlock($_smarty_tpl, 'Block_10202351496a562470bb0632_77535751', 'content');
+$_smarty_tpl->getInheritance()->instanceBlock($_smarty_tpl, 'Block_544684806a58c3bc5e53d0_59790899', 'content');
 ?>
 
 <?php $_smarty_tpl->getInheritance()->endChild($_smarty_tpl, 'layouts/base.tpl', $_smarty_current_dir);
 }
 /* {block 'title'} */
-class Block_1714320796a562470ba7d08_88456266 extends \Smarty\Runtime\Block
+class Block_6821061216a58c3bc5dae27_22238873 extends \Smarty\Runtime\Block
 {
 public function callBlock(\Smarty\Template $_smarty_tpl) {
 $_smarty_current_dir = 'C:\\xampp\\htdocs\\MechanicOne\\templates';
@@ -48,7 +48,7 @@ Aggiungi veicolo - MechanicOne<?php
 }
 /* {/block 'title'} */
 /* {block 'content'} */
-class Block_10202351496a562470bb0632_77535751 extends \Smarty\Runtime\Block
+class Block_544684806a58c3bc5e53d0_59790899 extends \Smarty\Runtime\Block
 {
 public function callBlock(\Smarty\Template $_smarty_tpl) {
 $_smarty_current_dir = 'C:\\xampp\\htdocs\\MechanicOne\\templates';
@@ -66,7 +66,7 @@ $_smarty_current_dir = 'C:\\xampp\\htdocs\\MechanicOne\\templates';
 </div>
     <?php }?>
 
-    <form class="form" action="/MechanicOne/veicolo/aggiungiVeicolo" method="post">
+    <form class="form" action="/MechanicOne/aggiungiveicolo/aggiungiVeicolo" method="post">
         <div class="form-field">
             <label class="form-label" for="targa">Targa</label>
             <input class="form-input" type="text" id="targa" name="targa" maxlength="7" placeholder="AB123CD" required>
@@ -83,7 +83,7 @@ $_smarty_current_dir = 'C:\\xampp\\htdocs\\MechanicOne\\templates';
     </form>
 
     <div class="form-footer">
-        <a class="form-link" href="/MechanicOne/veicolo/lista">&larr; Torna al garage</a>
+        <a class="form-link" href="/MechanicOne/garage/lista">&larr; Torna al garage</a>
     </div>
 </div>
 <?php

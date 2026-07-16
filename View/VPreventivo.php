@@ -25,12 +25,33 @@ class VPreventivo extends View {
             $categorie[$stato][] = $p;
         }
 
+        // un array di sezioni invece di 4 variabili: il tpl fa un solo {foreach} invece di 4 blocchi copiati
+        $sezioni = [
+            [
+                'label' => 'Inviati', 'classe' => 'inviato', 'items' => $categorie['inviato'],
+                'modificabile' => true, 'mostraCosto' => false, 'mostraPrenotaLink' => false,
+                'vuoto' => 'Nessun preventivo in attesa di risposta.',
+            ],
+            [
+                'label' => 'Accettati', 'classe' => 'accettato', 'items' => $categorie['accettato'],
+                'modificabile' => true, 'mostraCosto' => true, 'mostraPrenotaLink' => true,
+                'vuoto' => 'Nessun preventivo accettato al momento.',
+            ],
+            [
+                'label' => 'Svolti', 'classe' => 'svolto', 'items' => $categorie['svolto'],
+                'modificabile' => false, 'mostraCosto' => true, 'mostraPrenotaLink' => false,
+                'vuoto' => 'Nessun intervento concluso.',
+            ],
+            [
+                'label' => 'Rifiutati', 'classe' => 'rifiutato', 'items' => $categorie['rifiutato'],
+                'modificabile' => false, 'mostraCosto' => false, 'mostraPrenotaLink' => false,
+                'vuoto' => 'Nessun preventivo rifiutato.',
+            ],
+        ];
+
         $this->renderTemplate('visualizzapreventivi.tpl', [
             'titolo' => 'I tuoi preventivi',
-            'preventiviInviati' => $categorie['inviato'],
-            'preventiviAccettati' => $categorie['accettato'],
-            'preventiviRifiutati' => $categorie['rifiutato'],
-            'preventiviSvolti' => $categorie['svolto'],
+            'sezioni' => $sezioni,
             'errore' => $errore,
         ]);
     }

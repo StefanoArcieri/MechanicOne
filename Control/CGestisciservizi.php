@@ -7,20 +7,41 @@ require_once __DIR__ . '/../View/VServizio.php';
 
 class CGestisciservizi {
 
+    public function lista($params = []) {
+        $view = new VServizio();
+        $errore = '';
+        try {
+            $servizi = $this->richiediLista();
+        } catch (Exception $e) {
+            $errore = $e->getMessage();
+            $servizi = [];
+        }
+        $view->mostraLista($servizi, $errore);
+    }
+
     public function aggiungiServizio() {
         $titolo = trim($_POST['titolo'] ?? '');
         $descrizione = trim($_POST['descrizione'] ?? '');
 
-        $pm = PersistentManager::getInstance();
+        try {
+            if ($titolo === '') {
+                throw new Exception("Il titolo del servizio è obbligatorio.");
+            }
 
-        if ($pm->load('EServizio', 'titolo', $titolo)) {
-            throw new Exception("Un servizio chiamato '$titolo' esiste già nel catalogo.");
-        }
+            $pm = PersistentManager::getInstance();
 
-        $nuovoServizio = new EServizio(null, $titolo, $descrizione);
+            if ($pm->load('EServizio', 'titolo', $titolo)) {
+                throw new Exception("Un servizio chiamato '$titolo' esiste già nel catalogo.");
+            }
 
-        if (!$pm->store($nuovoServizio)) {
-            throw new Exception("Impossibile salvare il servizio.");
+            $nuovoServizio = new EServizio(null, $titolo, $descrizione);
+
+            if (!$pm->store($nuovoServizio)) {
+                throw new Exception("Impossibile salvare il servizio.");
+            }
+        } catch (Exception $e) {
+            (new VServizio())->mostraLista($this->richiediLista(), $e->getMessage());
+            return;
         }
 
         header('Location: /MechanicOne/gestisciservizi/lista?msg=servizio_aggiunto');

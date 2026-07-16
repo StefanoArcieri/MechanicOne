@@ -24,12 +24,28 @@ class VPrenotazione extends View {
             $categorie[$stato][] = $p;
         }
 
+        $sezioni = [
+            [
+                'label' => 'In attesa', 'classe' => 'in-attesa', 'items' => $categorie['in attesa'],
+                'modificabile' => true, 'vuoto' => 'Nessuna prenotazione in attesa di conferma.',
+            ],
+            [
+                'label' => 'Confermate', 'classe' => 'accettata', 'items' => $categorie['accettata'],
+                'modificabile' => true, 'vuoto' => 'Nessuna prenotazione confermata al momento.',
+            ],
+            [
+                'label' => 'Concluse', 'classe' => 'conclusa', 'items' => $categorie['conclusa'],
+                'modificabile' => false, 'vuoto' => 'Nessun intervento concluso.',
+            ],
+            [
+                'label' => 'Cancellate', 'classe' => 'cancellata', 'items' => $categorie['cancellata'],
+                'modificabile' => false, 'vuoto' => 'Nessuna prenotazione cancellata.',
+            ],
+        ];
+
         $this->renderTemplate('visualizzaprenotazioni.tpl', [
             'titolo' => 'Le tue prenotazioni',
-            'prenotazioniInAttesa' => $categorie['in attesa'],
-            'prenotazioniConfermate' => $categorie['accettata'],
-            'prenotazioniConcluse' => $categorie['conclusa'],
-            'prenotazioniCancellate' => $categorie['cancellata'],
+            'sezioni' => $sezioni,
             'errore' => $errore,
         ]);
     }

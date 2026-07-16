@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 5.8.0, created on 2026-07-14 23:14:14
+/* Smarty version 5.8.0, created on 2026-07-16 15:51:47
   from 'file:layouts/base.tpl' */
 
 /* @var \Smarty\Template $_smarty_tpl */
 if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
   'version' => '5.8.0',
-  'unifunc' => 'content_6a56a6a64874d8_04603670',
+  'unifunc' => 'content_6a58e1f3cc9fd6_46671509',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     'c8d470a5407eb956363632e73f7f40b175b858b2' => 
     array (
       0 => 'layouts/base.tpl',
-      1 => 1784063522,
+      1 => 1784209894,
       2 => 'file',
     ),
   ),
@@ -20,7 +20,7 @@ if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
   array (
   ),
 ))) {
-function content_6a56a6a64874d8_04603670 (\Smarty\Template $_smarty_tpl) {
+function content_6a58e1f3cc9fd6_46671509 (\Smarty\Template $_smarty_tpl) {
 $_smarty_current_dir = 'C:\\xampp\\htdocs\\MechanicOne\\templates\\layouts';
 $_smarty_tpl->getInheritance()->init($_smarty_tpl, false);
 ?>
@@ -30,10 +30,10 @@ $_smarty_tpl->getInheritance()->init($_smarty_tpl, false);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?php 
-$_smarty_tpl->getInheritance()->instanceBlock($_smarty_tpl, 'Block_18562993046a56a6a6471407_55861418', "title");
+$_smarty_tpl->getInheritance()->instanceBlock($_smarty_tpl, 'Block_18609234976a58e1f3749d93_44438493', "title");
 ?>
 </title>
-    <link rel="stylesheet" href="/MechanicOne/templates/css/style.css">
+    <link rel="stylesheet" href="/MechanicOne/templates/css/style.css?v=2">
 </head>
 <body class="page-shell">
     <div class="page-wrapper">
@@ -51,13 +51,24 @@ $_smarty_tpl->getInheritance()->instanceBlock($_smarty_tpl, 'Block_18562993046a5
                 <details class="profile-menu">
                     <summary class="profile-menu__trigger" aria-label="Menu profilo">👤</summary>
                     <div class="profile-menu__panel">
-                        <a href="/MechanicOne/profilomeccanico/area">Area Meccanico</a>
-                        <a href="/MechanicOne/richiedipreventivo/nuovo">Richiedi un preventivo</a>
-                        <a href="/MechanicOne/visualizzapreventivi/lista">Visualizza i tuoi preventivi</a>
-                        <a href="/MechanicOne/richiediprenotazione/nuovo">Richiedi una prenotazione</a>
-                        <a href="/MechanicOne/visualizzaprenotazioni/lista">Visualizza le tue prenotazioni</a>
-                        <a href="/MechanicOne/aggiungiveicolo/nuovo">Aggiungi un veicolo</a>
-                        <a href="/MechanicOne/garage/lista">Visualizza il tuo garage</a>
+                        <?php if ($_smarty_tpl->getValue('userRole') == 'meccanico') {?>
+                            <a href="/MechanicOne/profilomeccanico/profilo">Il mio profilo</a>
+                            <a href="/MechanicOne/gestiscipreventivi/lista">Preventivi da gestire</a>
+                            <a href="/MechanicOne/gestisciprenotazioni/lista">Prenotazioni da gestire</a>
+                        <?php } elseif ($_smarty_tpl->getValue('userRole') == 'admin') {?>
+                            <a href="/MechanicOne/gestiscimeccanici/lista">Gestisci meccanici</a>
+                            <a href="/MechanicOne/gestisciservizi/lista">Gestisci servizi</a>
+                            <a href="/MechanicOne/gestiscipreventivi/lista">Preventivi da gestire</a>
+                            <a href="/MechanicOne/gestisciprenotazioni/lista">Prenotazioni da gestire</a>
+                        <?php } else { ?>
+                            <a href="/MechanicOne/profilomeccanico/area">Area Meccanico</a>
+                            <a href="/MechanicOne/richiedipreventivo/nuovo">Richiedi un preventivo</a>
+                            <a href="/MechanicOne/visualizzapreventivi/lista">Visualizza i tuoi preventivi</a>
+                            <a href="/MechanicOne/richiediprenotazione/nuovo">Richiedi una prenotazione</a>
+                            <a href="/MechanicOne/visualizzaprenotazioni/lista">Visualizza le tue prenotazioni</a>
+                            <a href="/MechanicOne/aggiungiveicolo/nuovo">Aggiungi un veicolo</a>
+                            <a href="/MechanicOne/garage/lista">Visualizza il tuo garage</a>
+                        <?php }?>
                     </div>
                 </details>
             </div>
@@ -65,7 +76,7 @@ $_smarty_tpl->getInheritance()->instanceBlock($_smarty_tpl, 'Block_18562993046a5
 
         <main class="page-layout">
             <?php 
-$_smarty_tpl->getInheritance()->instanceBlock($_smarty_tpl, 'Block_3028568726a56a6a6485290_38830350', "content");
+$_smarty_tpl->getInheritance()->instanceBlock($_smarty_tpl, 'Block_12824408526a58e1f3cc8664_10144436', "content");
 ?>
 
         </main>
@@ -78,7 +89,7 @@ $_smarty_tpl->getInheritance()->instanceBlock($_smarty_tpl, 'Block_3028568726a56
 </html>
 <?php }
 /* {block "title"} */
-class Block_18562993046a56a6a6471407_55861418 extends \Smarty\Runtime\Block
+class Block_18609234976a58e1f3749d93_44438493 extends \Smarty\Runtime\Block
 {
 public function callBlock(\Smarty\Template $_smarty_tpl) {
 $_smarty_current_dir = 'C:\\xampp\\htdocs\\MechanicOne\\templates\\layouts';
@@ -88,7 +99,7 @@ MechanicOne<?php
 }
 /* {/block "title"} */
 /* {block "content"} */
-class Block_3028568726a56a6a6485290_38830350 extends \Smarty\Runtime\Block
+class Block_12824408526a58e1f3cc8664_10144436 extends \Smarty\Runtime\Block
 {
 public function callBlock(\Smarty\Template $_smarty_tpl) {
 $_smarty_current_dir = 'C:\\xampp\\htdocs\\MechanicOne\\templates\\layouts';

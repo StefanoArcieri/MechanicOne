@@ -11,7 +11,7 @@ class CGestiscimeccanici {
         $view = new VMeccanico();
         $errore = '';
         try {
-            $meccanici = $this->richiediLista();
+            $meccanici = array_map([$this, 'arricchisciConNome'], $this->richiediLista());
         } catch (Exception $e) {
             $errore = $e->getMessage();
             $meccanici = [];
@@ -22,6 +22,17 @@ class CGestiscimeccanici {
     public function richiediLista() {
         $pm = PersistentManager::getInstance();
         return $pm->getAll('EMeccanico') ?: [];
+    }
+
+    // meccanici table non ha nome/cognome (stanno su utenti), quindi li recuperiamo qui per i template
+    public function arricchisciConNome($meccanicoEntity) {
+        $m = $meccanicoEntity->toArray();
+        $pm = PersistentManager::getInstance();
+        $u = $pm->load('EUtente', 'idU', $m['idM']);
+        $m['nome'] = $u ? $u->getNome() : '';
+        $m['cognome'] = $u ? $u->getCognome() : '';
+        $m['email'] = $u ? $u->getEmail() : '';
+        return $m;
     }
 
     public function approvaMeccanico($idM) {

@@ -1,5 +1,6 @@
 -- Elimina le tabelle se esistono già per evitare errori (nell'ordine corretto per via delle FK)
 DROP TABLE IF EXISTS `prenotazioni`;
+DROP TABLE IF EXISTS `recensioni`;
 DROP TABLE IF EXISTS `preventivi`;
 DROP TABLE IF EXISTS `meccanici`;
 DROP TABLE IF EXISTS `veicoli`;
@@ -43,7 +44,7 @@ CREATE TABLE `veicoli` (
 
 CREATE TABLE `meccanici` (
    `idM` int(11) NOT NULL,
-   `specializzazione` text DEFAULT NULL,
+   `specializzazione` varchar(200) DEFAULT NULL,
    `foto_profilo` varchar(255) DEFAULT NULL,
    `status` enum('in attesa','approvato', 'licenziato') DEFAULT 'in attesa',
    PRIMARY KEY (`idM`),

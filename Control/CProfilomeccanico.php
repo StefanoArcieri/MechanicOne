@@ -27,7 +27,7 @@ class CProfilomeccanico {
 
         if ($ruolo === 'meccanico') {
             try {
-                $profilo = $this->getProfilo();
+                $profilo = (new CGestiscimeccanici())->arricchisciConNome($this->getProfilo());
             } catch (Exception $e) {
                 $errore = $e->getMessage();
                 $profilo = null;
@@ -38,7 +38,10 @@ class CProfilomeccanico {
 
         if ($ruolo === 'admin') {
             try {
-                $meccanici = (new CGestiscimeccanici())->richiediLista();
+                $meccanici = array_map(
+                    [new CGestiscimeccanici(), 'arricchisciConNome'],
+                    (new CGestiscimeccanici())->richiediLista()
+                );
             } catch (Exception $e) {
                 $errore = $e->getMessage();
                 $meccanici = [];
@@ -54,7 +57,7 @@ class CProfilomeccanico {
         $view = new VMeccanico();
         $errore = '';
         try {
-            $profilo = $this->getProfilo();
+            $profilo = (new CGestiscimeccanici())->arricchisciConNome($this->getProfilo());
         } catch (Exception $e) {
             $errore = $e->getMessage();
             $profilo = null;
@@ -69,16 +72,22 @@ class CProfilomeccanico {
         $nuovaSpecializzazione = trim($_POST['specializzazione'] ?? '');
         $nuovaFoto = $_POST['foto'] ?? null;
 
-        $datiAttuali = $pm->load('EMeccanico', 'idM', $idM);
-        if (!$datiAttuali) throw new Exception("Profilo meccanico non trovato.");
+        try {
+            $datiAttuali = $pm->load('EMeccanico', 'idM', $idM);
+            if (!$datiAttuali) throw new Exception("Profilo meccanico non trovato.");
 
-        $meccanicoAggiornato = new EMeccanico(
-            null, '', '', '', '', '', null, null,
-            $idM, $nuovaSpecializzazione, $nuovaFoto, $datiAttuali->getStatus()
-        );
+            $meccanicoAggiornato = new EMeccanico(
+                null, '', '', '', '', '', null, null,
+                $idM, $nuovaSpecializzazione, $nuovaFoto, $datiAttuali->getStatus()
+            );
 
-        if (!$pm->update($meccanicoAggiornato)) {
-            throw new Exception("Impossibile aggiornare il profilo.");
+            if (!$pm->update($meccanicoAggiornato)) {
+                throw new Exception("Impossibile aggiornare il profilo.");
+            }
+        } catch (Exception $e) {
+            $profilo = (new CGestiscimeccanici())->arricchisciConNome($this->getProfilo());
+            (new VMeccanico())->mostraProfilo($profilo, $e->getMessage());
+            return;
         }
 
         header('Location: /MechanicOne/profilomeccanico/profilo?msg=profilo_aggiornato');
