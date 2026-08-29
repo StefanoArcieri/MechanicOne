@@ -234,6 +234,18 @@ a {
     color: var(--color-primary-dark);
 }
 
+.profile-menu__logout {
+    margin-top: 6px;
+    padding-top: 12px !important;
+    border-top: 1px solid var(--color-border-soft);
+    color: var(--color-danger) !important;
+}
+
+.profile-menu__logout:hover {
+    background: var(--color-danger-soft) !important;
+    color: var(--color-danger) !important;
+}
+
 .site-footer {
     text-align: center;
     padding: 24px 0 0;
