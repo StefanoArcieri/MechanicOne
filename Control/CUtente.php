@@ -2,6 +2,8 @@
 
 require_once __DIR__ . '/../View/VUtente.php';
 require_once __DIR__ . '/../Foundation/Session.php';
+require_once __DIR__ . '/../Foundation/Request.php';
+require_once __DIR__ . '/../Foundation/Cookie.php';
 require_once __DIR__ . '/../Foundation/PersistentManager.php';
 require_once __DIR__ . '/../Foundation/FUtente.php';
 require_once __DIR__ . '/../Entity/EUtente.php';
@@ -65,10 +67,10 @@ class CUtente {
         $vUtente = new VUtente();
         $errore = '';
 
-        if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['email'], $_POST['password'])) {
+        if (Request::isPost() && Request::hasPost('email', 'password')) {
             try {
-                $email = $_POST['email'];
-                $password = $_POST['password'];
+                $email = Request::post('email');
+                $password = Request::post('password');
 
                 $pm = PersistentManager::getInstance();
                 $utente = $pm->verificaLogin($email, $password);
@@ -77,6 +79,14 @@ class CUtente {
                     Session::set('idU', $utente->getId());
                     Session::set('nome', $utente->getNome());
                     Session::set('ruolo', $utente->getRuolo());
+
+                    // "Ricordami": salva (o dimentica) l'email in un cookie, mai la password
+                    if (Request::post('ricordami')) {
+                        Cookie::set('email_ricordata', $email, 30);
+                    } else {
+                        Cookie::delete('email_ricordata');
+                    }
+
                     header('Location: /MechanicOne/utente/home');
                     exit;
                 } else {
@@ -87,7 +97,7 @@ class CUtente {
             }
         }
 
-        $vUtente->mostraFormLogin($errore);
+        $vUtente->mostraFormLogin($errore, Cookie::get('email_ricordata', ''));
     }
 
     public function home() {
@@ -126,21 +136,28 @@ class CUtente {
         $vUtente = new VUtente();
         $errore = '';
 
-        if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['nome'], $_POST['cognome'], $_POST['email'], $_POST['password'])) {
+        if (Request::isPost() && Request::hasPost('nome', 'cognome', 'email', 'password')) {
             try {
-                $nome           = trim($_POST['nome']);
-                $cognome        = trim($_POST['cognome']);
-                $email          = trim($_POST['email']);
-                $password       = $_POST['password'];
-                $ruolo          = isset($_POST['ruolo']) && $_POST['ruolo'] === 'meccanico' ? 'meccanico' : 'cliente';
-                $specializzazione = $ruolo === 'meccanico' ? trim($_POST['specializzazione'] ?? '') : null;
+                $nome           = trim(Request::post('nome'));
+                $cognome        = trim(Request::post('cognome'));
+                $email          = trim(Request::post('email'));
+                $password       = Request::post('password');
+                $ruolo          = Request::post('ruolo') === 'meccanico' ? 'meccanico' : 'cliente';
+                $specializzazione = $ruolo === 'meccanico' ? trim(Request::post('specializzazione', '')) : null;
 
                 $nuovoUtente = new EUtente(null, $nome, $cognome, $email, $password, $ruolo, null, date('Y-m-d H:i:s'));
 
                 $pm = PersistentManager::getInstance();
+
+                // Transazione: chi si registra come meccanico scrive su DUE tabelle (utenti + meccanici).
+                // Senza transazione, se la seconda store() fallisse resteremmo con un utente ruolo='meccanico'
+                // ma senza riga in meccanici -> l'app si romperebbe al primo accesso a profilomeccanico/area.
+                $pm->beginTransaction();
+
                 $nuovoId = $pm->store($nuovoUtente);
 
                 if (!$nuovoId) {
+                    $pm->rollback();
                     throw new Exception("Impossibile registrarsi. Forse questa email è già nel nostro database?");
                 }
 
@@ -149,10 +166,20 @@ class CUtente {
                         null, $nome, $cognome, $email, $password, 'meccanico', null, null,
                         $nuovoId, $specializzazione, null, 'in attesa'
                     );
-                    $pm->store($nuovoMeccanico);
+                    if (!$pm->store($nuovoMeccanico)) {
+                        $pm->rollback();
+                        throw new Exception("Registrazione non riuscita: impossibile creare il profilo meccanico.");
+                    }
                 }
 
-                header('Location: /MechanicOne/utente/login');
+                $pm->commit();
+
+                // Auto-login: appena registrato l'utente resta già dentro, non deve rifare il login
+                Session::set('idU', $nuovoId);
+                Session::set('nome', $nome);
+                Session::set('ruolo', $ruolo);
+
+                header('Location: /MechanicOne/utente/home');
                 exit;
 
             } catch (Exception $e) {

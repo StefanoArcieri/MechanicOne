@@ -3,6 +3,7 @@
 require_once __DIR__ . '/../Foundation/PersistentManager.php';
 require_once __DIR__ . '/../Entity/EPreventivo.php';
 require_once __DIR__ . '/../Foundation/Session.php';
+require_once __DIR__ . '/../Foundation/Request.php';
 require_once __DIR__ . '/../View/VGestiscipreventivi.php';
 
 class CGestiscipreventivi {
@@ -46,7 +47,7 @@ class CGestiscipreventivi {
         $prevData = $pm->load('EPreventivo', 'idPrev', $idPrev);
         if (!$prevData) throw new Exception("Preventivo non trovato.");
 
-        $nuovoCosto = $_POST['costo'] ?? null;
+        $nuovoCosto = Request::post('costo');
 
         // se il preventivo aveva una proposta di modifica in sospeso, accettandolo la proposta diventa definitiva
         $descrizioneFinale = $prevData->getDescrizioneProposta() ?: $prevData->getDescrizione();

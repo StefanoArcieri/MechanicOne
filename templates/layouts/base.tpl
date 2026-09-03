@@ -51,6 +51,9 @@
         </header>
 
         <main class="page-layout">
+            {if $messaggioSuccesso}
+                <div class="flash-success">{$messaggioSuccesso}</div>
+            {/if}
             {block name="content"}{/block}
         </main>
 

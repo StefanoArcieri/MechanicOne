@@ -3,6 +3,7 @@
 require_once __DIR__ . '/../Foundation/PersistentManager.php';
 require_once __DIR__ . '/../Entity/EPrenotazione.php';
 require_once __DIR__ . '/../Foundation/Session.php';
+require_once __DIR__ . '/../Foundation/Request.php';
 require_once __DIR__ . '/../View/VPrenotazione.php';
 
 class CVisualizzaprenotazioni {
@@ -37,8 +38,8 @@ class CVisualizzaprenotazioni {
             throw new Exception("Questa prenotazione non è più modificabile.");
         }
 
-        $nuovaData = $_POST['nuovaData'] ?? '';
-        $nuovaOra = $_POST['nuovaOra'] ?? '';
+        $nuovaData = Request::post('nuovaData', '');
+        $nuovaOra = Request::post('nuovaOra', '');
         if ($nuovaData === '' || $nuovaOra === '') {
             throw new Exception("Indica la nuova data e ora.");
         }

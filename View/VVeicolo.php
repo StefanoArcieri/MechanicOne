@@ -5,7 +5,7 @@ require_once __DIR__ . '/View.php';
 class VVeicolo extends View {
 
     public function mostraGarage($veicoli, $errore = '') {
-        $this->renderTemplate('garage.tpl', [
+        $this->renderTemplate('utente/garage.tpl', [
             'titolo' => 'Il tuo garage',
             'veicoli' => array_map(function ($v) { return $v->toArray(); }, $veicoli),
             'errore' => $errore,
@@ -13,7 +13,7 @@ class VVeicolo extends View {
     }
 
     public function mostraFormAggiungi($errore = '') {
-        $this->renderTemplate('aggiungiveicolo.tpl', [
+        $this->renderTemplate('utente/aggiungiveicolo.tpl', [
             'titolo' => 'Aggiungi un veicolo',
             'errore' => $errore,
         ]);

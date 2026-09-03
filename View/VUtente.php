@@ -4,35 +4,40 @@ require_once __DIR__ . '/View.php';
 
 class VUtente extends View {
 
-    public function mostraFormLogin($errore = '') {
-        $this->smarty->assign('errore', $errore);
-        $this->smarty->display('login.tpl');
+    public function mostraFormLogin($errore = '', $emailRicordata = '') {
+        $this->renderTemplate('login.tpl', [
+            'errore' => $errore,
+            'emailRicordata' => $emailRicordata,
+        ]);
     }
 
     public function mostraFormRegistrazione($errore = '') {
-        $this->smarty->assign('errore', $errore);
-        $this->smarty->display('registrazione.tpl');
+        $this->renderTemplate('registrazione.tpl', [
+            'errore' => $errore,
+        ]);
     }
 
     public function mostraHomePubblica($datiRecensioni = []) {
-        $this->assignData($datiRecensioni);
-        $this->smarty->display('home.tpl');
+        $this->renderTemplate('home.tpl', $datiRecensioni);
     }
 
     public function mostraDashboardMeccanico($nome) {
-        $this->smarty->assign('nome', $nome);
-        $this->smarty->display('home_meccanico.tpl');
+        $this->renderTemplate('meccanico/home_meccanico.tpl', [
+            'nome' => $nome,
+        ]);
     }
 
     public function mostraDashboardUtente($nome, $datiRecensioni = []) {
-        $this->smarty->assign('nome', $nome);
-        $this->assignData($datiRecensioni);
-        $this->smarty->display('home_utente.tpl');
+        $this->renderTemplate('utente/home_utente.tpl', array_merge(
+            ['nome' => $nome],
+            $datiRecensioni
+        ));
     }
 
     public function mostraDashboardAdmin($nome) {
-        $this->smarty->assign('nome', $nome);
-        $this->smarty->display('home_admin.tpl');
+        $this->renderTemplate('admin/home_admin.tpl', [
+            'nome' => $nome,
+        ]);
     }
 }
 ?>

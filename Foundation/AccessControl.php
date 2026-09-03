@@ -23,27 +23,29 @@ class AccessControl {
             '*' => 'public',
         ],
 
-        // Lato utente
+        // Lato utente: riservato al ruolo 'cliente'. Un meccanico non deve poter usare anche
+        // le funzioni cliente (garage, preventivi, prenotazioni, recensioni): se un meccanico
+        // vuole essere anche cliente dell'officina, si registra un secondo account.
         'aggiungiveicolo' => [
-            '*' => 'auth',
+            '*' => ['cliente'],
         ],
         'garage' => [
-            '*' => 'auth',
+            '*' => ['cliente'],
         ],
         'richiedipreventivo' => [
-            '*' => 'auth',
+            '*' => ['cliente'],
         ],
         'visualizzapreventivi' => [
-            '*' => 'auth',
+            '*' => ['cliente'],
         ],
         'richiediprenotazione' => [
-            '*' => 'auth',
+            '*' => ['cliente'],
         ],
         'visualizzaprenotazioni' => [
-            '*' => 'auth',
+            '*' => ['cliente'],
         ],
         'scrivirecensione' => [
-            'scrivi' => 'auth',
+            'scrivi' => ['cliente'],
         ],
         'visualizzarecensioni' => [
             'richiediLista' => 'auth',

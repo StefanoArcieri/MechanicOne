@@ -9,6 +9,10 @@ require_once __DIR__ . '/FPreventivo.php';
 require_once __DIR__ . '/FPrenotazione.php';
 require_once __DIR__ . '/FRecensione.php';
 
+// Il nostro mini-ORM: niente Doctrine, lo facciamo a mano apposta per capire cosa fa
+// davvero un ORM sotto al cofano. PersistentManager è la facciata unica (singleton) che
+// i controller usano; smista poi la richiesta alla classe F<Entità> giusta, che è quella
+// che parla davvero con PDO. Se un domani si volesse cambiare DB/driver, si tocca solo qui dentro.
 class PersistentManager {
 
     private static $instance = null;
@@ -76,6 +80,23 @@ class PersistentManager {
     public function verificaLogin($email, $password) {
         $fUtente = new FUtente();
         return $fUtente->verificaLogin($email, $password, $this->pdo);
+    }
+
+    // Transazioni: servono solo dove un controller fa più store()/update() che DEVONO andare
+    // a buon fine insieme (es. registrazione di un meccanico: riga in utenti + riga in meccanici).
+    // Per una singola store/update non serve: una query PDO è già atomica di suo.
+    public function beginTransaction() {
+        $this->pdo->beginTransaction();
+    }
+
+    public function commit() {
+        $this->pdo->commit();
+    }
+
+    public function rollback() {
+        if ($this->pdo->inTransaction()) {
+            $this->pdo->rollBack();
+        }
     }
 }
 ?>

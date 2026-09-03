@@ -3,6 +3,7 @@
 require_once __DIR__ . '/../Foundation/PersistentManager.php';
 require_once __DIR__ . '/../Entity/EPreventivo.php';
 require_once __DIR__ . '/../Foundation/Session.php';
+require_once __DIR__ . '/../Foundation/Request.php';
 require_once __DIR__ . '/../View/VPreventivo.php';
 
 class CVisualizzapreventivi {
@@ -39,7 +40,7 @@ class CVisualizzapreventivi {
             throw new Exception("Questo preventivo non è più modificabile.");
         }
 
-        $nuovaDescrizione = trim($_POST['nuovaDescrizione'] ?? '');
+        $nuovaDescrizione = trim(Request::post('nuovaDescrizione', ''));
         if ($nuovaDescrizione === '') {
             throw new Exception("La descrizione non può essere vuota.");
         }

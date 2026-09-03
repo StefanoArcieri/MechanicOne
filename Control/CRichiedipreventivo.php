@@ -3,6 +3,7 @@
 require_once __DIR__ . '/../Foundation/PersistentManager.php';
 require_once __DIR__ . '/../Entity/EPreventivo.php';
 require_once __DIR__ . '/../Foundation/Session.php';
+require_once __DIR__ . '/../Foundation/Request.php';
 require_once __DIR__ . '/../View/VPreventivo.php';
 require_once __DIR__ . '/CGarage.php';
 require_once __DIR__ . '/CGestisciservizi.php';
@@ -18,9 +19,9 @@ class CRichiedipreventivo {
 
     public function richiedi() {
         $idU = Session::get('idU');
-        $idV = $_POST['idV'] ?? '';
-        $idS = $_POST['idS'] ?? '';
-        $descrizione = trim($_POST['descrizione'] ?? '');
+        $idV = Request::post('idV', '');
+        $idS = Request::post('idS', '');
+        $descrizione = trim(Request::post('descrizione', ''));
 
         try {
             $pm = PersistentManager::getInstance();
