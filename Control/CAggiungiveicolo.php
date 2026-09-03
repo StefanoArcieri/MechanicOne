@@ -3,6 +3,7 @@
 require_once __DIR__ . '/../Foundation/PersistentManager.php';
 require_once __DIR__ . '/../Entity/EVeicolo.php';
 require_once __DIR__ . '/../Foundation/Session.php';
+require_once __DIR__ . '/../Foundation/Request.php';
 require_once __DIR__ . '/../View/VVeicolo.php';
 
 class CAggiungiveicolo {
@@ -14,9 +15,9 @@ class CAggiungiveicolo {
 
     public function aggiungiVeicolo() {
         $idU = Session::get('idU');
-        $targa = trim($_POST['targa'] ?? '');
-        $marca = trim($_POST['marca'] ?? '');
-        $modello = trim($_POST['modello'] ?? '');
+        $targa = trim(Request::post('targa', ''));
+        $marca = trim(Request::post('marca', ''));
+        $modello = trim(Request::post('modello', ''));
 
         try {
             if ($targa === '' || $marca === '' || $modello === '') {

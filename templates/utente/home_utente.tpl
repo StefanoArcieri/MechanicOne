@@ -23,7 +23,7 @@
     <hr class="auth-divider">
     <a class="home-link home-link--danger" href="/MechanicOne/utente/logout">Esci dall'Officina</a>
 
-    {include file='scrivirecensione.tpl'}
-    {include file='visualizzarecensioni.tpl'}
+    {include file='utente/scrivirecensione.tpl'}
+    {include file='utente/visualizzarecensioni.tpl'}
 </div>
 {/block}

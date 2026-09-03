@@ -18,12 +18,19 @@
     <form action="/MechanicOne/utente/login" method="POST" class="form">
         <div class="form-field">
             <label for="email" class="form-label">Indirizzo Email</label>
-            <input type="email" id="email" name="email" required placeholder="esempio@meccanico.it" class="form-input">
+            <input type="email" id="email" name="email" required placeholder="esempio@meccanico.it" class="form-input" value="{$emailRicordata|default:''}">
         </div>
 
         <div class="form-field form-field--last">
             <label for="password" class="form-label">Password</label>
             <input type="password" id="password" name="password" required placeholder="••••••••" class="form-input">
+        </div>
+
+        <div class="form-field form-field--checkbox">
+            <label for="ricordami" class="form-label form-label--inline">
+                <input type="checkbox" id="ricordami" name="ricordami" value="1"{if $emailRicordata} checked{/if}>
+                Ricordami l'email su questo dispositivo
+            </label>
         </div>
 
         <button type="submit" name="login" class="form-submit">

@@ -3,6 +3,7 @@
 require_once __DIR__ . '/../Foundation/PersistentManager.php';
 require_once __DIR__ . '/../Entity/EMeccanico.php';
 require_once __DIR__ . '/../Foundation/Session.php';
+require_once __DIR__ . '/../Foundation/Request.php';
 require_once __DIR__ . '/../View/VMeccanico.php';
 require_once __DIR__ . '/CGestiscimeccanici.php';
 
@@ -69,8 +70,8 @@ class CProfilomeccanico {
         $idM = Session::get('idU');
         $pm = PersistentManager::getInstance();
 
-        $nuovaSpecializzazione = trim($_POST['specializzazione'] ?? '');
-        $nuovaFoto = $_POST['foto'] ?? null;
+        $nuovaSpecializzazione = trim(Request::post('specializzazione', ''));
+        $nuovaFoto = Request::post('foto');
 
         try {
             $datiAttuali = $pm->load('EMeccanico', 'idM', $idM);

@@ -51,15 +51,21 @@ class FUtente {
 
         public function update($utente, $pdo) {
             try {
-                $query = "UPDATE utenti SET nome = :nome, cognome = :cognome, email = :email, password = :password, 
+                $query = "UPDATE utenti SET nome = :nome, cognome = :cognome, email = :email, password = :password,
                 ruolo = :ruolo, ultimo_accesso = :ultimo_accesso, data_registrazione = :data_registrazione WHERE idU = :idU;";
                 $stmt = $pdo->prepare($query);
+                // Se arriva già un hash bcrypt (caso tipico: hai ricaricato l'utente dal DB e stai
+                // aggiornando solo altri campi) lo lasciamo com'è; se arriva una password nuova in
+                // chiaro (l'utente la sta davvero cambiando) la hashiamo qui, come fa già store().
+                $passwordDaSalvare = str_starts_with($utente->getPassword(), '$2y$')
+                    ? $utente->getPassword()
+                    : password_hash($utente->getPassword(), PASSWORD_DEFAULT);
                 return $stmt->execute([
                     ':idU' => $utente->getId(),
                     ':nome' => $utente->getNome(),
                     ':cognome' => $utente->getCognome(),
                     ':email' => $utente->getEmail(),
-                    ':password' => $utente->getPassword(),
+                    ':password' => $passwordDaSalvare,
                     ':ruolo' => $utente->getRuolo(),
                     ':ultimo_accesso' => $utente->getUltimoAccesso(),
                     ':data_registrazione' => $utente->getDataRegistrazione()

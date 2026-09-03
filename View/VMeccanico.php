@@ -5,7 +5,7 @@ require_once __DIR__ . '/View.php';
 class VMeccanico extends View {
 
     public function mostraProfilo($profilo, $errore = '') {
-        $this->renderTemplate('profilomeccanico.tpl', [
+        $this->renderTemplate('meccanico/profilomeccanico.tpl', [
             'titolo' => 'Il mio profilo',
             'profilo' => $profilo,
             'team' => false,
@@ -14,7 +14,7 @@ class VMeccanico extends View {
     }
 
     public function mostraLista($meccanici, $errore = '') {
-        $this->renderTemplate('gestiscimeccanici.tpl', [
+        $this->renderTemplate('admin/gestiscimeccanici.tpl', [
             'titolo' => 'Meccanici',
             'meccanici' => $meccanici,
             'errore' => $errore,
@@ -22,7 +22,7 @@ class VMeccanico extends View {
     }
 
     public function mostraAreaTeam() {
-        $this->renderTemplate('profilomeccanico.tpl', [
+        $this->renderTemplate('meccanico/profilomeccanico.tpl', [
             'titolo' => 'Il nostro team',
             'team' => true,
             'errore' => '',

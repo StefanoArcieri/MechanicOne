@@ -19,15 +19,20 @@ require_once __DIR__ . '/CGestiscimeccanici.php';
 require_once __DIR__ . '/CGestisciservizi.php';
 require_once __DIR__ . '/CGestiscipreventivi.php';
 require_once __DIR__ . '/CGestisciprenotazioni.php';
+
 require_once __DIR__ . '/../Foundation/Session.php';
 require_once __DIR__ . '/../Foundation/AccessControl.php';
+require_once __DIR__ . '/../Foundation/Request.php';
 
+// Un solo entry point (index.php -> qui) invece di un file .php per ogni pagina: tutte le
+// richieste passano da qui, così i controlli trasversali (permessi, 404, errori) si scrivono
+// una volta sola invece che ripetuti in ogni controller.
 class FrontController {
 
     public function run() {
 
         // Scorpora l'URL in parti per determinare il controller, il metodo e i parametri
-        $url = $_GET['url'] ?? '';
+        $url = Request::get('url', '');
 
         $url = filter_var(rtrim($url, '/'), FILTER_SANITIZE_URL);
         $urlParts = explode('/', $url);

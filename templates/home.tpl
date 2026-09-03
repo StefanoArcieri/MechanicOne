@@ -22,8 +22,8 @@
     </section>
 
     <section class="hero-card">
-        {include file='scrivirecensione.tpl'}
-        {include file='visualizzarecensioni.tpl'}
+        {include file='utente/scrivirecensione.tpl'}
+        {include file='utente/visualizzarecensioni.tpl'}
     </section>
 </div>
 {/block}

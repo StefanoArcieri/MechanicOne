@@ -3,6 +3,7 @@
 require_once __DIR__ . '/../Foundation/PersistentManager.php';
 require_once __DIR__ . '/../Entity/EPrenotazione.php';
 require_once __DIR__ . '/../Foundation/Session.php';
+require_once __DIR__ . '/../Foundation/Request.php';
 require_once __DIR__ . '/../View/VPrenotazione.php';
 require_once __DIR__ . '/CGarage.php';
 require_once __DIR__ . '/CVisualizzapreventivi.php';
@@ -26,10 +27,10 @@ class CRichiediprenotazione {
 
     public function prenota() {
         $idU = Session::get('idU');
-        $idV = $_POST['idV'] ?? '';
-        $idPrev = ($_POST['idPrev'] ?? '') !== '' ? $_POST['idPrev'] : null;
-        $data = $_POST['data'] ?? '';
-        $ora = $_POST['ora'] ?? '';
+        $idV = Request::post('idV', '');
+        $idPrev = Request::post('idPrev', '') !== '' ? Request::post('idPrev') : null;
+        $data = Request::post('data', '');
+        $ora = Request::post('ora', '');
 
         try {
             $pm = PersistentManager::getInstance();

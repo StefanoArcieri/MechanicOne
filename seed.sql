@@ -84,4 +84,6 @@ INSERT INTO recensioni (idM, idU, valutazione, commento, data_recensione) VALUES
 (4, 1, 5, 'Servizio rapido e prezzo onesto, tornerò sicuramente.', '2026-06-25'),
 (4, 3, 4, 'Molto professionale, un po'' di attesa per l''appuntamento.', '2026-07-01'),
 (5, 2, 5, 'Ha risolto un problema elettrico che altri non trovavano.', '2026-05-22'),
-(5, 1, 3, 'Lavoro fatto bene ma tempi un po'' lunghi.', '2026-06-12');
+(5, 1, 3, 'Lavoro fatto bene ma tempi un po'' lunghi.', '2026-06-12'),
+(4, 2, 5, 'Disponibile e preciso, mi ha spiegato tutto il lavoro fatto.', '2026-07-08'),
+(5, 3, 4, 'Diagnosi rapida sul problema elettrico, consigliato.', '2026-07-19');

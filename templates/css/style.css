@@ -398,6 +398,16 @@ a {
     font-size: 14px;
 }
 
+.flash-success {
+    background: var(--color-success-soft);
+    border: 1px solid #b7e4c7;
+    color: #1e6b3e;
+    padding: 12px 14px;
+    margin-bottom: 20px;
+    border-radius: var(--radius-sm);
+    font-size: 14px;
+}
+
 .form {
     display: flex;
     flex-direction: column;
@@ -412,6 +422,19 @@ a {
 
 .form-field--last {
     margin-bottom: 8px;
+}
+
+.form-field--checkbox {
+    flex-direction: row;
+    align-items: center;
+}
+
+.form-label--inline {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 500;
+    cursor: pointer;
 }
 
 .form-label {

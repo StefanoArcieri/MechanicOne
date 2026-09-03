@@ -6,7 +6,7 @@ class VPreventivo extends View {
 
     public function mostraForm($veicoli, $servizi, $errore = '') {
         // riconvertiamo in array qui perché i tpl usano ancora {$v.campo}, non {$v->getCampo()}
-        $this->renderTemplate('richiedipreventivo.tpl', [
+        $this->renderTemplate('utente/richiedipreventivo.tpl', [
             'titolo' => 'Richiedi un preventivo',
             'veicoli' => array_map(function ($v) { return $v->toArray(); }, $veicoli),
             'servizi' => array_map(function ($s) { return $s->toArray(); }, $servizi),
@@ -15,15 +15,7 @@ class VPreventivo extends View {
     }
 
     public function mostraLista($preventivi, $errore = '') {
-        $categorie = ['inviato' => [], 'accettato' => [], 'rifiutato' => [], 'svolto' => []];
-        foreach ($preventivi as $pEntity) {
-            $p = $pEntity->toArray();
-            $stato = $p['stato'] ?? 'inviato';
-            if (!isset($categorie[$stato])) {
-                $categorie[$stato] = [];
-            }
-            $categorie[$stato][] = $p;
-        }
+        $categorie = $this->raggruppaPerStato($preventivi, ['inviato', 'accettato', 'rifiutato', 'svolto']);
 
         // un array di sezioni invece di 4 variabili: il tpl fa un solo {foreach} invece di 4 blocchi copiati
         $sezioni = [
@@ -49,7 +41,7 @@ class VPreventivo extends View {
             ],
         ];
 
-        $this->renderTemplate('visualizzapreventivi.tpl', [
+        $this->renderTemplate('utente/visualizzapreventivi.tpl', [
             'titolo' => 'I tuoi preventivi',
             'sezioni' => $sezioni,
             'errore' => $errore,
