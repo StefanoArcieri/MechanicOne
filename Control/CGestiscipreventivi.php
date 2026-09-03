@@ -85,26 +85,7 @@ class CGestiscipreventivi {
         exit();
     }
 
-    public function segnaSvolto($idPrev) {
-        $pm = PersistentManager::getInstance();
-        $prevData = $pm->load('EPreventivo', 'idPrev', $idPrev);
-        if (!$prevData) throw new Exception("Preventivo non trovato.");
-        if ($prevData->getStato() !== 'accettato') {
-            throw new Exception("Solo un preventivo accettato può essere segnato come svolto.");
-        }
-
-        $preventivoSvolto = new EPreventivo(
-            $prevData->getIdPreventivo(), $prevData->getIdUtente(), $prevData->getIdVeicolo(), $prevData->getIdServizio(),
-            $prevData->getCosto(), 'svolto', $prevData->getDescrizione(), $prevData->getPdf(), $prevData->getDataRichiesta(),
-            null
-        );
-
-        if (!$pm->update($preventivoSvolto)) {
-            throw new Exception("Impossibile aggiornare il preventivo.");
-        }
-
-        header('Location: /MechanicOne/gestiscipreventivi/lista?msg=preventivo_svolto');
-        exit();
-    }
+    // Non c'è più un'azione manuale per segnarlo svolto: ci pensa CGestisciprenotazioni::accetta()
+    // in automatico, quando un meccanico prende in carico la prenotazione collegata a questo preventivo.
 }
 ?>

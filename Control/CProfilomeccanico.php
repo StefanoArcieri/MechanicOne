@@ -20,7 +20,8 @@ class CProfilomeccanico {
     }
 
     // punto d'ingresso unico che mostra cose diverse a seconda di chi lo apre: il meccanico vede il suo profilo,
-    // l'admin la lista da gestire, chiunque altro una vetrina generica
+    // l'admin la lista da gestire. Non c'è più una vetrina per i clienti: i profili meccanico
+    // li crea solo l'admin da CGestiscimeccanici::creaMeccanico().
     public function area($params = []) {
         $view = new VMeccanico();
         $ruolo = strtolower((string) Session::get('ruolo'));
@@ -51,7 +52,8 @@ class CProfilomeccanico {
             return;
         }
 
-        $view->mostraAreaTeam();
+        header('Location: /MechanicOne/utente/home');
+        exit();
     }
 
     public function profilo($params = []) {
@@ -92,6 +94,50 @@ class CProfilomeccanico {
         }
 
         header('Location: /MechanicOne/profilomeccanico/profilo?msg=profilo_aggiornato');
+        exit();
+    }
+
+    // Permette al meccanico di sostituire la password provvisoria consegnata dall'admin
+    // con una scelta da lui, dopo aver confermato di conoscere quella attuale.
+    public function cambiaPassword() {
+        $idU = Session::get('idU');
+        $passwordAttuale   = Request::post('password_attuale', '');
+        $nuovaPassword     = Request::post('nuova_password', '');
+        $confermaPassword  = Request::post('conferma_password', '');
+
+        try {
+            $pm = PersistentManager::getInstance();
+            $utenteAttuale = $pm->load('EUtente', 'idU', $idU);
+            if (!$utenteAttuale) throw new Exception("Utente non trovato.");
+
+            if (!password_verify($passwordAttuale, $utenteAttuale->getPassword())) {
+                throw new Exception("La password attuale non è corretta.");
+            }
+
+            if (strlen($nuovaPassword) < 8) {
+                throw new Exception("La nuova password deve avere almeno 8 caratteri.");
+            }
+
+            if ($nuovaPassword !== $confermaPassword) {
+                throw new Exception("Le due password non coincidono.");
+            }
+
+            $utenteAggiornato = new EUtente(
+                $utenteAttuale->getId(), $utenteAttuale->getNome(), $utenteAttuale->getCognome(),
+                $utenteAttuale->getEmail(), $nuovaPassword, $utenteAttuale->getRuolo(),
+                $utenteAttuale->getUltimoAccesso(), $utenteAttuale->getDataRegistrazione()
+            );
+
+            if (!$pm->update($utenteAggiornato)) {
+                throw new Exception("Impossibile aggiornare la password.");
+            }
+        } catch (Exception $e) {
+            $profilo = (new CGestiscimeccanici())->arricchisciConNome($this->getProfilo());
+            (new VMeccanico())->mostraProfilo($profilo, $e->getMessage());
+            return;
+        }
+
+        header('Location: /MechanicOne/profilomeccanico/profilo?msg=password_aggiornata');
         exit();
     }
 }

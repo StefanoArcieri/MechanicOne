@@ -36,7 +36,9 @@ class CVisualizzapreventivi {
         $prevData = $pm->load('EPreventivo', 'idPrev', $idPrev);
         if (!$prevData) throw new Exception("Preventivo non trovato.");
         if ($prevData->getIdUtente() != $idU) throw new Exception("Non puoi modificare un preventivo che non ti appartiene.");
-        if (in_array($prevData->getStato(), ['rifiutato', 'svolto'], true)) {
+        // whitelist invece di blacklist: si propone una modifica solo finché è 'inviato', prima che
+        // l'admin lo accetti e fissi il prezzo. Dopo (accettato/svolto/rifiutato) non è più modificabile.
+        if ($prevData->getStato() !== 'inviato') {
             throw new Exception("Questo preventivo non è più modificabile.");
         }
 

@@ -26,7 +26,9 @@ class VPreventivo extends View {
             ],
             [
                 'label' => 'Accettati', 'classe' => 'accettato', 'items' => $categorie['accettato'],
-                'modificabile' => true, 'mostraCosto' => true, 'mostraPrenotaLink' => true,
+                // una volta che l'admin ha accettato e fissato il prezzo, la descrizione non è più
+                // modificabile dal cliente: si può ancora proporre una modifica solo prima, da 'inviato'.
+                'modificabile' => false, 'mostraCosto' => true, 'mostraPrenotaLink' => true,
                 'vuoto' => 'Nessun preventivo accettato al momento.',
             ],
             [

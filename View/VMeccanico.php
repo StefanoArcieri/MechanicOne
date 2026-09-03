@@ -8,24 +8,16 @@ class VMeccanico extends View {
         $this->renderTemplate('meccanico/profilomeccanico.tpl', [
             'titolo' => 'Il mio profilo',
             'profilo' => $profilo,
-            'team' => false,
             'errore' => $errore,
         ]);
     }
 
-    public function mostraLista($meccanici, $errore = '') {
+    public function mostraLista($meccanici, $errore = '', $credenzialiGenerate = null) {
         $this->renderTemplate('admin/gestiscimeccanici.tpl', [
             'titolo' => 'Meccanici',
             'meccanici' => $meccanici,
             'errore' => $errore,
-        ]);
-    }
-
-    public function mostraAreaTeam() {
-        $this->renderTemplate('meccanico/profilomeccanico.tpl', [
-            'titolo' => 'Il nostro team',
-            'team' => true,
-            'errore' => '',
+            'credenzialiGenerate' => $credenzialiGenerate,
         ]);
     }
 }

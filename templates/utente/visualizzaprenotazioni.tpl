@@ -48,6 +48,8 @@
                                         </form>
                                     </details>
                                 {/if}
+                            {/if}
+                            {if $sezione.cancellabile}
                                 <form action="/MechanicOne/visualizzaprenotazioni/annullaPrenotazione/{$p.idPren}" method="post" onsubmit="return confirm('Annullare questa prenotazione?');">
                                     <button class="btn btn--danger" type="submit">Annulla prenotazione</button>
                                 </form>

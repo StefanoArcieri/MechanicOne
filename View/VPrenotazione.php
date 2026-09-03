@@ -19,19 +19,22 @@ class VPrenotazione extends View {
         $sezioni = [
             [
                 'label' => 'In attesa', 'classe' => 'in-attesa', 'items' => $categorie['in attesa'],
-                'modificabile' => true, 'vuoto' => 'Nessuna prenotazione in attesa di conferma.',
+                'modificabile' => true, 'cancellabile' => true, 'vuoto' => 'Nessuna prenotazione in attesa di conferma.',
             ],
             [
                 'label' => 'Confermate', 'classe' => 'accettata', 'items' => $categorie['accettata'],
-                'modificabile' => true, 'vuoto' => 'Nessuna prenotazione confermata al momento.',
+                // una volta confermata (dall'admin o dal meccanico che la prende in carico), il cliente
+                // non può più proporre di spostarla: può ancora farlo solo mentre è 'in attesa'.
+                // Può comunque ancora annullarla: quello resta un permesso separato.
+                'modificabile' => false, 'cancellabile' => true, 'vuoto' => 'Nessuna prenotazione confermata al momento.',
             ],
             [
                 'label' => 'Concluse', 'classe' => 'conclusa', 'items' => $categorie['conclusa'],
-                'modificabile' => false, 'vuoto' => 'Nessun intervento concluso.',
+                'modificabile' => false, 'cancellabile' => false, 'vuoto' => 'Nessun intervento concluso.',
             ],
             [
                 'label' => 'Cancellate', 'classe' => 'cancellata', 'items' => $categorie['cancellata'],
-                'modificabile' => false, 'vuoto' => 'Nessuna prenotazione cancellata.',
+                'modificabile' => false, 'cancellabile' => false, 'vuoto' => 'Nessuna prenotazione cancellata.',
             ],
         ];
 

@@ -46,9 +46,25 @@
                         <h3>{$s.titolo}</h3>
                         <p>{$s.descrizione}</p>
                         {if $userRole == 'admin'}
-                            <form action="/MechanicOne/gestisciservizi/eliminaServizio/{$s.idS}" method="post" onsubmit="return confirm('Eliminare questo servizio?');">
-                                <button class="btn btn--danger" type="submit">Elimina</button>
-                            </form>
+                            <div class="auth-actions">
+                                <details class="inline-edit">
+                                    <summary class="btn btn--secondary">Modifica</summary>
+                                    <form class="form inline-edit__form" action="/MechanicOne/gestisciservizi/modificaServizio/{$s.idS}" method="post">
+                                        <div class="form-field">
+                                            <label class="form-label" for="titolo-{$s.idS}">Titolo</label>
+                                            <input class="form-input" type="text" id="titolo-{$s.idS}" name="titolo" value="{$s.titolo}" required>
+                                        </div>
+                                        <div class="form-field form-field--last">
+                                            <label class="form-label" for="descrizione-{$s.idS}">Descrizione</label>
+                                            <textarea class="form-input" id="descrizione-{$s.idS}" name="descrizione" rows="2">{$s.descrizione}</textarea>
+                                        </div>
+                                        <button class="form-submit form-submit--primary" type="submit">Salva modifiche</button>
+                                    </form>
+                                </details>
+                                <form action="/MechanicOne/gestisciservizi/eliminaServizio/{$s.idS}" method="post" onsubmit="return confirm('Eliminare questo servizio?');">
+                                    <button class="btn btn--danger" type="submit">Elimina</button>
+                                </form>
+                            </div>
                         {/if}
                     </article>
                 {/foreach}

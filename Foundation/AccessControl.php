@@ -57,32 +57,38 @@ class AccessControl {
             'profilo' => ['meccanico', 'admin'],
             'getProfilo' => ['meccanico', 'admin'],
             'aggiornaProfilo' => ['meccanico'],
+            'cambiaPassword' => ['meccanico'],
         ],
         'gestiscimeccanici' => [
             'lista' => 'auth',
             'richiediLista' => 'auth',
-            'approvaMeccanico' => ['admin'],
+            'creaMeccanico' => ['admin'],
             'eliminaMeccanico' => ['admin'],
         ],
         'gestisciservizi' => [
             'lista' => 'auth',
             'aggiungiServizio' => ['admin'],
+            'modificaServizio' => ['admin'],
             'richiediLista' => 'auth',
             'eliminaServizio' => ['admin'],
         ],
+        // I preventivi (valutare, prezzare, rifiutare) restano solo all'admin: il meccanico
+        // non li vede più né li gestisce, si occupa solo delle prenotazioni assegnate.
         'gestiscipreventivi' => [
-            'lista' => ['admin', 'meccanico'],
-            'richiediLista' => ['admin', 'meccanico'],
-            'updateCosto' => ['admin'],
-            'rifiuta' => ['admin'],
-            'segnaSvolto' => ['admin', 'meccanico'],
+            '*' => ['admin'],
         ],
         'gestisciprenotazioni' => [
             'lista' => ['admin', 'meccanico'],
             'richiediLista' => ['admin', 'meccanico'],
             'accetta' => ['admin', 'meccanico'],
-            'concludi' => ['admin', 'meccanico'],
+            // solo il meccanico segna il lavoro come concluso: l'admin vede l'avanzamento ma non lo forza
+            'concludi' => ['meccanico'],
+            // spostare data/ora resta una decisione dell'admin, non del meccanico
+            'modifica' => ['admin'],
             'cancella' => ['admin', 'meccanico'],
+        ],
+        'dashboard' => [
+            'admin' => ['admin'],
         ],
     ];
 

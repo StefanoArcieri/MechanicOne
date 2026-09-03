@@ -19,6 +19,7 @@ require_once __DIR__ . '/CGestiscimeccanici.php';
 require_once __DIR__ . '/CGestisciservizi.php';
 require_once __DIR__ . '/CGestiscipreventivi.php';
 require_once __DIR__ . '/CGestisciprenotazioni.php';
+require_once __DIR__ . '/CDashboard.php';
 
 require_once __DIR__ . '/../Foundation/Session.php';
 require_once __DIR__ . '/../Foundation/AccessControl.php';

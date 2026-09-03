@@ -21,23 +21,11 @@ class VUtente extends View {
         $this->renderTemplate('home.tpl', $datiRecensioni);
     }
 
-    public function mostraDashboardMeccanico($nome) {
-        $this->renderTemplate('meccanico/home_meccanico.tpl', [
-            'nome' => $nome,
-        ]);
-    }
-
     public function mostraDashboardUtente($nome, $datiRecensioni = []) {
         $this->renderTemplate('utente/home_utente.tpl', array_merge(
             ['nome' => $nome],
             $datiRecensioni
         ));
-    }
-
-    public function mostraDashboardAdmin($nome) {
-        $this->renderTemplate('admin/home_admin.tpl', [
-            'nome' => $nome,
-        ]);
     }
 }
 ?>

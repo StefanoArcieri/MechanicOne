@@ -34,7 +34,9 @@ class CVisualizzaprenotazioni {
         $prenData = $pm->load('EPrenotazione', 'idPren', $idPren);
         if (!$prenData) throw new Exception("Prenotazione non trovata.");
         if ($prenData->getIdUtente() != $idU) throw new Exception("Non puoi modificare una prenotazione che non ti appartiene.");
-        if (in_array($prenData->getStato(), ['conclusa', 'cancellata'], true)) {
+        // whitelist invece di blacklist: si propone una modifica solo finché è 'in attesa'. Una volta
+        // confermata (o conclusa/cancellata) il cliente non può più spostarla di sua iniziativa.
+        if ($prenData->getStato() !== 'in attesa') {
             throw new Exception("Questa prenotazione non è più modificabile.");
         }
 

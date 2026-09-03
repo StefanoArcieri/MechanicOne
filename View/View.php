@@ -48,9 +48,9 @@ class View {
         'preventivo_inviato'      => 'Richiesta di preventivo inviata.',
         'preventivo_prezzato'     => 'Preventivo aggiornato.',
         'preventivo_rifiutato'    => 'Preventivo rifiutato.',
-        'preventivo_svolto'       => 'Preventivo segnato come svolto.',
         'prenotazione_effettuata' => 'Prenotazione richiesta.',
         'prenotazione_accettata'  => 'Prenotazione confermata.',
+        'prenotazione_modificata' => 'Prenotazione modificata.',
         'prenotazione_conclusa'   => 'Prenotazione conclusa.',
         'prenotazione_cancellata' => 'Prenotazione cancellata.',
         'prenotazione_annullata'  => 'Prenotazione annullata.',
@@ -58,9 +58,11 @@ class View {
         'modifica_annullata'      => 'Modifica annullata.',
         'recensione_pubblicata'   => 'Recensione pubblicata, grazie!',
         'servizio_aggiunto'       => 'Servizio aggiunto al catalogo.',
+        'servizio_modificato'     => 'Servizio aggiornato.',
         'servizio_eliminato'      => 'Servizio eliminato dal catalogo.',
         'profilo_aggiornato'      => 'Profilo aggiornato.',
-        'meccanico_approvato'     => 'Meccanico approvato.',
+        'password_aggiornata'     => 'Password aggiornata con successo.',
+        'meccanico_creato'        => 'Account meccanico creato.',
         'meccanico_eliminato'     => 'Meccanico eliminato.',
     ];
 
