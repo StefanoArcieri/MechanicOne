@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 5.8.0, created on 2026-09-03 19:31:31
+/* Smarty version 5.8.0, created on 2026-09-04 17:32:45
   from 'file:layouts/base.tpl' */
 
 /* @var \Smarty\Template $_smarty_tpl */
 if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
   'version' => '5.8.0',
-  'unifunc' => 'content_6a99aef3e4a017_37739468',
+  'unifunc' => 'content_6a9ae49d85a1c2_63111597',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     'c8d470a5407eb956363632e73f7f40b175b858b2' => 
     array (
       0 => 'layouts/base.tpl',
-      1 => 1788456037,
+      1 => 1788535960,
       2 => 'file',
     ),
   ),
@@ -20,7 +20,7 @@ if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
   array (
   ),
 ))) {
-function content_6a99aef3e4a017_37739468 (\Smarty\Template $_smarty_tpl) {
+function content_6a9ae49d85a1c2_63111597 (\Smarty\Template $_smarty_tpl) {
 $_smarty_current_dir = 'C:\\xampp\\htdocs\\MechanicOne\\templates\\layouts';
 $_smarty_tpl->getInheritance()->init($_smarty_tpl, false);
 ?>
@@ -30,10 +30,10 @@ $_smarty_tpl->getInheritance()->init($_smarty_tpl, false);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?php 
-$_smarty_tpl->getInheritance()->instanceBlock($_smarty_tpl, 'Block_12441115876a99aef3e38551_99203567', "title");
+$_smarty_tpl->getInheritance()->instanceBlock($_smarty_tpl, 'Block_16129204346a9ae49d81b065_53452305', "title");
 ?>
 </title>
-    <link rel="stylesheet" href="/MechanicOne/templates/css/style.css?v=9">
+    <link rel="stylesheet" href="/MechanicOne/templates/css/style.css?v=15">
 </head>
 <body class="page-shell">
     <div class="page-wrapper">
@@ -42,7 +42,7 @@ $_smarty_tpl->getInheritance()->instanceBlock($_smarty_tpl, 'Block_12441115876a9
 
             <div class="header-user">
                 <?php if ($_smarty_tpl->getValue('isLogged')) {?>
-                    <span class="header-greeting">Benvenuto, <?php echo $_smarty_tpl->getValue('nomeUtente');?>
+                    <span class="header-greeting">Benvenuto, <?php echo htmlspecialchars((string) ($_smarty_tpl->getValue('nomeUtente')), ENT_QUOTES, 'UTF-8');?>
 </span>
                 <?php } else { ?>
                     <a class="header-login-link" href="/MechanicOne/utente/login">Benvenuto, clicca qui per accedere</a>
@@ -80,11 +80,11 @@ $_smarty_tpl->getInheritance()->instanceBlock($_smarty_tpl, 'Block_12441115876a9
 
         <main class="page-layout">
             <?php if ($_smarty_tpl->getValue('messaggioSuccesso')) {?>
-                <div class="flash-success"><?php echo $_smarty_tpl->getValue('messaggioSuccesso');?>
+                <div class="flash-success"><?php echo htmlspecialchars((string) ($_smarty_tpl->getValue('messaggioSuccesso')), ENT_QUOTES, 'UTF-8');?>
 </div>
             <?php }?>
             <?php 
-$_smarty_tpl->getInheritance()->instanceBlock($_smarty_tpl, 'Block_7102588936a99aef3e486f0_32521397', "content");
+$_smarty_tpl->getInheritance()->instanceBlock($_smarty_tpl, 'Block_16969451326a9ae49d858489_23966439', "content");
 ?>
 
         </main>
@@ -99,7 +99,7 @@ $_smarty_tpl->getInheritance()->instanceBlock($_smarty_tpl, 'Block_7102588936a99
                 <div class="footer-col">
                     <h3 class="footer-heading">Contatti</h3>
                     <ul class="footer-list">
-                        <li><a href="tel:+390862123456">📞 0862 123 456</a></li>
+                        <li><a href="tel:+390862451556">📞 0862 451 556</a></li>
                         <li><a href="mailto:info@mechanicone.it">✉️ info@mechanicone.it</a></li>
                         <li>🕑 Lun–Sab: 8:00–19:00</li>
                     </ul>
@@ -108,9 +108,9 @@ $_smarty_tpl->getInheritance()->instanceBlock($_smarty_tpl, 'Block_7102588936a99
                 <div class="footer-col">
                     <h3 class="footer-heading">Dove siamo</h3>
                     <ul class="footer-list">
-                        <li>📍 Via dell'Officina, 12</li>
+                        <li>📍 Via delle Aquile, 12</li>
                         <li>67100 L'Aquila (AQ)</li>
-                        <li><a href="https://www.google.com/maps/search/?api=1&query=Via+dell%27Officina+12+L%27Aquila" target="_blank" rel="noopener">Vedi sulla mappa</a></li>
+                        <li><a href="https://www.google.com/maps/search/?api=1&query=Via+delle+Aquile+12+67100+L%27Aquila+AQ" target="_blank" rel="noopener">Vedi sulla mappa</a></li>
                     </ul>
                 </div>
 
@@ -130,7 +130,7 @@ $_smarty_tpl->getInheritance()->instanceBlock($_smarty_tpl, 'Block_7102588936a99
 </html>
 <?php }
 /* {block "title"} */
-class Block_12441115876a99aef3e38551_99203567 extends \Smarty\Runtime\Block
+class Block_16129204346a9ae49d81b065_53452305 extends \Smarty\Runtime\Block
 {
 public function callBlock(\Smarty\Template $_smarty_tpl) {
 $_smarty_current_dir = 'C:\\xampp\\htdocs\\MechanicOne\\templates\\layouts';
@@ -140,7 +140,7 @@ MechanicOne<?php
 }
 /* {/block "title"} */
 /* {block "content"} */
-class Block_7102588936a99aef3e486f0_32521397 extends \Smarty\Runtime\Block
+class Block_16969451326a9ae49d858489_23966439 extends \Smarty\Runtime\Block
 {
 public function callBlock(\Smarty\Template $_smarty_tpl) {
 $_smarty_current_dir = 'C:\\xampp\\htdocs\\MechanicOne\\templates\\layouts';

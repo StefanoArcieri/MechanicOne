@@ -54,7 +54,7 @@
             <fieldset class="form-step" data-step="3" hidden>
                 <div class="form-field">
                     <label class="form-label" for="data">Data</label>
-                    <input class="form-input" type="date" id="data" name="data" required>
+                    <input class="form-input" type="date" id="data" name="data" min="{$oggi}" required>
                 </div>
                 <div class="form-field form-field--last">
                     <label class="form-label" for="ora">Ora</label>

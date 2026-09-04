@@ -33,7 +33,7 @@
 
         <div class="form-field form-field--last">
             <label for="password" class="form-label">Password</label>
-            <input type="password" id="password" name="password" required placeholder="Scegli una password sicura" class="form-input">
+            <input type="password" id="password" name="password" required minlength="8" placeholder="Almeno 8 caratteri" class="form-input">
         </div>
 
         <button type="submit" class="form-submit form-submit--primary">

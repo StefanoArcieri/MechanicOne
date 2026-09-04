@@ -9,4 +9,12 @@ class VDashboard extends View {
             'nome' => $nome,
         ]);
     }
+
+    public function mostraMeccanico($profilo, $stats, $errore = '') {
+        $this->renderTemplate('meccanico/dashboard.tpl', [
+            'profilo' => $profilo,
+            'stats' => $stats,
+            'errore' => $errore,
+        ]);
+    }
 }

@@ -39,7 +39,7 @@
                                         <summary>Modifica data/ora</summary>
                                         <form class="form" action="/MechanicOne/visualizzaprenotazioni/modifica/{$p.idPren}" method="post">
                                             <div class="form-field">
-                                                <input class="form-input" type="date" name="nuovaData" value="{$p.data}" required>
+                                                <input class="form-input" type="date" name="nuovaData" value="{$p.data}" min="{$oggi}" required>
                                             </div>
                                             <div class="form-field form-field--last">
                                                 <input class="form-input" type="time" name="nuovaOra" value="{$p.ora}" required>

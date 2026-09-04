@@ -29,13 +29,14 @@ class FRecensione {
         try {
             $query = "INSERT INTO recensioni (idM, idU, valutazione, commento, data_recensione) VALUES (:idM, :idU, :valutazione, :commento, :data_recensione)";
             $stmt = $pdo->prepare($query);
-                return $stmt->execute([
+                $stmt->execute([
                     ':idM' => $recensione->getIdMeccanico(),
                     ':idU' => $recensione->getIdUtente(),
                     ':valutazione' => $recensione->getValutazione(),
                     ':commento' => $recensione->getCommento(),
                     ':data_recensione' => $recensione->getDataRecensione(),
                 ]);
+                return (int) $pdo->lastInsertId();
 
         } catch (PDOException $e) {
                 error_log($e->getMessage());

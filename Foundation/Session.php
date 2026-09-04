@@ -31,5 +31,13 @@ class Session {
         self::start();
         session_destroy();
     }
+
+    // Da chiamare subito dopo un login riuscito: cambia l'id di sessione mantenendo i dati,
+    // così un id di sessione noto/impostato prima del login (session fixation) smette di
+    // valere per la sessione autenticata che segue.
+    public static function regenerate() {
+        self::start();
+        session_regenerate_id(true);
+    }
 }
 ?>

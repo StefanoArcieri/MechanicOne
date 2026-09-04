@@ -27,12 +27,14 @@ class FVeicolo {
         try {
             $query = "INSERT INTO veicoli (targa, marca, modello, idU) VALUES (:targa, :marca, :modello, :idU)";
             $stmt = $pdo->prepare($query);
-            return $stmt->execute([
+            $stmt->execute([
                 ':targa'   => $veicolo->getTarga(),
                 ':marca'   => $veicolo->getMarca(),
                 ':modello' => $veicolo->getModello(),
                 ':idU'     => $veicolo->getIdUtente(),
             ]);
+            // coerente con FUtente/FPreventivo: il chiamante può aver bisogno dell'id appena creato
+            return (int) $pdo->lastInsertId();
         } catch (PDOException $e) {
             error_log($e->getMessage());
             throw new Exception("Errore nello store del veicolo.");

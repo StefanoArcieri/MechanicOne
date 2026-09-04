@@ -17,6 +17,23 @@ class CGestisciprenotazioni {
     public function lista($anno = null, $mese = null, $settimanaInizio = null) {
         $view = new VGestisciprenotazioni();
         $errore = '';
+
+        // questi arrivano da segmenti di URL scritti a mano: se non sono validi si scartano
+        // invece di lasciarli propagare in date()/strtotime() (altrimenti si ottengono
+        // etichette senza senso tipo "Gennaio 1970" da una data non riconosciuta)
+        if ($mese !== null && (!ctype_digit((string) $mese) || (int) $mese < 1 || (int) $mese > 12)) {
+            $mese = null;
+        }
+        if ($anno !== null && (!ctype_digit((string) $anno) || (int) $anno < 2000 || (int) $anno > 2100)) {
+            $anno = null;
+        }
+        if ($settimanaInizio !== null && !preg_match('/^\d{4}-\d{2}-\d{2}$/', $settimanaInizio)) {
+            $settimanaInizio = null;
+        }
+        if ($anno === null || $mese === null) {
+            $settimanaInizio = null;
+        }
+
         try {
             $prenotazioni = array_map([$this, 'arricchisci'], $this->richiediLista());
         } catch (Exception $e) {

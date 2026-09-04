@@ -4,6 +4,7 @@ require_once __DIR__ . '/../Foundation/PersistentManager.php';
 require_once __DIR__ . '/../Entity/EMeccanico.php';
 require_once __DIR__ . '/../Foundation/Session.php';
 require_once __DIR__ . '/../Foundation/Request.php';
+require_once __DIR__ . '/../Foundation/Upload.php';
 require_once __DIR__ . '/../View/VMeccanico.php';
 require_once __DIR__ . '/CGestiscimeccanici.php';
 
@@ -73,15 +74,23 @@ class CProfilomeccanico {
         $pm = PersistentManager::getInstance();
 
         $nuovaSpecializzazione = trim(Request::post('specializzazione', ''));
-        $nuovaFoto = Request::post('foto');
 
         try {
             $datiAttuali = $pm->load('EMeccanico', 'idM', $idM);
             if (!$datiAttuali) throw new Exception("Profilo meccanico non trovato.");
 
+            // se non è stato scelto un nuovo file la foto resta quella di prima; se invece
+            // ne arriva una nuova, quella vecchia (se c'era) va tolta dal disco: non serve più
+            $nomeFoto = $datiAttuali->getFotoProfilo();
+            $nuovoFile = Upload::immagine(Request::file('foto'), 'meccanici');
+            if ($nuovoFile !== null) {
+                Upload::elimina('meccanici', $nomeFoto);
+                $nomeFoto = $nuovoFile;
+            }
+
             $meccanicoAggiornato = new EMeccanico(
                 null, '', '', '', '', '', null, null,
-                $idM, $nuovaSpecializzazione, $nuovaFoto, $datiAttuali->getStatus()
+                $idM, $nuovaSpecializzazione, $nomeFoto, $datiAttuali->getStatus()
             );
 
             if (!$pm->update($meccanicoAggiornato)) {

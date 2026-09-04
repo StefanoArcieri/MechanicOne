@@ -101,9 +101,14 @@ class CGestiscimeccanici {
         (new VMeccanico())->mostraLista($meccanici, '', ['email' => $email, 'password' => $password]);
     }
 
+    // Cancella l'intero account (utenti), non solo la riga di specializzazione in meccanici:
+    // idM e idU sono lo stesso id. Cancellare solo 'meccanici' lasciava l'account utenti intatto
+    // con ruolo='meccanico' — l'ex meccanico poteva ancora fare login e gestire le prenotazioni,
+    // gli si rompeva solo la sua pagina di profilo. La FK meccanici->utenti è ON DELETE CASCADE,
+    // quindi cancellando qui la riga in meccanici sparisce da sola.
     public function eliminaMeccanico($idM) {
         $pm = PersistentManager::getInstance();
-        if (!$pm->delete('EMeccanico', 'idM', $idM)) {
+        if (!$pm->delete('EUtente', 'idU', $idM)) {
             throw new Exception("Impossibile eliminare il meccanico.");
         }
 

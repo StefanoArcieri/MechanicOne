@@ -13,6 +13,9 @@
     {if $profilo}
         <div class="home-grid">
             <div class="home-card">
+                {if $profilo.foto_profilo}
+                    <img class="profile-photo" src="/MechanicOne/uploads/meccanici/{$profilo.foto_profilo}" alt="Foto profilo di {$profilo.nome} {$profilo.cognome}">
+                {/if}
                 <h3>{$profilo.nome} {$profilo.cognome}</h3>
                 <p>{$profilo.email}</p>
                 <p class="status-note">Stato account: <strong>{$profilo.status}</strong></p>
@@ -23,14 +26,15 @@
         <hr class="auth-divider">
 
         <h2 class="auth-title auth-title--small">Modifica profilo</h2>
-        <form class="form" action="/MechanicOne/profilomeccanico/aggiornaProfilo" method="post">
+        <form class="form" action="/MechanicOne/profilomeccanico/aggiornaProfilo" method="post" enctype="multipart/form-data">
             <div class="form-field">
                 <label class="form-label" for="specializzazione">Specializzazione</label>
                 <input class="form-input" type="text" id="specializzazione" name="specializzazione" value="{$profilo.specializzazione}">
             </div>
             <div class="form-field form-field--last">
-                <label class="form-label" for="foto">Link foto profilo</label>
-                <input class="form-input" type="text" id="foto" name="foto" value="{$profilo.foto_profilo}" placeholder="https://...">
+                <label class="form-label" for="foto">Foto profilo</label>
+                <input class="form-input" type="file" id="foto" name="foto" accept="image/jpeg,image/png,image/webp,image/gif">
+                <p class="form-hint">JPG, PNG, WEBP o GIF, max 3&nbsp;MB. Lascia vuoto per non cambiarla.</p>
             </div>
             <button class="form-submit form-submit--primary" type="submit">Salva modifiche</button>
         </form>

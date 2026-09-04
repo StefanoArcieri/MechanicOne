@@ -90,6 +90,64 @@ a {
     border-top: 5px solid var(--color-primary);
 }
 
+/* Hero "a due riquadri": un pannello scuro con il messaggio di benvenuto e uno chiaro con
+   l'azione pratica (richiedi un preventivo), affiancati invece di un unico blocco di testo. */
+.hero-split {
+    display: flex;
+    align-items: stretch;
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    box-shadow: var(--shadow-md);
+}
+
+.hero-split__promo,
+.hero-split__action {
+    flex: 1 1 0;
+    min-width: 0;
+    padding: 44px 40px;
+}
+
+.hero-split__promo {
+    background: linear-gradient(135deg, var(--color-primary-dark), var(--color-primary));
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.hero-split__title {
+    margin: 0 0 12px;
+    color: #ffffff;
+    font-size: 2.3rem;
+    letter-spacing: -0.01em;
+}
+
+.hero-split__action {
+    background: var(--color-surface);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.hero-split__action h2 {
+    margin: 0 0 6px;
+    color: var(--color-text);
+    font-size: 1.4rem;
+    letter-spacing: -0.01em;
+}
+
+.hero-steps {
+    margin: 18px 0 24px;
+    padding-left: 22px;
+    color: var(--color-text-muted);
+    display: grid;
+    gap: 10px;
+    line-height: 1.5;
+}
+
+.hero-split__action-btn {
+    align-self: flex-start;
+}
+
 .hero-eyebrow {
     margin: 0 0 8px;
     text-transform: uppercase;
@@ -97,6 +155,10 @@ a {
     color: var(--color-text-faint);
     font-size: 12px;
     font-weight: 700;
+}
+
+.hero-eyebrow--light {
+    color: rgba(255, 255, 255, 0.75);
 }
 
 .hero-content h1 {
@@ -112,24 +174,125 @@ a {
     line-height: 1.7;
 }
 
-.hero-services {
-    margin-top: 28px;
-    padding-top: 22px;
-    border-top: 1px solid var(--color-border-soft);
+.hero-text--light {
+    color: rgba(255, 255, 255, 0.9);
 }
 
-.hero-services h2 {
-    margin: 0 0 12px;
+.hero-cta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 26px;
+}
+
+.section-title {
+    margin: 0 0 24px;
     color: var(--color-text);
-    font-size: 1.2rem;
+    font-size: 1.3rem;
+    letter-spacing: -0.01em;
 }
 
-.services-list {
-    margin: 0;
-    padding-left: 20px;
-    color: var(--color-text-muted);
+/* Griglia di servizi con icona: sostituisce il vecchio elenco puntato, più in linea con
+   l'aspetto "prodotto moderno" che con una lista da documento. */
+.feature-grid {
     display: grid;
-    gap: 8px;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 28px;
+}
+
+.feature-item {
+    text-align: center;
+    padding: 26px 22px;
+    border: 1px solid var(--color-border-soft);
+    border-radius: var(--radius-md);
+    transition: box-shadow var(--transition), transform var(--transition);
+}
+
+.feature-item:hover {
+    box-shadow: var(--shadow-sm);
+    transform: translateY(-2px);
+}
+
+.feature-item__icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 56px;
+    height: 56px;
+    margin: 0 auto 14px;
+    border-radius: 50%;
+    background: var(--color-primary-soft);
+    font-size: 1.5rem;
+}
+
+.feature-item h3 {
+    margin: 0 0 6px;
+    color: var(--color-text);
+    font-size: 1.05rem;
+}
+
+.feature-item p {
+    margin: 0;
+    color: var(--color-text-muted);
+    font-size: 0.9rem;
+    line-height: 1.6;
+}
+
+/* Righe fotografiche a piena larghezza: una foto grande alla volta, con il suo testo
+   accanto, invece di miniature ammassate in griglia. Si susseguono mentre si scorre la
+   pagina, alternando foto a sinistra e a destra (--reverse) per dare un po' di ritmo. */
+.showcase-row {
+    display: flex;
+    align-items: center;
+    gap: 40px;
+}
+
+.showcase-row--reverse {
+    flex-direction: row-reverse;
+}
+
+.showcase-row__image,
+.showcase-row__text {
+    flex: 1 1 0;
+    min-width: 0;
+}
+
+.showcase-row__image img {
+    display: block;
+    width: 100%;
+    height: 420px;
+    object-fit: cover;
+    object-position: top center;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-md);
+}
+
+.showcase-row__text h2 {
+    margin: 4px 0 12px;
+    color: var(--color-text);
+    font-size: 1.5rem;
+    letter-spacing: -0.01em;
+}
+
+/* Fascia "perché scegliere noi": si stacca dalle hero-card bianche con uno sfondo blu
+   tenue, per dare un punto di respiro/rilievo prima di arrivare alle recensioni. */
+.trust-band {
+    padding: 44px 40px;
+    border-radius: var(--radius-lg);
+    background: var(--color-primary-soft);
+    text-align: center;
+}
+
+.trust-band h2 {
+    margin: 4px 0 12px;
+    color: var(--color-text);
+    font-size: 1.6rem;
+    letter-spacing: -0.01em;
+}
+
+.trust-band .hero-text {
+    margin: 0 auto 22px;
+    max-width: 560px;
 }
 
 .site-header {
@@ -363,6 +526,48 @@ a {
     border-top-color: var(--color-success);
 }
 
+/* Banner fotografico dell'area cliente: foto dell'officina con il saluto scritto sopra
+   in basso, invece di un titolo a secco su sfondo bianco. */
+.client-hero {
+    position: relative;
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    margin-bottom: 28px;
+}
+
+.client-hero__img {
+    display: block;
+    width: 100%;
+    height: 300px;
+    object-fit: cover;
+    object-position: top center;
+}
+
+.client-hero__overlay {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 24px 32px;
+    /* uno scurimento leggero già dall'alto (non solo un gradiente che parte trasparente):
+       con un titolo su due righe su schermi piccoli il testo può salire oltre la parte
+       davvero scura, e una foto chiara sotto lo renderebbe illeggibile senza questo. */
+    background: linear-gradient(180deg, rgba(15, 23, 42, 0.15) 0%, rgba(15, 23, 42, 0.25) 30%, rgba(15, 23, 42, 0.88) 100%);
+}
+
+.client-hero__overlay .hero-text--light {
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+}
+
+.client-hero__title {
+    margin: 0 0 8px;
+    color: #ffffff;
+    font-size: 1.7rem;
+    letter-spacing: -0.01em;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+}
+
 .auth-title {
     margin: 0 0 10px;
     color: var(--color-text);
@@ -451,6 +656,23 @@ a {
 .btn--ghost:hover {
     background: var(--color-surface);
     color: var(--color-text);
+}
+
+/* Varianti pensate per stare su uno sfondo scuro (il pannello blu dell'hero), dove
+   .btn--primary e .btn--ghost standard perderebbero contrasto. */
+.btn--accent {
+    background: #ffffff;
+    color: var(--color-primary-dark);
+}
+
+.btn--ghost-light {
+    background: transparent;
+    color: #ffffff;
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.6);
+}
+
+.btn--ghost-light:hover {
+    background: rgba(255, 255, 255, 0.12);
 }
 
 .form-panel {
@@ -722,6 +944,87 @@ a {
 .home-card h3 {
     margin-top: 0;
     color: var(--color-text);
+}
+
+/* Dentro una .home-card il testo resta allineato a sinistra: l'icona non va centrata
+   come nella griglia servizi, altrimenti stona con il titolo sotto. */
+.home-card .feature-item__icon {
+    margin: 0 0 12px;
+}
+
+.profile-photo {
+    display: block;
+    width: 96px;
+    height: 96px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 14px;
+    box-shadow: var(--shadow-sm);
+}
+
+/* Intestazione da "biglietto da visita" della dashboard meccanico: foto grande e centrata
+   invece che piccola e allineata a sinistra come nella card di .profile-photo standard. */
+.dashboard-hero {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    margin-top: 20px;
+}
+
+.dashboard-hero .profile-photo {
+    width: 140px;
+    height: 140px;
+    margin: 0 0 16px;
+}
+
+.dashboard-hero__avatar-placeholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 140px;
+    height: 140px;
+    border-radius: 50%;
+    margin-bottom: 16px;
+    background: var(--color-primary-soft);
+    color: var(--color-primary-dark);
+    font-size: 2.6rem;
+    font-weight: 700;
+    box-shadow: var(--shadow-sm);
+}
+
+.dashboard-hero h2 {
+    margin: 0 0 4px;
+}
+
+/* Numeri di riepilogo ("situazione generale"): stessa famiglia visiva delle .home-card,
+   ma pensata per un numero grande invece che per un blocco di testo. */
+.stat-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 20px;
+    margin-top: 24px;
+}
+
+.stat-card {
+    padding: 20px;
+    border: 1px solid var(--color-border-soft);
+    border-radius: var(--radius-md);
+    background: var(--color-surface);
+    text-align: center;
+}
+
+.stat-card__numero {
+    display: block;
+    font-size: 2.2rem;
+    font-weight: 800;
+    color: var(--color-primary-dark);
+    line-height: 1.1;
+}
+
+.stat-card__etichetta {
+    color: var(--color-text-muted);
+    font-size: 0.9rem;
 }
 
 .home-card p {
@@ -1172,8 +1475,49 @@ a {
         padding: 26px 22px;
     }
 
-    .home-grid {
+    .hero-split {
+        flex-direction: column;
+    }
+
+    .hero-split__promo,
+    .hero-split__action {
+        padding: 30px 24px;
+    }
+
+    .hero-split__title {
+        font-size: 1.8rem;
+    }
+
+    .trust-band {
+        padding: 32px 22px;
+    }
+
+    .home-grid,
+    .stat-grid,
+    .feature-grid {
         grid-template-columns: 1fr;
+    }
+
+    .feature-grid {
+        gap: 24px;
+    }
+
+    .showcase-row,
+    .showcase-row--reverse {
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .showcase-row__image img {
+        height: 280px;
+    }
+
+    .client-hero__img {
+        height: 220px;
+    }
+
+    .client-hero__title {
+        font-size: 1.4rem;
     }
 
     .site-header {

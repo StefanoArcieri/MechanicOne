@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{block name="title"}MechanicOne{/block}</title>
-    <link rel="stylesheet" href="/MechanicOne/templates/css/style.css?v=9">
+    <link rel="stylesheet" href="/MechanicOne/templates/css/style.css?v=15">
 </head>
 <body class="page-shell">
     <div class="page-wrapper">
@@ -65,7 +65,7 @@
                 <div class="footer-col">
                     <h3 class="footer-heading">Contatti</h3>
                     <ul class="footer-list">
-                        <li><a href="tel:+390862123456">📞 0862 123 456</a></li>
+                        <li><a href="tel:+390862451556">📞 0862 451 556</a></li>
                         <li><a href="mailto:info@mechanicone.it">✉️ info@mechanicone.it</a></li>
                         <li>🕑 Lun–Sab: 8:00–19:00</li>
                     </ul>
@@ -74,9 +74,9 @@
                 <div class="footer-col">
                     <h3 class="footer-heading">Dove siamo</h3>
                     <ul class="footer-list">
-                        <li>📍 Via dell'Officina, 12</li>
+                        <li>📍 Via delle Aquile, 12</li>
                         <li>67100 L'Aquila (AQ)</li>
-                        <li><a href="https://www.google.com/maps/search/?api=1&query=Via+dell%27Officina+12+L%27Aquila" target="_blank" rel="noopener">Vedi sulla mappa</a></li>
+                        <li><a href="https://www.google.com/maps/search/?api=1&query=Via+delle+Aquile+12+67100+L%27Aquila+AQ" target="_blank" rel="noopener">Vedi sulla mappa</a></li>
                     </ul>
                 </div>
 

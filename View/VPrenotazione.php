@@ -9,6 +9,7 @@ class VPrenotazione extends View {
             'titolo' => 'Richiedi una prenotazione',
             'veicoli' => array_map(function ($v) { return $v->toArray(); }, $veicoli),
             'preventiviAccettati' => array_map(function ($p) { return $p->toArray(); }, $preventiviAccettati),
+            'oggi' => date('Y-m-d'),
             'errore' => $errore,
         ]);
     }
@@ -41,6 +42,7 @@ class VPrenotazione extends View {
         $this->renderTemplate('utente/visualizzaprenotazioni.tpl', [
             'titolo' => 'Le tue prenotazioni',
             'sezioni' => $sezioni,
+            'oggi' => date('Y-m-d'),
             'errore' => $errore,
         ]);
     }

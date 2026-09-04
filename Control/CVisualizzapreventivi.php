@@ -83,5 +83,37 @@ class CVisualizzapreventivi {
         header('Location: /MechanicOne/visualizzapreventivi/lista?msg=modifica_annullata');
         exit();
     }
+
+    // Il PDF non si serve mai come link statico diretto: passando da qui si controlla che sia
+    // davvero il proprietario a scaricarlo, invece di fidarsi solo dell'imprevedibilità del nome file.
+    public function scaricaPdf($idPrev) {
+        $idU = Session::get('idU');
+        $pm = PersistentManager::getInstance();
+
+        $preventivo = $pm->load('EPreventivo', 'idPrev', $idPrev);
+        if (!$preventivo || $preventivo->getIdUtente() != $idU) {
+            throw new Exception("Non puoi scaricare il PDF di un preventivo che non ti appartiene.");
+        }
+        // il campo pdf da solo basterebbe (si valorizza solo in updateCosto), ma controllare anche lo
+        // stato è una seconda barriera esplicita: finché il preventivo è solo 'inviato' non deve mai
+        // risultare scaricabile, qualunque cosa succeda in futuro alla colonna pdf.
+        if ($preventivo->getStato() !== 'accettato' && $preventivo->getStato() !== 'svolto') {
+            throw new Exception("Il PDF sarà disponibile solo dopo che l'admin avrà accettato e fissato un prezzo.");
+        }
+        if (!$preventivo->getPdf()) {
+            throw new Exception("Nessun PDF disponibile per questo preventivo.");
+        }
+
+        $percorso = __DIR__ . '/../uploads/preventivi/' . basename($preventivo->getPdf());
+        if (!is_file($percorso)) {
+            throw new Exception("Il file PDF non è più disponibile.");
+        }
+
+        header('Content-Type: application/pdf');
+        header('Content-Disposition: attachment; filename="preventivo_' . $preventivo->getIdPreventivo() . '.pdf"');
+        header('Content-Length: ' . filesize($percorso));
+        readfile($percorso);
+        exit();
+    }
 }
 ?>

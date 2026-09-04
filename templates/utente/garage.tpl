@@ -25,7 +25,7 @@
                     <p>Targa: <strong>{$v.targa}</strong></p>
                     <div class="auth-actions">
                         <a class="home-link home-link--blue" href="/MechanicOne/richiedipreventivo/nuovo">Richiedi preventivo</a>
-                        <form action="/MechanicOne/garage/eliminaVeicolo/{$v.idV}" method="post" onsubmit="return confirm('Eliminare questo veicolo?');">
+                        <form action="/MechanicOne/garage/eliminaVeicolo/{$v.idV}" method="post" onsubmit="return confirm('Eliminare questo veicolo? Verranno eliminati anche tutti i preventivi e le prenotazioni collegati, senza possibilità di recupero.');">
                             <button class="btn btn--danger" type="submit">Elimina</button>
                         </form>
                     </div>

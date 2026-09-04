@@ -1,0 +1,8 @@
+# I file qui dentro sono contenuti caricati dagli utenti (foto profilo, PDF generati):
+# non deve mai essere possibile farne eseguire uno come script, qualunque estensione abbia.
+<IfModule mod_php.c>
+    php_flag engine off
+</IfModule>
+<FilesMatch "\.(php|php\d|phtml|pl|py|cgi|sh)$">
+    Require all denied
+</FilesMatch>

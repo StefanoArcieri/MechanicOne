@@ -28,6 +28,9 @@
                         <article class="card status-card status-card--{$sezione.classe}">
                             <h3>Preventivo #{$p.idPrev}</h3>
                             <p>{$p.descrizione}</p>
+                            {if $p.pdf && ($p.stato == 'accettato' || $p.stato == 'svolto')}
+                                <p><a class="form-link" href="/MechanicOne/visualizzapreventivi/scaricaPdf/{$p.idPrev}">📄 Scarica PDF</a></p>
+                            {/if}
                             {if $sezione.mostraCosto}
                                 <p class="status-note">Costo: <strong>{if $p.costo}{$p.costo} &euro;{else}da definire{/if}</strong></p>
                             {/if}

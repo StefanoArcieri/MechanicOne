@@ -30,7 +30,7 @@ class FPrenotazione {
             $query = "INSERT INTO prenotazioni (idPrev, idM, idU, idV, data, data_proposta, ora, ora_proposta, stato)
                       VALUES (:idPrev, :idM, :idU, :idV, :data, :data_proposta, :ora, :ora_proposta, :stato)";
             $stmt = $pdo->prepare($query);
-            return $stmt->execute([
+            $stmt->execute([
                 ':idPrev'        => $prenotazione->getIdPreventivo(),
                 ':idM'           => $prenotazione->getIdMeccanico(),
                 ':idU'           => $prenotazione->getIdUtente(),
@@ -41,6 +41,7 @@ class FPrenotazione {
                 ':ora_proposta'  => $prenotazione->getOraProposta(),
                 ':stato'         => $prenotazione->getStato(),
             ]);
+            return (int) $pdo->lastInsertId();
         } catch (PDOException $e) {
             error_log($e->getMessage());
             throw new Exception("Errore nello store della prenotazione.");

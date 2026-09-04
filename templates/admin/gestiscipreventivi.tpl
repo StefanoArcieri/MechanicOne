@@ -39,6 +39,9 @@
                                 <p class="status-note">{$p.clienteLabel} — {$p.veicoloLabel}</p>
                                 <p class="status-note">Servizio: {$p.servizioLabel}</p>
                                 <p>{$p.descrizione}</p>
+                                {if $p.pdf && ($p.stato == 'accettato' || $p.stato == 'svolto')}
+                                    <p><a class="form-link" href="/MechanicOne/gestiscipreventivi/scaricaPdf/{$p.idPrev}">📄 Scarica PDF</a></p>
+                                {/if}
                                 {if $p.descrizione_proposta}
                                     <p class="status-note">Modifica proposta dal cliente: <em>{$p.descrizione_proposta}</em></p>
                                 {/if}
@@ -60,6 +63,10 @@
                                 {elseif $sezione.classe == 'svolto'}
                                     <p class="status-note">Prezzo: <strong>{$p.costo} &euro;</strong></p>
                                 {/if}
+
+                                <form action="/MechanicOne/gestiscipreventivi/elimina/{$p.idPrev}" method="post" onsubmit="return confirm('Eliminare definitivamente questo preventivo? Se ha già una prenotazione collegata, verrà eliminata anche quella. L\'azione non è reversibile.');">
+                                    <button class="btn btn--danger" type="submit">Elimina</button>
+                                </form>
                             </article>
                             {if $smarty.foreach.item.last && $smarty.foreach.item.iteration > 3}
                                     </div>

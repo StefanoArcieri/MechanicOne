@@ -32,12 +32,16 @@ class FMeccanico {
         try {
             $query = "INSERT INTO meccanici (idM, specializzazione, foto_profilo, status) VALUES (:idM, :specializzazione, :foto_profilo, :status)";
             $stmt = $pdo->prepare($query);
-                return $stmt->execute([
+                $stmt->execute([
                     ':idM' => $meccanico->getIdMeccanico(),
                     ':specializzazione' => $meccanico->getSpecializzazione(),
                     ':foto_profilo' => $meccanico->getFotoProfilo(),
                     ':status' => $meccanico->getStatus(),
                 ]);
+                // qui idM non è auto-increment (è la stessa idU dell'utente, passata da chi chiama):
+                // niente lastInsertId(), sarebbe sbagliato. L'id è già noto, lo restituiamo per
+                // coerenza con le altre store() (un id vero invece di un semplice booleano).
+                return (int) $meccanico->getIdMeccanico();
 
         } catch (PDOException $e) {
                 error_log($e->getMessage());

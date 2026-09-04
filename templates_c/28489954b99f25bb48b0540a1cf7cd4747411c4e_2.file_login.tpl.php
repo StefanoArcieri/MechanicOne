@@ -1,11 +1,11 @@
 <?php
-/* Smarty version 5.8.0, created on 2026-09-03 19:32:27
+/* Smarty version 5.8.0, created on 2026-09-04 17:49:03
   from 'file:login.tpl' */
 
 /* @var \Smarty\Template $_smarty_tpl */
 if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
   'version' => '5.8.0',
-  'unifunc' => 'content_6a99af2b628fe4_05016162',
+  'unifunc' => 'content_6a9ae86fb8eda3_29819523',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
@@ -20,23 +20,23 @@ if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
   array (
   ),
 ))) {
-function content_6a99af2b628fe4_05016162 (\Smarty\Template $_smarty_tpl) {
+function content_6a9ae86fb8eda3_29819523 (\Smarty\Template $_smarty_tpl) {
 $_smarty_current_dir = 'C:\\xampp\\htdocs\\MechanicOne\\templates';
 $_smarty_tpl->getInheritance()->init($_smarty_tpl, true);
 ?>
 
 
 <?php 
-$_smarty_tpl->getInheritance()->instanceBlock($_smarty_tpl, 'Block_14531357066a99af2b60bcd7_90502840', 'title');
+$_smarty_tpl->getInheritance()->instanceBlock($_smarty_tpl, 'Block_12815287006a9ae86fb64e94_83127286', 'title');
 ?>
 
 
 <?php 
-$_smarty_tpl->getInheritance()->instanceBlock($_smarty_tpl, 'Block_4469635226a99af2b615c91_48683958', 'content');
+$_smarty_tpl->getInheritance()->instanceBlock($_smarty_tpl, 'Block_19997037286a9ae86fb735e0_10517162', 'content');
 $_smarty_tpl->getInheritance()->endChild($_smarty_tpl, 'layouts/base.tpl', $_smarty_current_dir);
 }
 /* {block 'title'} */
-class Block_14531357066a99af2b60bcd7_90502840 extends \Smarty\Runtime\Block
+class Block_12815287006a9ae86fb64e94_83127286 extends \Smarty\Runtime\Block
 {
 public function callBlock(\Smarty\Template $_smarty_tpl) {
 $_smarty_current_dir = 'C:\\xampp\\htdocs\\MechanicOne\\templates';
@@ -46,7 +46,7 @@ Login - MechanicOne<?php
 }
 /* {/block 'title'} */
 /* {block 'content'} */
-class Block_4469635226a99af2b615c91_48683958 extends \Smarty\Runtime\Block
+class Block_19997037286a9ae86fb735e0_10517162 extends \Smarty\Runtime\Block
 {
 public function callBlock(\Smarty\Template $_smarty_tpl) {
 $_smarty_current_dir = 'C:\\xampp\\htdocs\\MechanicOne\\templates';
@@ -60,7 +60,7 @@ $_smarty_current_dir = 'C:\\xampp\\htdocs\\MechanicOne\\templates';
 
     <?php if ($_smarty_tpl->getValue('errore')) {?>
         <div class="form-alert">
-            <strong>❌ Errore:</strong> <?php echo $_smarty_tpl->getValue('errore');?>
+            <strong>❌ Errore:</strong> <?php echo htmlspecialchars((string) ($_smarty_tpl->getValue('errore')), ENT_QUOTES, 'UTF-8');?>
 
         </div>
     <?php }?>
@@ -68,7 +68,7 @@ $_smarty_current_dir = 'C:\\xampp\\htdocs\\MechanicOne\\templates';
     <form action="/MechanicOne/utente/login" method="POST" class="form">
         <div class="form-field">
             <label for="email" class="form-label">Indirizzo Email</label>
-            <input type="email" id="email" name="email" required placeholder="esempio@meccanico.it" class="form-input" value="<?php echo (($tmp = $_smarty_tpl->getValue('emailRicordata') ?? null)===null||$tmp==='' ? '' ?? null : $tmp);?>
+            <input type="email" id="email" name="email" required placeholder="esempio@meccanico.it" class="form-input" value="<?php echo htmlspecialchars((string) ((($tmp = $_smarty_tpl->getValue('emailRicordata') ?? null)===null||$tmp==='' ? '' ?? null : $tmp)), ENT_QUOTES, 'UTF-8');?>
 ">
         </div>
 

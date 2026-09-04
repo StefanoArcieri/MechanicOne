@@ -67,7 +67,7 @@ class CUtente {
     // atterrano sempre su una loro pagina dedicata, mai su questa 'home' condivisa.
     private function pannelloLavorativo($ruolo) {
         switch ($ruolo) {
-            case 'meccanico': return '/MechanicOne/profilomeccanico/profilo';
+            case 'meccanico': return '/MechanicOne/dashboard/meccanico';
             case 'admin':      return '/MechanicOne/dashboard/admin';
             default:           return null;
         }
@@ -86,6 +86,10 @@ class CUtente {
                 $utente = $pm->verificaLogin($email, $password);
 
                 if ($utente !== null) {
+                    // prima di scrivere qualunque dato in sessione: nuovo id di sessione, per non
+                    // ereditare un id che l'attaccante potrebbe aver fissato prima del login
+                    Session::regenerate();
+
                     Session::set('idU', $utente->getId());
                     Session::set('nome', $utente->getNome());
                     Session::set('ruolo', $utente->getRuolo());
@@ -149,6 +153,10 @@ class CUtente {
                 $email    = trim(Request::post('email'));
                 $password = Request::post('password');
 
+                if (strlen($password) < 8) {
+                    throw new Exception("La password deve avere almeno 8 caratteri.");
+                }
+
                 $nuovoUtente = new EUtente(null, $nome, $cognome, $email, $password, 'cliente', null, date('Y-m-d H:i:s'));
 
                 $pm = PersistentManager::getInstance();
@@ -158,7 +166,9 @@ class CUtente {
                     throw new Exception("Impossibile registrarsi. Forse questa email è già nel nostro database?");
                 }
 
-                // Auto-login: appena registrato l'utente resta già dentro, non deve rifare il login
+                // Auto-login: appena registrato l'utente resta già dentro, non deve rifare il login.
+                // Anche qui: nuovo id di sessione prima di scrivere i dati, stesso motivo del login.
+                Session::regenerate();
                 Session::set('idU', $nuovoId);
                 Session::set('nome', $nome);
                 Session::set('ruolo', 'cliente');

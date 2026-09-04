@@ -23,6 +23,15 @@ class CScrivirecensione {
             throw new Exception("Il meccanico che vuoi recensire non è disponibile.");
         }
 
+        // una recensione a testa per meccanico: senza questo controllo si potevano pubblicare
+        // recensioni illimitate sullo stesso meccanico, alterando la media voti mostrata in home
+        $recensioniUtente = $pm->search('ERecensione', 'idU', $idU) ?: [];
+        foreach ($recensioniUtente as $r) {
+            if ((int) $r->getIdMeccanico() === (int) $idM) {
+                throw new Exception("Hai già recensito questo meccanico.");
+            }
+        }
+
         $nuovaRecensione = new ERecensione(null, $idM, $idU, $voto, $testo, date('Y-m-d'));
 
         if (!$pm->store($nuovaRecensione)) {

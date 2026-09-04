@@ -31,14 +31,24 @@ class CRichiedipreventivo {
                 throw new Exception("Il veicolo selezionato non appartiene al tuo garage.");
             }
 
+            // prima c'era solo il vincolo di chiave esterna nel DB a bloccare un idS inesistente:
+            // funzionava, ma con un errore tecnico invece di un messaggio comprensibile
+            if (!$pm->load('EServizio', 'idS', $idS)) {
+                throw new Exception("Il servizio selezionato non è valido.");
+            }
+
             if ($descrizione === '') {
                 throw new Exception("Descrivi il problema o l'intervento richiesto.");
             }
 
+            $dataRichiesta = date('Y-m-d H:i:s');
             $nuovoPreventivo = new EPreventivo(
-                null, $idU, $idV, $idS, null, 'inviato', $descrizione, null, date('Y-m-d H:i:s')
+                null, $idU, $idV, $idS, null, 'inviato', $descrizione, null, $dataRichiesta
             );
 
+            // niente PDF qui: si genera solo quando l'admin accetta e fissa un prezzo (vedi
+            // CGestiscipreventivi::updateCosto()), così il documento riporta anche il prezzo
+            // ed esiste solo per un preventivo davvero accettato, non per una semplice richiesta.
             if (!$pm->store($nuovoPreventivo)) {
                 throw new Exception("Problema tecnico durante l'invio della richiesta.");
             }

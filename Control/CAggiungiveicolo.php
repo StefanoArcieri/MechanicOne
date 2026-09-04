@@ -23,6 +23,11 @@ class CAggiungiveicolo {
             if ($targa === '' || $marca === '' || $modello === '') {
                 throw new Exception("Compila tutti i campi del veicolo.");
             }
+            // la colonna è varchar(7): senza questo controllo una targa più lunga (il campo nel
+            // form ha solo un maxlength HTML, aggirabile) verrebbe troncata in silenzio da MySQL
+            if (strlen($targa) > 7) {
+                throw new Exception("La targa non può superare i 7 caratteri.");
+            }
 
             $pm = PersistentManager::getInstance();
 

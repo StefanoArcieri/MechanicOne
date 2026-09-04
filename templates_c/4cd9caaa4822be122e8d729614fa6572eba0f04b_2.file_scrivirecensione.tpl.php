@@ -1,11 +1,11 @@
 <?php
-/* Smarty version 5.8.0, created on 2026-09-03 19:32:34
+/* Smarty version 5.8.0, created on 2026-09-04 17:32:45
   from 'file:utente/scrivirecensione.tpl' */
 
 /* @var \Smarty\Template $_smarty_tpl */
 if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
   'version' => '5.8.0',
-  'unifunc' => 'content_6a99af32116b76_86330088',
+  'unifunc' => 'content_6a9ae49db237e2_88695871',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
@@ -20,7 +20,7 @@ if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
   array (
   ),
 ))) {
-function content_6a99af32116b76_86330088 (\Smarty\Template $_smarty_tpl) {
+function content_6a9ae49db237e2_88695871 (\Smarty\Template $_smarty_tpl) {
 $_smarty_current_dir = 'C:\\xampp\\htdocs\\MechanicOne\\templates\\utente';
 ?><section class="review-write" id="recensioni">
     <h2>Lascia una recensione</h2>
@@ -38,8 +38,8 @@ $foreach0DoElse = true;
 foreach ($_from ?? [] as $_smarty_tpl->getVariable('m')->value) {
 $foreach0DoElse = false;
 ?>
-                            <option value="<?php echo $_smarty_tpl->getValue('m')['idM'];?>
-"><?php echo $_smarty_tpl->getValue('m')['nomeCompleto'];?>
+                            <option value="<?php echo htmlspecialchars((string) ($_smarty_tpl->getValue('m')['idM']), ENT_QUOTES, 'UTF-8');?>
+"><?php echo htmlspecialchars((string) ($_smarty_tpl->getValue('m')['nomeCompleto']), ENT_QUOTES, 'UTF-8');?>
 </option>
                         <?php
 }

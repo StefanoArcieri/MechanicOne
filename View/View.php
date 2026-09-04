@@ -29,7 +29,16 @@ class View {
 
     public function __construct() {
         $this->smarty = new Smarty();
-        
+
+        // Smarty di default NON scappa l'output di {$var} (escape_html = false). Nessun template
+        // di questo progetto usa mai un modificatore |escape esplicito, quindi qualunque input utente
+        // finito in un {$var} (nome, commento di una recensione, descrizione di un preventivo...)
+        // veniva stampato tale e quale: XSS persistente, sfruttabile anche da ospiti non loggati
+        // dove quel contenuto compare in pagine pubbliche (es. le recensioni in home). Attivandolo qui,
+        // ogni {$var} passa da htmlspecialchars() automaticamente in tutti i template, senza doverli
+        // toccare uno per uno.
+        $this->smarty->escape_html = true;
+
         $rootPath = dirname(__DIR__);
         $this->smarty->setTemplateDir($rootPath . '/templates/');
         $this->smarty->setCompileDir($rootPath . '/templates_c/');
@@ -48,6 +57,7 @@ class View {
         'preventivo_inviato'      => 'Richiesta di preventivo inviata.',
         'preventivo_prezzato'     => 'Preventivo aggiornato.',
         'preventivo_rifiutato'    => 'Preventivo rifiutato.',
+        'preventivo_eliminato'    => 'Preventivo eliminato.',
         'prenotazione_effettuata' => 'Prenotazione richiesta.',
         'prenotazione_accettata'  => 'Prenotazione confermata.',
         'prenotazione_modificata' => 'Prenotazione modificata.',

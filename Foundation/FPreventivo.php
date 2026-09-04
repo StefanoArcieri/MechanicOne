@@ -31,7 +31,7 @@ class FPreventivo {
             $query = "INSERT INTO preventivi (idU, idV, idS, descrizione, descrizione_proposta, costo, stato, pdf, data_richiesta)
                       VALUES (:idU, :idV, :idS, :descrizione, :descrizione_proposta, :costo, :stato, :pdf, :data_richiesta)";
             $stmt = $pdo->prepare($query);
-            return $stmt->execute([
+            $stmt->execute([
                 ':idU'                  => $preventivo->getIdUtente(),
                 ':idV'                  => $preventivo->getIdVeicolo(),
                 ':idS'                  => $preventivo->getIdServizio(),
@@ -42,6 +42,8 @@ class FPreventivo {
                 ':pdf'                  => $preventivo->getPdf(),
                 ':data_richiesta'       => $preventivo->getDataRichiesta(),
             ]);
+            // l'id serve subito dopo per generare il PDF della richiesta (che riporta "Preventivo #<id>")
+            return (int) $pdo->lastInsertId();
         } catch (PDOException $e) {
             error_log($e->getMessage());
             throw new Exception("Errore nello store del preventivo.");

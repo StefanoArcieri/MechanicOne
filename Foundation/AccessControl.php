@@ -19,7 +19,9 @@ class AccessControl {
             'registrazione' => 'public',
             'logout' => 'public',
         ],
-        'errore' => [
+        // la classe è CErrori (plurale): la chiave qui deve combaciare, altrimenti la regola
+        // non scatta mai e /errori/... finisce sulla regola di default ('auth') invece che 'public'
+        'errori' => [
             '*' => 'public',
         ],
 
@@ -89,6 +91,7 @@ class AccessControl {
         ],
         'dashboard' => [
             'admin' => ['admin'],
+            'meccanico' => ['meccanico'],
         ],
     ];
 

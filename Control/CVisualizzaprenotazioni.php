@@ -42,8 +42,15 @@ class CVisualizzaprenotazioni {
 
         $nuovaData = Request::post('nuovaData', '');
         $nuovaOra = Request::post('nuovaOra', '');
-        if ($nuovaData === '' || $nuovaOra === '') {
-            throw new Exception("Indica la nuova data e ora.");
+        // stessa validazione di CRichiediprenotazione::prenota(): niente date invalide o nel passato
+        if (!preg_match('/^\d{4}-\d{2}-\d{2}$/', $nuovaData) || !checkdate((int) substr($nuovaData, 5, 2), (int) substr($nuovaData, 8, 2), (int) substr($nuovaData, 0, 4))) {
+            throw new Exception("Indica una data valida.");
+        }
+        if ($nuovaData < date('Y-m-d')) {
+            throw new Exception("Non puoi proporre una data già passata.");
+        }
+        if (!preg_match('/^\d{2}:\d{2}(:\d{2})?$/', $nuovaOra)) {
+            throw new Exception("Indica un orario valido.");
         }
 
         $prenotazioneAggiornata = new EPrenotazione(

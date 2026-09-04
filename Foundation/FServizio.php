@@ -29,10 +29,11 @@ class FServizio {
         try {
             $query = "INSERT INTO servizi (titolo, descrizione) VALUES (:titolo, :descrizione)";
             $stmt = $pdo->prepare($query);
-                return $stmt->execute([
+                $stmt->execute([
                     ':titolo'      => $servizio->getTitolo(),
                     ':descrizione' => $servizio->getDescrizione(),
                 ]);
+                return (int) $pdo->lastInsertId();
 
         } catch (PDOException $e) {
                 error_log($e->getMessage());

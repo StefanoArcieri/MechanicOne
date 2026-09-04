@@ -40,6 +40,18 @@ class CRichiediprenotazione {
                 throw new Exception("Il veicolo selezionato non appartiene al tuo garage.");
             }
 
+            // data/ora non erano controllate affatto: si poteva prenotare nel passato, o con
+            // un formato invalido che il DB avrebbe rifiutato con un errore poco chiaro
+            if (!preg_match('/^\d{4}-\d{2}-\d{2}$/', $data) || !checkdate((int) substr($data, 5, 2), (int) substr($data, 8, 2), (int) substr($data, 0, 4))) {
+                throw new Exception("Indica una data valida.");
+            }
+            if ($data < date('Y-m-d')) {
+                throw new Exception("Non puoi prenotare una data già passata.");
+            }
+            if (!preg_match('/^\d{2}:\d{2}(:\d{2})?$/', $ora)) {
+                throw new Exception("Indica un orario valido.");
+            }
+
             if ($idPrev !== null) {
                 $preventivo = $pm->load('EPreventivo', 'idPrev', $idPrev);
                 if (!$preventivo || $preventivo->getIdUtente() != $idU || $preventivo->getIdVeicolo() != $idV) {
