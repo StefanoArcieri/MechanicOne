@@ -13,47 +13,60 @@ require_once __DIR__ . '/Session.php';
 class AccessControl {
 
     private static $rules = [
+
+        // ===== ACCOUNT / UTENTE — ciclo di vita dell'account, non un oggetto del dominio =====
         'utente' => [
             'home' => 'public',
             'login' => 'public',
             'registrazione' => 'public',
             'logout' => 'public',
-        ],
-        // la classe è CErrori (plurale): la chiave qui deve combaciare, altrimenti la regola
-        // non scatta mai e /errori/... finisce sulla regola di default ('auth') invece che 'public'
-        'errori' => [
-            '*' => 'public',
+            'dashboardUtente' => ['cliente'],
         ],
 
-        // Lato utente: riservato al ruolo 'cliente'. Un meccanico non deve poter usare anche
-        // le funzioni cliente (garage, preventivi, prenotazioni, recensioni): se un meccanico
-        // vuole essere anche cliente dell'officina, si registra un secondo account.
-        'aggiungiveicolo' => [
+        // ===== VEICOLO — solo lato cliente, nessuna gestione staff per ora =====
+        'veicolo' => [
             '*' => ['cliente'],
         ],
-        'garage' => [
-            '*' => ['cliente'],
-        ],
+
+        // ===== PREVENTIVO — il cliente crea/vede i propri, l'admin gestisce tutti =====
         'richiedipreventivo' => [
             '*' => ['cliente'],
         ],
         'visualizzapreventivi' => [
             '*' => ['cliente'],
         ],
+        // Valutare/prezzare/rifiutare restano solo all'admin: il meccanico non vede né
+        // gestisce i preventivi, si occupa solo delle prenotazioni già assegnate.
+        'gestiscipreventivi' => [
+            '*' => ['admin'],
+        ],
+
+        // ===== PRENOTAZIONE — il cliente crea/vede le proprie, admin+meccanico gestiscono tutte =====
         'richiediprenotazione' => [
             '*' => ['cliente'],
         ],
         'visualizzaprenotazioni' => [
             '*' => ['cliente'],
         ],
-        'scrivirecensione' => [
-            'scrivi' => ['cliente'],
-        ],
-        'visualizzarecensioni' => [
-            'richiediLista' => 'auth',
+        'gestisciprenotazioni' => [
+            'lista' => ['admin', 'meccanico'],
+            'richiediLista' => ['admin', 'meccanico'],
+            'accetta' => ['admin', 'meccanico'],
+            // solo il meccanico segna il lavoro come concluso: l'admin vede l'avanzamento ma non lo forza
+            'concludi' => ['meccanico'],
+            // spostare data/ora resta una decisione dell'admin, non del meccanico
+            'modifica' => ['admin'],
+            'cancella' => ['admin'],
+            'elimina' => ['admin'],
         ],
 
-        // Lato meccanico/admin
+        // ===== RECENSIONE — il cliente scrive, la lista è pubblica =====
+        'recensione' => [
+            'scrivi' => ['cliente'],
+            'richiediLista' => 'public',
+        ],
+
+        // ===== MECCANICO — il meccanico gestisce se stesso, l'admin gestisce l'elenco =====
         'profilomeccanico' => [
             'area' => 'auth',
             'profilo' => ['meccanico', 'admin'],
@@ -67,6 +80,8 @@ class AccessControl {
             'creaMeccanico' => ['admin'],
             'eliminaMeccanico' => ['admin'],
         ],
+
+        // ===== SERVIZIO — catalogo gestito solo dall'admin =====
         'gestisciservizi' => [
             'lista' => 'auth',
             'aggiungiServizio' => ['admin'],
@@ -74,24 +89,12 @@ class AccessControl {
             'richiediLista' => 'auth',
             'eliminaServizio' => ['admin'],
         ],
-        // I preventivi (valutare, prezzare, rifiutare) restano solo all'admin: il meccanico
-        // non li vede più né li gestisce, si occupa solo delle prenotazioni assegnate.
-        'gestiscipreventivi' => [
-            '*' => ['admin'],
-        ],
-        'gestisciprenotazioni' => [
-            'lista' => ['admin', 'meccanico'],
-            'richiediLista' => ['admin', 'meccanico'],
-            'accetta' => ['admin', 'meccanico'],
-            // solo il meccanico segna il lavoro come concluso: l'admin vede l'avanzamento ma non lo forza
-            'concludi' => ['meccanico'],
-            // spostare data/ora resta una decisione dell'admin, non del meccanico
-            'modifica' => ['admin'],
-            'cancella' => ['admin', 'meccanico'],
-        ],
-        'dashboard' => [
-            'admin' => ['admin'],
-            'meccanico' => ['meccanico'],
+
+        // ===== INFRASTRUTTURA — non è un oggetto del dominio =====
+        // la classe è CErrori (plurale): la chiave qui deve combaciare, altrimenti la regola
+        // non scatta mai e /errori/... finisce sulla regola di default ('auth') invece che 'public'
+        'errori' => [
+            '*' => 'public',
         ],
     ];
 
@@ -115,18 +118,25 @@ class AccessControl {
     public static function verifica($controllerInput, $method) {
         $requisito = self::requisito($controllerInput, $method);
 
+        //se è pubblico ez
         if ($requisito === 'public') {
             return 'ok';
         }
 
+        //se nn è pubblico vuol dire che devi essere loggato
+        //quindi se non hai l'idU in sessione, login
         if (empty(Session::get('idU'))) {
             return 'login';
         }
 
+        //ora che abbiamo visto che abbiamo l'id di sessione
+        //vediamo se richiede un auth generale, in caso positivo ok
         if ($requisito === 'auth') {
             return 'ok';
         }
 
+        //se non è auth, vuol dire che richiede un ruolo specifico, 
+        //quindi controlliamo il ruolo dell'utente in sessione
         $ruolo = strtolower((string) Session::get('ruolo'));
         return in_array($ruolo, $requisito, true) ? 'ok' : 'forbidden';
     }

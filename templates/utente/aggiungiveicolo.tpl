@@ -5,7 +5,7 @@
 {block name='content'}
 <div class="form-panel">
     <div class="form-header">
-        <h1 class="form-title">{$titolo|default:'Aggiungi un veicolo'}</h1>
+        <h1 class="form-title">Aggiungi un veicolo</h1>
         <p class="form-subtitle">Inserisci i dati del veicolo da collegare al tuo garage.</p>
     </div>
 
@@ -13,7 +13,7 @@
         <div class="form-alert"><strong>Errore:</strong> {$errore}</div>
     {/if}
 
-    <form class="form" action="/MechanicOne/aggiungiveicolo/aggiungiVeicolo" method="post">
+    <form class="form" action="/MechanicOne/veicolo/aggiungiVeicolo" method="post">
         <div class="form-field">
             <label class="form-label" for="targa">Targa</label>
             <input class="form-input" type="text" id="targa" name="targa" maxlength="7" placeholder="AB123CD" required>
@@ -30,7 +30,7 @@
     </form>
 
     <div class="form-footer">
-        <a class="form-link" href="/MechanicOne/garage/lista">&larr; Torna al garage</a>
+        <a class="form-link" href="/MechanicOne/veicolo/lista">&larr; Torna al garage</a>
     </div>
 </div>
 {/block}

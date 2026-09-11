@@ -4,14 +4,12 @@ require_once __DIR__ . '/CUtente.php';
 require_once __DIR__ . '/CErrori.php';
 
 // Lato utente: un controller per macro-funzionalità
-require_once __DIR__ . '/CAggiungiveicolo.php';
-require_once __DIR__ . '/CGarage.php';
+require_once __DIR__ . '/CVeicolo.php';
 require_once __DIR__ . '/CRichiedipreventivo.php';
 require_once __DIR__ . '/CVisualizzapreventivi.php';
 require_once __DIR__ . '/CRichiediprenotazione.php';
 require_once __DIR__ . '/CVisualizzaprenotazioni.php';
-require_once __DIR__ . '/CScrivirecensione.php';
-require_once __DIR__ . '/CVisualizzarecensioni.php';
+require_once __DIR__ . '/CRecensione.php';
 
 // Lato meccanico/admin: un controller per macro-funzionalità
 require_once __DIR__ . '/CProfilomeccanico.php';
@@ -19,7 +17,6 @@ require_once __DIR__ . '/CGestiscimeccanici.php';
 require_once __DIR__ . '/CGestisciservizi.php';
 require_once __DIR__ . '/CGestiscipreventivi.php';
 require_once __DIR__ . '/CGestisciprenotazioni.php';
-require_once __DIR__ . '/CDashboard.php';
 
 require_once __DIR__ . '/../Foundation/Session.php';
 require_once __DIR__ . '/../Foundation/AccessControl.php';
@@ -56,6 +53,15 @@ class FrontController {
         if (!method_exists($controller, $method)) {
             $errorController = new CErrori();
             return $errorController->mostraErrore(405, "L'azione '$method' non esiste nel sistema.");
+        }
+
+        // Controllo se l'id di sessione corrisponde a un utente valido: se non c'è, significa che
+        // l'utente ha cancellato il cookie di sessione o che l'id di sessione è stato manipolato 
+        //(session fixation) e quindi la sessione va invalidata. Oppure utente eliminato dal db, 
+        //ma il cookie di sessione era rimasto.
+        $idU = Session::get('idU');
+        if ($idU && !PersistentManager::getInstance()->load('EUtente', 'idU', $idU)) {
+            Session::destroy();
         }
 
         // Controllo permessi tramite la mappa dichiarativa di AccessControl

@@ -5,67 +5,42 @@ require_once __DIR__ . '/../Entity/EPrenotazione.php';
 require_once __DIR__ . '/../Entity/EPreventivo.php';
 require_once __DIR__ . '/../Foundation/Session.php';
 require_once __DIR__ . '/../Foundation/Request.php';
-require_once __DIR__ . '/../View/VGestisciprenotazioni.php';
+require_once __DIR__ . '/../View/VPrenotazione.php';
 require_once __DIR__ . '/CGestiscimeccanici.php';
 
 class CGestisciprenotazioni {
 
-    // Navigazione a 3 livelli, tutta su questo stesso metodo:
-    //  /gestisciprenotazioni/lista                      -> mesi che hanno almeno una prenotazione
-    //  /gestisciprenotazioni/lista/{anno}/{mese}         -> settimane di quel mese
-    //  /gestisciprenotazioni/lista/{anno}/{mese}/{lun}    -> prenotazioni di quella settimana (lun = lunedì, Y-m-d)
-    public function lista($anno = null, $mese = null, $settimanaInizio = null) {
-        $view = new VGestisciprenotazioni();
+    // Una sola pagina, tutte le prenotazioni raggruppate per mese (la View se ne occupa,
+    // stessa classe usata anche lato cliente — VPrenotazione::mostraLista() decide il resto
+    // in base al ruolo, come già fatto per i preventivi).
+    public function lista() {
+        $view = new VPrenotazione();
         $errore = '';
-
-        // questi arrivano da segmenti di URL scritti a mano: se non sono validi si scartano
-        // invece di lasciarli propagare in date()/strtotime() (altrimenti si ottengono
-        // etichette senza senso tipo "Gennaio 1970" da una data non riconosciuta)
-        if ($mese !== null && (!ctype_digit((string) $mese) || (int) $mese < 1 || (int) $mese > 12)) {
-            $mese = null;
-        }
-        if ($anno !== null && (!ctype_digit((string) $anno) || (int) $anno < 2000 || (int) $anno > 2100)) {
-            $anno = null;
-        }
-        if ($settimanaInizio !== null && !preg_match('/^\d{4}-\d{2}-\d{2}$/', $settimanaInizio)) {
-            $settimanaInizio = null;
-        }
-        if ($anno === null || $mese === null) {
-            $settimanaInizio = null;
-        }
 
         try {
             $prenotazioni = array_map([$this, 'arricchisci'], $this->richiediLista());
+
+            // il meccanico vede solo le proprie prese in carico + quelle 'in attesa' (idM ancora
+            // null: pool condiviso da cui chiunque può accettare) — mai quelle degli altri colleghi
+            if (Session::get('ruolo') === 'meccanico') {
+                $mioId = (int) Session::get('idU');
+                $prenotazioni = array_values(array_filter($prenotazioni, function ($p) use ($mioId) {
+                    return $p['idM'] === null || (int) $p['idM'] === $mioId;
+                }));
+            }
         } catch (Exception $e) {
             $errore = $e->getMessage();
             $prenotazioni = [];
         }
 
-        if ($anno && $mese && $settimanaInizio) {
-            // per il selettore "assegna meccanico" nel form di modifica, solo l'admin lo vede/usa
-            $meccanici = Session::get('ruolo') === 'admin'
-                ? array_map([new CGestiscimeccanici(), 'arricchisciConNome'], (new CGestiscimeccanici())->richiediLista())
-                : [];
-            $view->mostraSettimana((int) $anno, (int) $mese, $settimanaInizio, $prenotazioni, $errore, $meccanici);
-        } elseif ($anno && $mese) {
-            $view->mostraSettimaneDelMese((int) $anno, (int) $mese, $prenotazioni, $errore);
-        } else {
-            $view->mostraMesi($prenotazioni, $errore);
-        }
+        // per il selettore "assegna meccanico" nel form di modifica, solo l'admin lo vede/usa
+        $meccanici = Session::get('ruolo') === 'admin'
+            ? array_map([new CGestiscimeccanici(), 'arricchisciConNome'], (new CGestiscimeccanici())->richiediLista())
+            : [];
+
+        $view->mostraLista($prenotazioni, $errore, $meccanici);
     }
 
-    // Dopo un'azione (accetta/concludi/cancella) si torna alla stessa settimana da cui si è partiti,
-    // non alla lista dei mesi: il form nasconde anno/mese/settimanaInizio, li leggiamo da qui.
-    private function redirectAllaSettimana($msg) {
-        $anno = Request::post('anno');
-        $mese = Request::post('mese');
-        $settimanaInizio = Request::post('settimanaInizio');
-
-        if ($anno && $mese && $settimanaInizio) {
-            return "/MechanicOne/gestisciprenotazioni/lista/$anno/$mese/$settimanaInizio?msg=$msg";
-        }
-        return "/MechanicOne/gestisciprenotazioni/lista?msg=$msg";
-    }
 
     public function richiediLista() {
         $pm = PersistentManager::getInstance();
@@ -103,7 +78,7 @@ class CGestisciprenotazioni {
 
         $ruolo = Session::get('ruolo');
         $presaInCaricoDaMeccanico = $ruolo === 'meccanico';
-        $idM = $presaInCaricoDaMeccanico ? Session::get('idU') : $prenData->getIdMeccanico();
+        $idM = $presaInCaricoDaMeccanico ? Session::get('idU') : Request::post('idM', '');
 
         $prenotazioneAccettata = new EPrenotazione(
             $prenData->getIdPrenotazione(), $prenData->getIdPreventivo(), $idM,
@@ -119,7 +94,7 @@ class CGestisciprenotazioni {
             $this->completaPreventivoCollegato($prenData->getIdPreventivo());
         }
 
-        header('Location: ' . $this->redirectAllaSettimana('prenotazione_accettata'));
+        header('Location: /MechanicOne/gestisciprenotazioni/lista?msg=prenotazione_accettata#prenotazione-'.$idPren);
         exit();
     }
 
@@ -130,8 +105,7 @@ class CGestisciprenotazioni {
 
         $preventivoSvolto = new EPreventivo(
             $prevData->getIdPreventivo(), $prevData->getIdUtente(), $prevData->getIdVeicolo(), $prevData->getIdServizio(),
-            $prevData->getCosto(), 'svolto', $prevData->getDescrizione(), $prevData->getPdf(), $prevData->getDataRichiesta(),
-            null
+            $prevData->getCosto(), 'svolto', $prevData->getDescrizione(), $prevData->getPdf(), $prevData->getDataRichiesta()
         );
         $pm->update($preventivoSvolto);
     }
@@ -154,7 +128,7 @@ class CGestisciprenotazioni {
             throw new Exception("Impossibile concludere la prenotazione.");
         }
 
-        header('Location: ' . $this->redirectAllaSettimana('prenotazione_conclusa'));
+        header('Location: /MechanicOne/gestisciprenotazioni/lista?msg=prenotazione_conclusa#prenotazione-'.$idPren);
         exit();
     }
 
@@ -172,9 +146,6 @@ class CGestisciprenotazioni {
 
         $nuovaData = Request::post('data', '');
         $nuovaOra = Request::post('ora', '');
-        if ($nuovaData === '' || $nuovaOra === '') {
-            throw new Exception("Data e ora sono obbligatorie.");
-        }
 
         // '' nel select = "nessuno": toglie l'assegnazione. Un id valorizzato = assegna/cambia meccanico.
         $idMPost = Request::post('idM', '');
@@ -193,13 +164,7 @@ class CGestisciprenotazioni {
             throw new Exception("Impossibile modificare la prenotazione.");
         }
 
-        // la data è cambiata: la prenotazione potrebbe essere finita in un'altra settimana/mese,
-        // seguiamola invece di rimandare l'admin a una vista ormai vuota
-        $ts = strtotime($nuovaData);
-        $giornoSettimana = (int) date('N', $ts);
-        $lunedi = date('Y-m-d', strtotime('-' . ($giornoSettimana - 1) . ' days', $ts));
-
-        header('Location: /MechanicOne/gestisciprenotazioni/lista/' . date('Y', $ts) . '/' . date('n', $ts) . '/' . $lunedi . '?msg=prenotazione_modificata');
+        header('Location: /MechanicOne/gestisciprenotazioni/lista?msg=prenotazione_modificata#prenotazione-'.$idPren);
         exit();
     }
 
@@ -219,7 +184,20 @@ class CGestisciprenotazioni {
             throw new Exception("Impossibile cancellare la prenotazione.");
         }
 
-        header('Location: ' . $this->redirectAllaSettimana('prenotazione_cancellata'));
+        header('Location: /MechanicOne/gestisciprenotazioni/lista?msg=prenotazione_cancellata#prenotazione-'.$idPren);
+        exit();
+    }
+
+    public function elimina($idPren){
+        $pm = PersistentManager::getInstance();
+        $prenData = $pm->load('EPrenotazione', 'idPren', $idPren);
+        if (!$prenData) throw new Exception("Prenotazione non trovata.");
+
+        if (!$pm->delete('EPrenotazione', 'idPren', $idPren)) {
+            throw new Exception("Impossibile eliminare la prenotazione.");
+        }
+
+        header('Location: /MechanicOne/gestisciprenotazioni/lista?msg=prenotazione_eliminata#prenotazione-'.$idPren);
         exit();
     }
 }

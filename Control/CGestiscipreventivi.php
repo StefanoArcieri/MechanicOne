@@ -6,12 +6,12 @@ require_once __DIR__ . '/../Foundation/Session.php';
 require_once __DIR__ . '/../Foundation/Request.php';
 require_once __DIR__ . '/../Foundation/PdfPreventivo.php';
 require_once __DIR__ . '/../Foundation/Upload.php';
-require_once __DIR__ . '/../View/VGestiscipreventivi.php';
+require_once __DIR__ . '/../View/VPreventivo.php';
 
 class CGestiscipreventivi {
 
     public function lista($params = []) {
-        $view = new VGestiscipreventivi();
+        $view = new VPreventivo();
         $errore = '';
         try {
             $preventivi = array_map([$this, 'arricchisci'], $this->richiediLista());
@@ -54,13 +54,9 @@ class CGestiscipreventivi {
             throw new Exception("Il prezzo deve essere un numero maggiore o uguale a zero.");
         }
 
-        // se il preventivo aveva una proposta di modifica in sospeso, accettandolo la proposta diventa definitiva
-        $descrizioneFinale = $prevData->getDescrizioneProposta() ?: $prevData->getDescrizione();
-
         $preventivoAggiornato = new EPreventivo(
             $prevData->getIdPreventivo(), $prevData->getIdUtente(), $prevData->getIdVeicolo(), $prevData->getIdServizio(),
-            $nuovoCosto, 'accettato', $descrizioneFinale, $prevData->getPdf(), $prevData->getDataRichiesta(),
-            null
+            $nuovoCosto, 'accettato', $prevData->getDescrizione(), $prevData->getPdf(), $prevData->getDataRichiesta()
         );
 
         if (!$pm->update($preventivoAggiornato)) {
@@ -74,8 +70,7 @@ class CGestiscipreventivi {
             $nomeFile = PdfPreventivo::genera($preventivoAggiornato);
             $preventivoConPdf = new EPreventivo(
                 $preventivoAggiornato->getIdPreventivo(), $preventivoAggiornato->getIdUtente(), $preventivoAggiornato->getIdVeicolo(), $preventivoAggiornato->getIdServizio(),
-                $preventivoAggiornato->getCosto(), $preventivoAggiornato->getStato(), $preventivoAggiornato->getDescrizione(), $nomeFile, $preventivoAggiornato->getDataRichiesta(),
-                null
+                $preventivoAggiornato->getCosto(), $preventivoAggiornato->getStato(), $preventivoAggiornato->getDescrizione(), $nomeFile, $preventivoAggiornato->getDataRichiesta()
             );
             $pm->update($preventivoConPdf);
         } catch (Exception $e) {
@@ -99,8 +94,7 @@ class CGestiscipreventivi {
 
         $preventivoRifiutato = new EPreventivo(
             $prevData->getIdPreventivo(), $prevData->getIdUtente(), $prevData->getIdVeicolo(), $prevData->getIdServizio(),
-            $prevData->getCosto(), 'rifiutato', $prevData->getDescrizione(), $prevData->getPdf(), $prevData->getDataRichiesta(),
-            null
+            $prevData->getCosto(), 'rifiutato', $prevData->getDescrizione(), $prevData->getPdf(), $prevData->getDataRichiesta()
         );
 
         if (!$pm->update($preventivoRifiutato)) {

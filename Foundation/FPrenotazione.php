@@ -9,7 +9,7 @@ class FPrenotazione {
         if (!$row) return null;
         return new EPrenotazione(
             $row['idPren'], $row['idPrev'], $row['idM'], $row['idU'], $row['idV'],
-            $row['data'], $row['stato'], $row['ora'], $row['data_proposta'], $row['ora_proposta']
+            $row['data'], $row['stato'], $row['ora']
         );
     }
 
@@ -27,8 +27,8 @@ class FPrenotazione {
 
     public function store($prenotazione, $pdo) {
         try {
-            $query = "INSERT INTO prenotazioni (idPrev, idM, idU, idV, data, data_proposta, ora, ora_proposta, stato)
-                      VALUES (:idPrev, :idM, :idU, :idV, :data, :data_proposta, :ora, :ora_proposta, :stato)";
+            $query = "INSERT INTO prenotazioni (idPrev, idM, idU, idV, data, ora, stato)
+                      VALUES (:idPrev, :idM, :idU, :idV, :data, :ora, :stato)";
             $stmt = $pdo->prepare($query);
             $stmt->execute([
                 ':idPrev'        => $prenotazione->getIdPreventivo(),
@@ -36,9 +36,7 @@ class FPrenotazione {
                 ':idU'           => $prenotazione->getIdUtente(),
                 ':idV'           => $prenotazione->getIdVeicolo(),
                 ':data'          => $prenotazione->getDataPrenotazione(),
-                ':data_proposta' => $prenotazione->getDataProposta(),
                 ':ora'           => $prenotazione->getOra(),
-                ':ora_proposta'  => $prenotazione->getOraProposta(),
                 ':stato'         => $prenotazione->getStato(),
             ]);
             return (int) $pdo->lastInsertId();
@@ -51,8 +49,7 @@ class FPrenotazione {
     public function update($prenotazione, $pdo) {
         try {
             $query = "UPDATE prenotazioni SET idPrev = :idPrev, idM = :idM, idU = :idU,
-                      idV = :idV, data = :data, data_proposta = :data_proposta,
-                      ora = :ora, ora_proposta = :ora_proposta, stato = :stato WHERE idPren = :idPren";
+                      idV = :idV, data = :data, ora = :ora, stato = :stato WHERE idPren = :idPren";
             $stmt = $pdo->prepare($query);
             return $stmt->execute([
                 ':idPren'        => $prenotazione->getIdPrenotazione(),
@@ -61,9 +58,7 @@ class FPrenotazione {
                 ':idU'           => $prenotazione->getIdUtente(),
                 ':idV'           => $prenotazione->getIdVeicolo(),
                 ':data'          => $prenotazione->getDataPrenotazione(),
-                ':data_proposta' => $prenotazione->getDataProposta(),
                 ':ora'           => $prenotazione->getOra(),
-                ':ora_proposta'  => $prenotazione->getOraProposta(),
                 ':stato'         => $prenotazione->getStato(),
             ]);
         } catch (PDOException $e) {

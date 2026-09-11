@@ -16,7 +16,6 @@
                 <div class="dashboard-hero__avatar-placeholder">{$profilo.iniziale}</div>
             {/if}
             <h2>{$profilo.nome} {$profilo.cognome}</h2>
-            <p class="status-note">Stato account: <strong>{$profilo.status}</strong></p>
             <p class="auth-text">{$profilo.specializzazione|default:'Nessuna specializzazione indicata'}</p>
         </div>
 
@@ -26,7 +25,7 @@
         <div class="stat-grid">
             <div class="stat-card">
                 <span class="stat-card__numero">{$stats.daAccettare}</span>
-                <span class="stat-card__etichetta">Prenotazioni da accettare</span>
+                <span class="stat-card__etichetta">Prenotazioni disponibili</span>
             </div>
             <div class="stat-card">
                 <span class="stat-card__numero">{$stats.inCorso}</span>

@@ -12,7 +12,7 @@ class CVisualizzaprenotazioni {
         $view = new VPrenotazione();
         $errore = '';
         try {
-            $prenotazioni = $this->getPrenotazioniUtente();
+            $prenotazioni = array_map(function ($p) { return $p->toArray(); }, $this->getPrenotazioniUtente());
         } catch (Exception $e) {
             $errore = $e->getMessage();
             $prenotazioni = [];
@@ -26,7 +26,8 @@ class CVisualizzaprenotazioni {
         return $pm->search('EPrenotazione', 'idU', $idU) ?: [];
     }
 
-    // stesso discorso dei preventivi: data/ora vecchia resta valida finché non viene accettata la proposta nuova
+    // il cliente sposta direttamente data/ora (niente più proposta da far accettare all'admin):
+    // finché la prenotazione è 'in attesa' può cambiarla quante volte vuole.
     public function modifica($idPren) {
         $idU = Session::get('idU');
         $pm = PersistentManager::getInstance();
@@ -56,39 +57,14 @@ class CVisualizzaprenotazioni {
         $prenotazioneAggiornata = new EPrenotazione(
             $prenData->getIdPrenotazione(), $prenData->getIdPreventivo(), $prenData->getIdMeccanico(),
             $prenData->getIdUtente(), $prenData->getIdVeicolo(),
-            $prenData->getDataPrenotazione(), $prenData->getStato(), $prenData->getOra(),
-            $nuovaData, $nuovaOra
+            $nuovaData, $prenData->getStato(), $nuovaOra
         );
 
         if (!$pm->update($prenotazioneAggiornata)) {
-            throw new Exception("Impossibile inviare la modifica.");
+            throw new Exception("Impossibile modificare.");
         }
 
         header('Location: /MechanicOne/visualizzaprenotazioni/lista?msg=modifica_inviata');
-        exit();
-    }
-
-    // ritira la proposta: la prenotazione resta quella già confermata
-    public function annullaModifica($idPren) {
-        $idU = Session::get('idU');
-        $pm = PersistentManager::getInstance();
-
-        $prenData = $pm->load('EPrenotazione', 'idPren', $idPren);
-        if (!$prenData) throw new Exception("Prenotazione non trovata.");
-        if ($prenData->getIdUtente() != $idU) throw new Exception("Non puoi modificare una prenotazione che non ti appartiene.");
-
-        $prenotazioneRipristinata = new EPrenotazione(
-            $prenData->getIdPrenotazione(), $prenData->getIdPreventivo(), $prenData->getIdMeccanico(),
-            $prenData->getIdUtente(), $prenData->getIdVeicolo(),
-            $prenData->getDataPrenotazione(), $prenData->getStato(), $prenData->getOra(),
-            null, null
-        );
-
-        if (!$pm->update($prenotazioneRipristinata)) {
-            throw new Exception("Impossibile annullare la modifica.");
-        }
-
-        header('Location: /MechanicOne/visualizzaprenotazioni/lista?msg=modifica_annullata');
         exit();
     }
 
@@ -103,11 +79,12 @@ class CVisualizzaprenotazioni {
             throw new Exception("Non puoi annullare una prenotazione che non ti appartiene.");
         }
 
-        if (!$pm->delete('EPrenotazione', 'idPren', $idPren)) {
+        $prenotazione->setStato('cancellata');
+        if (!$pm->update($prenotazione)) {
             throw new Exception("Impossibile annullare la prenotazione.");
         }
 
-        header('Location: /MechanicOne/visualizzaprenotazioni/lista?msg=prenotazione_annullata');
+        header('Location: /MechanicOne/visualizzaprenotazioni/lista?msg=prenotazione_cancellata');
         exit();
     }
 }

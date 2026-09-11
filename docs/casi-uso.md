@@ -22,9 +22,9 @@ condivise con il meccanico)*
 | C2 | Aggiungere un veicolo al garage | `CAggiungiveicolo::nuovo` (form) / `CAggiungiveicolo::aggiungiVeicolo` (submit) | |
 | C3 | Consultare/eliminare i propri veicoli | `CGarage::lista`, `CGarage::getVeicoliPersonali`, `CGarage::eliminaVeicolo` | |
 | C4 | Richiedere un preventivo per un veicolo + servizio | `CRichiedipreventivo::nuovo` / `CRichiedipreventivo::richiedi` | Stato iniziale `inviato` |
-| C5 | Consultare lo stato dei propri preventivi, modificare la richiesta | `CVisualizzapreventivi::lista/getPreventiviUtente/modifica/annullaModifica` | |
+| C5 | Consultare lo stato dei propri preventivi, modificare la richiesta | `CVisualizzapreventivi::lista/getPreventiviUtente/modifica` | |
 | C6 | Richiedere una prenotazione (anche a partire da un preventivo accettato) | `CRichiediprenotazione::nuovo` / `CRichiediprenotazione::prenota` | |
-| C7 | Consultare/modificare/annullare le proprie prenotazioni | `CVisualizzaprenotazioni::lista`, `getPrenotazioniUtente`, `modifica`, `annullaModifica`, `annullaPrenotazione` | |
+| C7 | Consultare/modificare/annullare le proprie prenotazioni | `CVisualizzaprenotazioni::lista`, `getPrenotazioniUtente`, `modifica`, `annullaPrenotazione` | |
 | C8 | Scrivere una recensione a un meccanico approvato | `CScrivirecensione::scrivi` | Rifiutata se il meccanico non è `approvato` |
 | C9 | Uscire (logout) | `CUtente::logout` | Distrugge la sessione |
 

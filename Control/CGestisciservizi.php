@@ -8,11 +8,11 @@ require_once __DIR__ . '/../View/VServizio.php';
 
 class CGestisciservizi {
 
-    public function lista($params = []) {
+    public function lista() {
         $view = new VServizio();
         $errore = '';
         try {
-            $servizi = $this->richiediLista();
+            $servizi = array_map(function ($s) { return $s->toArray(); }, $this->richiediLista());
         } catch (Exception $e) {
             $errore = $e->getMessage();
             $servizi = [];
@@ -37,15 +37,16 @@ class CGestisciservizi {
 
             $nuovoServizio = new EServizio(null, $titolo, $descrizione);
 
-            if (!$pm->store($nuovoServizio)) {
+            $nuovoId = $pm->store($nuovoServizio);
+            if (!$nuovoId) {
                 throw new Exception("Impossibile salvare il servizio.");
             }
         } catch (Exception $e) {
-            (new VServizio())->mostraLista($this->richiediLista(), $e->getMessage());
+            (new VServizio())->mostraLista(array_map(function ($s) { return $s->toArray(); }, $this->richiediLista()), $e->getMessage());
             return;
         }
 
-        header('Location: /MechanicOne/gestisciservizi/lista?msg=servizio_aggiunto');
+        header('Location: /MechanicOne/gestisciservizi/lista?msg=servizio_aggiunto#servizio-'.$nuovoId);
         exit();
     }
 
@@ -77,7 +78,7 @@ class CGestisciservizi {
                 throw new Exception("Impossibile salvare le modifiche.");
             }
         } catch (Exception $e) {
-            (new VServizio())->mostraLista($this->richiediLista(), $e->getMessage());
+            (new VServizio())->mostraLista(array_map(function ($s) { return $s->toArray(); }, $this->richiediLista()), $e->getMessage());
             return;
         }
 

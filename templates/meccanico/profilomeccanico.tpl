@@ -18,7 +18,6 @@
                 {/if}
                 <h3>{$profilo.nome} {$profilo.cognome}</h3>
                 <p>{$profilo.email}</p>
-                <p class="status-note">Stato account: <strong>{$profilo.status}</strong></p>
                 <p>{$profilo.specializzazione|default:'Nessuna specializzazione indicata'}</p>
             </div>
         </div>

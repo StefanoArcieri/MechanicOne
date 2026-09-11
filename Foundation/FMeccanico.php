@@ -9,7 +9,7 @@ class FMeccanico {
         if (!$row) return null;
         return new EMeccanico(
             null, null, null, null, null, null, null, null,
-            $row['idM'], $row['specializzazione'], $row['foto_profilo'], $row['status']
+            $row['idM'], $row['specializzazione'], $row['foto_profilo']
         );
     }
 
@@ -30,13 +30,12 @@ class FMeccanico {
 
     public function store($meccanico, $pdo) {
         try {
-            $query = "INSERT INTO meccanici (idM, specializzazione, foto_profilo, status) VALUES (:idM, :specializzazione, :foto_profilo, :status)";
+            $query = "INSERT INTO meccanici (idM, specializzazione, foto_profilo) VALUES (:idM, :specializzazione, :foto_profilo)";
             $stmt = $pdo->prepare($query);
                 $stmt->execute([
                     ':idM' => $meccanico->getIdMeccanico(),
                     ':specializzazione' => $meccanico->getSpecializzazione(),
                     ':foto_profilo' => $meccanico->getFotoProfilo(),
-                    ':status' => $meccanico->getStatus(),
                 ]);
                 // qui idM non è auto-increment (è la stessa idU dell'utente, passata da chi chiama):
                 // niente lastInsertId(), sarebbe sbagliato. L'id è già noto, lo restituiamo per
@@ -51,12 +50,11 @@ class FMeccanico {
 
     public function update($meccanico, $pdo) {
             try {
-                $query = "UPDATE meccanici SET specializzazione = :specializzazione, status = :status, foto_profilo = :foto_profilo WHERE idM = :idM";
+                $query = "UPDATE meccanici SET specializzazione = :specializzazione, foto_profilo = :foto_profilo WHERE idM = :idM";
                 $stmt = $pdo->prepare($query);
                 return $stmt->execute([
                     ':idM' => $meccanico->getIdMeccanico(),
                     ':specializzazione' => $meccanico->getSpecializzazione(),
-                    ':status' => $meccanico->getStatus(),
                     ':foto_profilo' => $meccanico->getFotoProfilo(),
                 ]);
             } catch (PDOException $e) {

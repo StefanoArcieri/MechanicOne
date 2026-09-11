@@ -63,10 +63,8 @@ class View {
         'prenotazione_modificata' => 'Prenotazione modificata.',
         'prenotazione_conclusa'   => 'Prenotazione conclusa.',
         'prenotazione_cancellata' => 'Prenotazione cancellata.',
-        'prenotazione_annullata'  => 'Prenotazione annullata.',
-        'modifica_inviata'        => 'Modifica inviata.',
-        'modifica_annullata'      => 'Modifica annullata.',
-        'recensione_pubblicata'   => 'Recensione pubblicata, grazie!',
+        'modifica_inviata'        => 'Modifica salvata.',
+        'published'               => 'Recensione pubblicata, grazie!',
         'servizio_aggiunto'       => 'Servizio aggiunto al catalogo.',
         'servizio_modificato'     => 'Servizio aggiornato.',
         'servizio_eliminato'      => 'Servizio eliminato dal catalogo.',
@@ -101,14 +99,14 @@ class View {
     }
 
     // Raggruppa una lista di prenotazioni/preventivi per il campo "stato" in categorie.
-    // Stessa logica riusata da VPrenotazione/VGestisciprenotazioni e VPreventivo/
-    // VGestiscipreventivi, che prima la riscrivevano ciascuna per conto proprio.
-    // Accetta sia array di Entity (con toArray()) sia array già convertiti in array.
+    // Stessa logica riusata da VPrenotazione e VPreventivo (mostraLista), che prima la
+    // riscrivevano ciascuna per conto proprio.
+    // $items arriva sempre già come array di array: la conversione da Entity avviene
+    // ormai sempre nel Control, prima di chiamare la View (mai più qui dentro).
     protected function raggruppaPerStato(array $items, array $statiPossibili) {
         $categorie = array_fill_keys($statiPossibili, []);
 
-        foreach ($items as $item) {
-            $dato = (is_object($item) && method_exists($item, 'toArray')) ? $item->toArray() : $item;
+        foreach ($items as $dato) {
             $stato = $dato['stato'] ?? $statiPossibili[0];
 
             if (!isset($categorie[$stato])) {

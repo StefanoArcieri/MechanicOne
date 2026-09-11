@@ -10,7 +10,7 @@ class FPreventivo {
         if (!$row) return null;
         return new EPreventivo(
             $row['idPrev'], $row['idU'], $row['idV'], $row['idS'], $row['costo'], $row['stato'],
-            $row['descrizione'], $row['pdf'], $row['data_richiesta'], $row['descrizione_proposta']
+            $row['descrizione'], $row['pdf'], $row['data_richiesta']
         );
     }
 
@@ -28,15 +28,14 @@ class FPreventivo {
 
     public function store($preventivo, $pdo) {
         try {
-            $query = "INSERT INTO preventivi (idU, idV, idS, descrizione, descrizione_proposta, costo, stato, pdf, data_richiesta)
-                      VALUES (:idU, :idV, :idS, :descrizione, :descrizione_proposta, :costo, :stato, :pdf, :data_richiesta)";
+            $query = "INSERT INTO preventivi (idU, idV, idS, descrizione, costo, stato, pdf, data_richiesta)
+                      VALUES (:idU, :idV, :idS, :descrizione, :costo, :stato, :pdf, :data_richiesta)";
             $stmt = $pdo->prepare($query);
             $stmt->execute([
                 ':idU'                  => $preventivo->getIdUtente(),
                 ':idV'                  => $preventivo->getIdVeicolo(),
                 ':idS'                  => $preventivo->getIdServizio(),
                 ':descrizione'          => $preventivo->getDescrizione(),
-                ':descrizione_proposta' => $preventivo->getDescrizioneProposta(),
                 ':costo'                => $preventivo->getCosto(),
                 ':stato'                => $preventivo->getStato(),
                 ':pdf'                  => $preventivo->getPdf(),
@@ -53,7 +52,7 @@ class FPreventivo {
     public function update($preventivo, $pdo) {
         try {
             $query = "UPDATE preventivi SET idU = :idU, idV = :idV, idS = :idS,
-                      descrizione = :descrizione, descrizione_proposta = :descrizione_proposta,
+                      descrizione = :descrizione,
                       costo = :costo, stato = :stato,
                       pdf = :pdf, data_richiesta = :data_richiesta WHERE idPrev = :idPrev";
             $stmt = $pdo->prepare($query);
@@ -63,7 +62,6 @@ class FPreventivo {
                 ':idV'                  => $preventivo->getIdVeicolo(),
                 ':idS'                  => $preventivo->getIdServizio(),
                 ':descrizione'          => $preventivo->getDescrizione(),
-                ':descrizione_proposta' => $preventivo->getDescrizioneProposta(),
                 ':costo'                => $preventivo->getCosto(),
                 ':stato'                => $preventivo->getStato(),
                 ':pdf'                  => $preventivo->getPdf(),

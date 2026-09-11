@@ -4,14 +4,20 @@
 
 {block name='content'}
 <div class="home-stack">
+
+    {*primo blocco presentazione splittato*}
     <section class="hero-split">
         <div class="hero-split__promo">
             <p class="hero-eyebrow hero-eyebrow--light">Benvenuto</p>
             <h1 class="hero-split__title">🔧 MechanicOne</h1>
             <p class="hero-text hero-text--light">La tua officina online per prenotare interventi, richiedere preventivi e seguire i servizi di assistenza, dalla prima richiesta al collaudo finale.</p>
             <div class="hero-cta">
+            {if $isLogged}
+                <a class="btn btn--ghost-light" href="/MechanicOne/utente/dashboardUtente"> Visualizza il tuo profilo</a>
+            {else}
                 <a class="btn btn--accent" href="/MechanicOne/utente/registrazione">Registrati</a>
                 <a class="btn btn--ghost-light" href="/MechanicOne/utente/login">Accedi</a>
+            {/if}
             </div>
         </div>
         <div class="hero-split__action">
@@ -26,27 +32,21 @@
         </div>
     </section>
 
+    {*blocco servizi*}
     <section class="hero-card">
         <h2 class="section-title">I nostri servizi</h2>
         <div class="feature-grid">
+            {foreach $servizi as $s}
             <div class="feature-item">
-                <span class="feature-item__icon">🛠️</span>
-                <h3>Manutenzione</h3>
-                <p>Ordinaria e straordinaria, per tenere la tua auto sempre in forma.</p>
+                <span class="feature-item__icon">🔧</span>
+                <h3>{$s.titolo}</h3>
+                <p>{$s.descrizione}</p>
             </div>
-            <div class="feature-item">
-                <span class="feature-item__icon">🔍</span>
-                <h3>Riparazioni</h3>
-                <p>Diagnosi accurate e controlli di sicurezza su ogni componente.</p>
-            </div>
-            <div class="feature-item">
-                <span class="feature-item__icon">📋</span>
-                <h3>Preventivi</h3>
-                <p>Richiesta rapida online, con un prezzo chiaro prima di ogni intervento.</p>
-            </div>
+            {/foreach}
         </div>
     </section>
 
+    {*blocco immagini-testo*}
     <section class="showcase-row">
         <div class="showcase-row__image">
             <img src="/MechanicOne/templates/img/team-1.jpg" alt="Meccanica pronta ad accogliere un cliente in officina">
@@ -80,6 +80,7 @@
         </div>
     </section>
 
+    {*blocco pk scegliere noi*}
     <section class="trust-band">
         <p class="hero-eyebrow">Perché scegliere noi</p>
         <h2>Un punto di riferimento per la tua auto</h2>

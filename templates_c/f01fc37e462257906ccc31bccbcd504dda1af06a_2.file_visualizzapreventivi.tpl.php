@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 5.8.0, created on 2026-09-04 17:33:52
+/* Smarty version 5.8.0, created on 2026-09-11 15:59:27
   from 'file:utente/visualizzapreventivi.tpl' */
 
 /* @var \Smarty\Template $_smarty_tpl */
 if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
   'version' => '5.8.0',
-  'unifunc' => 'content_6a9ae4e0e09f70_35815425',
+  'unifunc' => 'content_6aa4093fcabac6_15688677',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     'f01fc37e462257906ccc31bccbcd504dda1af06a' => 
     array (
       0 => 'utente/visualizzapreventivi.tpl',
-      1 => 1788531364,
+      1 => 1789125095,
       2 => 'file',
     ),
   ),
@@ -20,25 +20,25 @@ if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
   array (
   ),
 ))) {
-function content_6a9ae4e0e09f70_35815425 (\Smarty\Template $_smarty_tpl) {
+function content_6aa4093fcabac6_15688677 (\Smarty\Template $_smarty_tpl) {
 $_smarty_current_dir = 'C:\\xampp\\htdocs\\MechanicOne\\templates\\utente';
 $_smarty_tpl->getInheritance()->init($_smarty_tpl, true);
 ?>
 
 
 <?php 
-$_smarty_tpl->getInheritance()->instanceBlock($_smarty_tpl, 'Block_20902503156a9ae4e0d81305_06730041', 'title');
+$_smarty_tpl->getInheritance()->instanceBlock($_smarty_tpl, 'Block_3625549516aa4093fc90758_05959184', 'title');
 ?>
 
 
 <?php 
-$_smarty_tpl->getInheritance()->instanceBlock($_smarty_tpl, 'Block_18002936266a9ae4e0d8f452_68712170', 'content');
+$_smarty_tpl->getInheritance()->instanceBlock($_smarty_tpl, 'Block_4653328246aa4093fc961f9_91612383', 'content');
 ?>
 
 <?php $_smarty_tpl->getInheritance()->endChild($_smarty_tpl, 'layouts/base.tpl', $_smarty_current_dir);
 }
 /* {block 'title'} */
-class Block_20902503156a9ae4e0d81305_06730041 extends \Smarty\Runtime\Block
+class Block_3625549516aa4093fc90758_05959184 extends \Smarty\Runtime\Block
 {
 public function callBlock(\Smarty\Template $_smarty_tpl) {
 $_smarty_current_dir = 'C:\\xampp\\htdocs\\MechanicOne\\templates\\utente';
@@ -48,7 +48,7 @@ I tuoi preventivi - MechanicOne<?php
 }
 /* {/block 'title'} */
 /* {block 'content'} */
-class Block_18002936266a9ae4e0d8f452_68712170 extends \Smarty\Runtime\Block
+class Block_4653328246aa4093fc961f9_91612383 extends \Smarty\Runtime\Block
 {
 public function callBlock(\Smarty\Template $_smarty_tpl) {
 $_smarty_current_dir = 'C:\\xampp\\htdocs\\MechanicOne\\templates\\utente';
@@ -58,9 +58,8 @@ $_smarty_current_dir = 'C:\\xampp\\htdocs\\MechanicOne\\templates\\utente';
     <header class="hero">
         <div>
             <p class="eyebrow">Preventivi</p>
-            <h1><?php echo htmlspecialchars((string) ((($tmp = $_smarty_tpl->getValue('titolo') ?? null)===null||$tmp==='' ? 'I tuoi preventivi' ?? null : $tmp)), ENT_QUOTES, 'UTF-8');?>
-</h1>
-            <p>Segui lo stato delle tue richieste e proponi modifiche finché non vengono accettate.</p>
+            <h1>I tuoi preventivi</h1>
+            <p>Segui lo stato delle tue richieste.</p>
         </div>
         <a class="button" href="/MechanicOne/richiedipreventivo/nuovo">+ Richiedi preventivo</a>
     </header>
@@ -92,6 +91,7 @@ foreach ($_from ?? [] as $_smarty_tpl->getVariable('p')->value) {
 $foreach1DoElse = false;
 ?>
                         <article class="card status-card status-card--<?php echo htmlspecialchars((string) ($_smarty_tpl->getValue('sezione')['classe']), ENT_QUOTES, 'UTF-8');?>
+" id="preventivo-<?php echo htmlspecialchars((string) ($_smarty_tpl->getValue('p')['idPrev']), ENT_QUOTES, 'UTF-8');?>
 ">
                             <h3>Preventivo #<?php echo htmlspecialchars((string) ($_smarty_tpl->getValue('p')['idPrev']), ENT_QUOTES, 'UTF-8');?>
 </h3>
@@ -107,26 +107,17 @@ echo htmlspecialchars((string) ($_smarty_tpl->getValue('p')['costo']), ENT_QUOTE
  &euro;<?php } else { ?>da definire<?php }?></strong></p>
                             <?php }?>
                             <?php if ($_smarty_tpl->getValue('sezione')['modificabile']) {?>
-                                <?php if ($_smarty_tpl->getValue('p')['descrizione_proposta']) {?>
-                                    <p class="status-note">Modifica proposta in attesa: <em><?php echo htmlspecialchars((string) ($_smarty_tpl->getValue('p')['descrizione_proposta']), ENT_QUOTES, 'UTF-8');?>
-</em></p>
-                                    <form action="/MechanicOne/visualizzapreventivi/annullaModifica/<?php echo htmlspecialchars((string) ($_smarty_tpl->getValue('p')['idPrev']), ENT_QUOTES, 'UTF-8');?>
+                                <details class="edit-toggle">
+                                    <summary>Modifica</summary>
+                                    <form class="form" action="/MechanicOne/visualizzapreventivi/modifica/<?php echo htmlspecialchars((string) ($_smarty_tpl->getValue('p')['idPrev']), ENT_QUOTES, 'UTF-8');?>
 " method="post">
-                                        <button class="btn btn--secondary" type="submit">Annulla modifica</button>
-                                    </form>
-                                <?php } else { ?>
-                                    <details class="edit-toggle">
-                                        <summary>Modifica</summary>
-                                        <form class="form" action="/MechanicOne/visualizzapreventivi/modifica/<?php echo htmlspecialchars((string) ($_smarty_tpl->getValue('p')['idPrev']), ENT_QUOTES, 'UTF-8');?>
-" method="post">
-                                            <div class="form-field form-field--last">
-                                                <textarea class="form-input" name="nuovaDescrizione" rows="3" required><?php echo htmlspecialchars((string) ($_smarty_tpl->getValue('p')['descrizione']), ENT_QUOTES, 'UTF-8');?>
+                                        <div class="form-field form-field--last">
+                                            <textarea class="form-input" name="nuovaDescrizione" rows="3" required><?php echo htmlspecialchars((string) ($_smarty_tpl->getValue('p')['descrizione']), ENT_QUOTES, 'UTF-8');?>
 </textarea>
-                                            </div>
-                                            <button class="form-submit form-submit--primary" type="submit">Proponi modifica</button>
-                                        </form>
-                                    </details>
-                                <?php }?>
+                                        </div>
+                                        <button class="form-submit form-submit--primary" type="submit">Modifica</button>
+                                    </form>
+                                </details>
                             <?php }?>
                             <?php if ($_smarty_tpl->getValue('sezione')['mostraPrenotaLink']) {?>
                                 <p><a class="home-link home-link--blue" href="/MechanicOne/richiediprenotazione/nuovo">Prenota un intervento &rarr;</a></p>

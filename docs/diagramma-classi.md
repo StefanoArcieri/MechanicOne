@@ -212,8 +212,6 @@ classDiagram
         #renderTemplate(template, data)
     }
     class VUtente
-    class VGestisciprenotazioni
-    class VGestiscipreventivi
     class VMeccanico
     class VPrenotazione
     class VPreventivo
@@ -222,8 +220,6 @@ classDiagram
     class VErrori
 
     View <|-- VUtente
-    View <|-- VGestisciprenotazioni
-    View <|-- VGestiscipreventivi
     View <|-- VMeccanico
     View <|-- VPrenotazione
     View <|-- VPreventivo

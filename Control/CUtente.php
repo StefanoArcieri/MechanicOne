@@ -7,8 +7,9 @@ require_once __DIR__ . '/../Foundation/Cookie.php';
 require_once __DIR__ . '/../Foundation/PersistentManager.php';
 require_once __DIR__ . '/../Foundation/FUtente.php';
 require_once __DIR__ . '/../Entity/EUtente.php';
-require_once __DIR__ . '/CVisualizzarecensioni.php';
+require_once __DIR__ . '/CRecensione.php';
 require_once __DIR__ . '/CGestiscimeccanici.php';
+require_once __DIR__ . '/CProfilomeccanico.php';
 
 class CUtente {
 
@@ -16,14 +17,16 @@ class CUtente {
     private function datiRecensioni() {
         $pm = PersistentManager::getInstance();
 
-        $recensioniEntities = (new CVisualizzarecensioni())->richiediLista();
+        //recupero le recensioni
+        $recensioniEntities = (new CRecensione())->richiediLista();
 
+        //creo un array di recensioni (arrary di array)
         $recensioni = [];
         foreach ($recensioniEntities as $rEntity) {
             $r = $rEntity->toArray();
 
             $autore = $pm->load('EUtente', 'idU', $r['idU']);
-            $r['nomeAutore'] = $autore ? $autore->getNome() : 'Cliente';
+            $r['nomeAutore'] = $autore ? trim($autore->getNome() . ' ' . $autore->getCognome()) : 'Cliente';
 
             $meccanico = $pm->load('EUtente', 'idU', $r['idM']);
             $r['nomeMeccanico'] = $meccanico ? trim($meccanico->getNome() . ' ' . $meccanico->getCognome()) : 'Meccanico';
@@ -34,24 +37,23 @@ class CUtente {
             $recensioni[] = $r;
         }
 
+        // calcolo media stelle e numero recensioni
         $numero = count($recensioni);
         $media = $numero > 0
             ? round(array_sum(array_column($recensioni, 'valutazione')) / $numero, 1)
             : 0;
         $mediaArrotondata = (int) round($media);
+        //stringa di stelline
         $stelleMedia = str_repeat('★', $mediaArrotondata) . str_repeat('☆', 5 - $mediaArrotondata);
 
-        $meccaniciEntities = array_values(array_filter(
-            (new CGestiscimeccanici())->richiediLista(),
-            function ($m) { return $m->getStatus() === 'approvato'; }
-        ));
-
-        $meccaniciApprovati = [];
+        //recupero i meccanici (array di array)
+        $meccaniciEntities = (new CGestiscimeccanici()) -> richiediLista();
+        $meccanici = [];
         foreach ($meccaniciEntities as $mEntity) {
             $m = $mEntity->toArray();
-            $u = $pm->load('EUtente', 'idU', $m['idM']);
-            $m['nomeCompleto'] = $u ? trim($u->getNome() . ' ' . $u->getCognome()) : ('Meccanico #' . $m['idM']);
-            $meccaniciApprovati[] = $m;
+            $u = $pm->load('EUtente', 'idU', $m['idM']); //carica i dati completi del meccanico
+            $m['nomeCompleto'] = trim($u->getNome() . ' ' . $u->getCognome());
+            $meccanici[] = $m;
         }
 
         return [
@@ -59,19 +61,23 @@ class CUtente {
             'mediaStelle' => $media,
             'stelleMedia' => $stelleMedia,
             'numeroRecensioni' => $numero,
-            'meccaniciApprovati' => $meccaniciApprovati,
+            'meccanici' => $meccanici,
         ];
     }
 
-    // Meccanico e admin non hanno accesso alla home di CUtente (quella resta di cliente/ospite):
-    // atterrano sempre su una loro pagina dedicata, mai su questa 'home' condivisa.
-    private function pannelloLavorativo($ruolo) {
-        switch ($ruolo) {
-            case 'meccanico': return '/MechanicOne/dashboard/meccanico';
-            case 'admin':      return '/MechanicOne/dashboard/admin';
-            default:           return null;
+    private function datiServizi() {
+        $pm = PersistentManager::getInstance();
+        $serviziEntities = (new CGestisciservizi())->richiediLista();
+
+        $servizi = [];
+        foreach ($serviziEntities as $sEntity) {
+            $s = $sEntity->toArray();
+            $servizi[] = $s;
         }
+
+        return ['servizi' => $servizi];
     }
+
 
     public function login() {
         $vUtente = new VUtente();
@@ -101,8 +107,7 @@ class CUtente {
                         Cookie::delete('email_ricordata');
                     }
 
-                    $destinazione = $this->pannelloLavorativo($utente->getRuolo()) ?? '/MechanicOne/utente/home';
-                    header('Location: ' . $destinazione);
+                    header('Location: /MechanicOne/utente/home');
                     exit;
                 } else {
                     throw new Exception("Email o Password errate! L'officina non ti riconosce.");
@@ -118,26 +123,101 @@ class CUtente {
     public function home() {
         $ruolo = Session::get('ruolo');
 
-        // Meccanico e admin: niente home, dritti al loro pannello di lavoro.
-        $destinazione = $this->pannelloLavorativo($ruolo);
-        if ($destinazione) {
-            header('Location: ' . $destinazione);
-            exit;
-        }
-
         require_once __DIR__ . '/../View/VUtente.php';
         $view = new VUtente();
 
-        $idU = Session::get('idU');
-        $nome = Session::get('nome');
-        $datiRecensioni = $this->datiRecensioni();
-
-        if ($idU && $ruolo === 'cliente') {
-            $view->mostraDashboardUtente($nome, $datiRecensioni);
-        } else {
-            // Ospite, oppure ruolo non riconosciuto: trattato come ospite (failsafe).
-            $view->mostraHomePubblica($datiRecensioni);
+         // Meccanico e admin niente home
+        switch ($ruolo) {
+            case 'meccanico':
+                $errore = '';
+                $profilo = null;
+                $stats = ['daAccettare' => 0, 'inCorso' => 0, 'concluse' => 0];
+                try {
+                    $profilo = (new CGestiscimeccanici())->arricchisciConNome((new CProfilomeccanico())->getProfilo());
+                    // niente foto profilo caricata: iniziale del nome per l'avatar segnaposto
+                    $profilo['iniziale'] = $profilo['nome'] !== '' ? mb_strtoupper(mb_substr($profilo['nome'], 0, 1)) : '?';
+                    $stats = $this->statisticheMeccanico(Session::get('idU'));
+                } catch (Exception $e) {
+                    $errore = $e->getMessage();
+                }
+                $view->mostraDashboardMeccanico($profilo, $stats, $errore);
+                break;
+            case 'admin':
+                $view->mostraDashboardAdmin(Session::get('nome'));
+                break;
+            default:
+                $view->mostraHomePubblica($this->datiRecensioni(), $this->datiServizi());
         }
+    }
+
+    // "Situazione generale" del meccanico: quante prenotazioni sono ancora libere (chiunque può
+    // prenderle in carico), quante ha già in corso lui, quante ne ha concluse in totale.
+    private function statisticheMeccanico($idM) {
+        $pm = PersistentManager::getInstance();
+        $prenotazioni = $pm->getAll('EPrenotazione') ?: [];
+
+        $daAccettare = 0;
+        $inCorso = 0;
+        $concluse = 0;
+
+        foreach ($prenotazioni as $p) {
+            if ($p->getStato() === 'in attesa') {
+                $daAccettare++;
+            } elseif ($p->getStato() === 'accettata' && (int) $p->getIdMeccanico() === (int) $idM) {
+                $inCorso++;
+            } elseif ($p->getStato() === 'conclusa' && (int) $p->getIdMeccanico() === (int) $idM) {
+                $concluse++;
+            }
+        }
+
+        return ['daAccettare' => $daAccettare, 'inCorso' => $inCorso, 'concluse' => $concluse];
+    }
+
+    // Pagina "personale" del cliente (garage, preventivi, prenotazioni a colpo d'occhio) —
+    // prima era ciò che home() mostrava di default al cliente loggato; ora è un punto
+    // d'ingresso a sé, raggiungibile dal menu profilo (come già CProfilomeccanico::profilo()).
+    public function dashboardUtente() {
+
+        require_once __DIR__ . '/../View/VUtente.php';
+        $view = new VUtente();
+        $view->mostraDashboardUtente(Session::get('nome'), $this->datiDashboardUtente());
+    }
+
+    private function datiDashboardUtente(){
+        $pm = PersistentManager::getInstance();
+        $preventiviEntities = $pm->search('EPreventivo', 'idU', Session::get('idU')) ?: [];
+        $countPreventiviTotali = count($preventiviEntities);
+        $conteggiPreventivi = array_count_values(array_map(function ($p) { return $p->getStato(); }, $preventiviEntities));
+
+        $prenotazioniEntities = $pm->search('EPrenotazione', 'idU', Session::get('idU')) ?: [];
+        $countPrenotazioniTotali = count($prenotazioniEntities);
+        $conteggiPrenotazioni = array_count_values(array_map(function ($pr) { return $pr->getStato(); }, $prenotazioniEntities));
+
+        $veicoliEntities = $pm->search('EVeicolo', 'idU', Session::get('idU')) ?: [];
+        $countVeicoliTotali = count($veicoliEntities);
+        $p = [];
+        foreach ($veicoliEntities as $vEntity) {
+            $p[] = [
+                'targa' => $vEntity->getTarga(),
+                'marca' => $vEntity->getMarca(),
+                'modello' => $vEntity->getModello(),
+            ];
+        }
+
+        return [
+            'countPreventiviTotali' => $countPreventiviTotali,
+            'countPreventiviSvolti' => $conteggiPreventivi['svolto'] ?? 0,
+            'countPreventiviAccettati' => $conteggiPreventivi['accettato'] ?? 0,
+            'countPreventiviRifiutati' => $conteggiPreventivi['rifiutato'] ?? 0,
+            'countPreventiviInviati' => $conteggiPreventivi['inviato'] ?? 0,
+            'countPrenotazioniTotali' => $countPrenotazioniTotali,
+            'countPrenotazioniInAttesa' => $conteggiPrenotazioni['in attesa'] ?? 0,
+            'countPrenotazioniConcluse' => $conteggiPrenotazioni['conclusa'] ?? 0,
+            'countPrenotazioniAccettate' => $conteggiPrenotazioni['accettata'] ?? 0,
+            'countPrenotazioniCancellate' => $conteggiPrenotazioni['cancellata'] ?? 0,
+            'countVeicoliTotali' => $countVeicoliTotali,
+            'veicoli' => $p,
+        ];
     }
 
     // Registrazione pubblica: crea sempre e solo account cliente.
@@ -186,7 +266,7 @@ class CUtente {
 
     public function logout() {
         Session::destroy();
-        header('Location: /MechanicOne/utente/login');
+        header('Location: /MechanicOne/utente/home');
         exit;
     }
 }

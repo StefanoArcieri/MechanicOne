@@ -12,13 +12,12 @@
     {else}
         <div class="cards">
             {foreach $recensioni as $r}
-                <article class="review-card">
+                <article class="review-card" id="recensione-{$r.idR}">
                     <div class="review-card__meta">
-                        <span>{$r.nomeMeccanico}</span>
+                        <span>{$r.nomeMeccanico} <span class="stars stars--inline">{$r.stelleVoto}</span></span>
                         <span>{$r.data_recensione|date_format:"%d/%m/%Y"}</span>
                     </div>
-                    <div class="stars">{$r.stelleVoto}</div>
-                    <p>{$r.commento}</p>
+                    <p class="review-card__commento">{$r.commento}</p>
                     <p class="status-note">— {$r.nomeAutore}</p>
                 </article>
             {/foreach}

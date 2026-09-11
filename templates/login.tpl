@@ -39,12 +39,9 @@
     </form>
 
     <div class="form-footer">
-        <p class="form-help">
-            Non sei registrato? Contatta l'amministratore di MechanicOne.
-        </p>
+        <p class="form-link-text">Non hai un account?</p>
+        <a href="/MechanicOne/utente/registrazione" class="btn btn--secondary">Registrati qui</a>
     </div>
 
-    <p class="form-link-text">Non hai un account?</p>
-    <a href="/MechanicOne/utente/registrazione" class="btn btn--secondary">Registrati qui</a>
 </div>
 {/block}

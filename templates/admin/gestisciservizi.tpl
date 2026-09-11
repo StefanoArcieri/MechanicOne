@@ -7,7 +7,7 @@
     <header class="hero">
         <div>
             <p class="eyebrow">Officina</p>
-            <h1>{$titolo|default:'Catalogo servizi'}</h1>
+            <h1>Catalogo servizi</h1>
             <p>I servizi che l'officina offre ai clienti.</p>
         </div>
     </header>
@@ -42,7 +42,7 @@
         {else}
             <div class="cards">
                 {foreach $servizi as $s}
-                    <article class="card">
+                    <article class="card" id="servizio-{$s.idS}">
                         <h3>{$s.titolo}</h3>
                         <p>{$s.descrizione}</p>
                         {if $userRole == 'admin'}

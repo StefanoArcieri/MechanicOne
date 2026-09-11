@@ -7,7 +7,7 @@
     <header class="hero">
         <div>
             <p class="eyebrow">Officina</p>
-            <h1>{$titolo|default:'Meccanici'}</h1>
+            <h1>Meccanici</h1>
             <p>Il team di MechanicOne.</p>
         </div>
     </header>

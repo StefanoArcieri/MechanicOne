@@ -7,10 +7,10 @@
     <header class="hero">
         <div>
             <p class="eyebrow">Garage</p>
-            <h1>{$titolo|default:'Il tuo garage'}</h1>
+            <h1>Il tuo garage</h1>
             <p>I veicoli collegati al tuo account.</p>
         </div>
-        <a class="button" href="/MechanicOne/aggiungiveicolo/nuovo">+ Aggiungi veicolo</a>
+        <a class="button" href="/MechanicOne/veicolo/nuovo">+ Aggiungi veicolo</a>
     </header>
 
     {if $errore}
@@ -20,12 +20,12 @@
     {if $veicoli|@count > 0}
         <section class="cards">
             {foreach $veicoli as $v}
-                <article class="card">
+                <article class="card" id="veicolo-{$v.idV}">
                     <h2>{$v.marca} {$v.modello}</h2>
                     <p>Targa: <strong>{$v.targa}</strong></p>
                     <div class="auth-actions">
-                        <a class="home-link home-link--blue" href="/MechanicOne/richiedipreventivo/nuovo">Richiedi preventivo</a>
-                        <form action="/MechanicOne/garage/eliminaVeicolo/{$v.idV}" method="post" onsubmit="return confirm('Eliminare questo veicolo? Verranno eliminati anche tutti i preventivi e le prenotazioni collegati, senza possibilità di recupero.');">
+                        <a class="home-link home-link--blue" href="/MechanicOne/richiedipreventivo/nuovo/{$v.idV}">Richiedi preventivo</a>
+                        <form action="/MechanicOne/veicolo/eliminaVeicolo/{$v.idV}" method="post" onsubmit="return confirm('Eliminare questo veicolo? Verranno eliminati anche tutti i preventivi e le prenotazioni collegati, senza possibilità di recupero.');">
                             <button class="btn btn--danger" type="submit">Elimina</button>
                         </form>
                     </div>

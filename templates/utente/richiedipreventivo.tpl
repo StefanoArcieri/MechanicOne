@@ -5,7 +5,7 @@
 {block name='content'}
 <div class="form-panel">
     <div class="form-header">
-        <h1 class="form-title">{$titolo|default:'Richiedi un preventivo'}</h1>
+        <h1 class="form-title">Richiedi un preventivo</h1>
         <p class="form-subtitle">Scegli il veicolo e il servizio, poi descrivi il problema.</p>
     </div>
 
@@ -14,7 +14,7 @@
     {/if}
 
     {if $veicoli|@count == 0}
-        <p class="auth-text">Devi prima aggiungere un veicolo al tuo <a class="form-link" href="/MechanicOne/garage/lista">garage</a>.</p>
+        <p class="auth-text">Devi prima aggiungere un veicolo al tuo <a class="form-link" href="/MechanicOne/veicolo/lista">garage</a>.</p>
     {elseif $servizi|@count == 0}
         <p class="auth-text">Al momento non ci sono servizi disponibili a catalogo.</p>
     {else}
@@ -23,7 +23,7 @@
                 <label class="form-label" for="idV">Veicolo</label>
                 <select class="form-input" id="idV" name="idV" required>
                     {foreach $veicoli as $v}
-                        <option value="{$v.idV}">{$v.marca} {$v.modello} ({$v.targa})</option>
+                        <option value="{$v.idV}" {if $v.idV == $idVPreselezionato}selected{/if}>{$v.marca} {$v.modello} ({$v.targa})</option>
                     {/foreach}
                 </select>
             </div>

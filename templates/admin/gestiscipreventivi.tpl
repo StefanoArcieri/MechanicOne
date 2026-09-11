@@ -7,8 +7,8 @@
     <header class="hero">
         <div>
             <p class="eyebrow">Officina</p>
-            <h1>{$titolo|default:'Preventivi da gestire'}</h1>
-            <p>Valuta le richieste dei clienti e fissa il prezzo: il resto è automatico.</p>
+            <h1>Area Preventivi</h1>
+            <p>Valuta le richieste dei clienti e fissa il prezzo.</p>
         </div>
     </header>
 
@@ -42,10 +42,6 @@
                                 {if $p.pdf && ($p.stato == 'accettato' || $p.stato == 'svolto')}
                                     <p><a class="form-link" href="/MechanicOne/gestiscipreventivi/scaricaPdf/{$p.idPrev}">📄 Scarica PDF</a></p>
                                 {/if}
-                                {if $p.descrizione_proposta}
-                                    <p class="status-note">Modifica proposta dal cliente: <em>{$p.descrizione_proposta}</em></p>
-                                {/if}
-
                                 {if $sezione.classe == 'inviato'}
                                     <form class="form" action="/MechanicOne/gestiscipreventivi/updateCosto/{$p.idPrev}" method="post">
                                         <div class="form-field">

@@ -5,7 +5,7 @@
 {block name='content'}
 <div class="form-panel">
     <div class="form-header">
-        <h1 class="form-title">{$titolo|default:'Richiedi una prenotazione'}</h1>
+        <h1 class="form-title">Richiedi una prenotazione</h1>
         <p class="form-subtitle">Segui i passaggi per prenotare un intervento.</p>
     </div>
 
@@ -14,7 +14,7 @@
     {/if}
 
     {if $veicoli|@count == 0}
-        <p class="auth-text">Devi prima aggiungere un veicolo al tuo <a class="form-link" href="/MechanicOne/garage/lista">garage</a>.</p>
+        <p class="auth-text">Devi prima aggiungere un veicolo al tuo <a class="form-link" href="/MechanicOne/veicolo/lista">garage</a>.</p>
     {else}
         <div class="step-indicator">
             <span class="step-dot step-dot--active" data-step-dot="1">1. Veicolo</span>

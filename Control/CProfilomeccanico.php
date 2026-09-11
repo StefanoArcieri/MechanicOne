@@ -23,7 +23,7 @@ class CProfilomeccanico {
     // punto d'ingresso unico che mostra cose diverse a seconda di chi lo apre: il meccanico vede il suo profilo,
     // l'admin la lista da gestire. Non c'è più una vetrina per i clienti: i profili meccanico
     // li crea solo l'admin da CGestiscimeccanici::creaMeccanico().
-    public function area($params = []) {
+    public function area() {
         $view = new VMeccanico();
         $ruolo = strtolower((string) Session::get('ruolo'));
         $errore = '';
@@ -73,12 +73,10 @@ class CProfilomeccanico {
         $idM = Session::get('idU');
         $pm = PersistentManager::getInstance();
 
-        $nuovaSpecializzazione = trim(Request::post('specializzazione', ''));
-
         try {
             $datiAttuali = $pm->load('EMeccanico', 'idM', $idM);
             if (!$datiAttuali) throw new Exception("Profilo meccanico non trovato.");
-
+            $nuovaSpecializzazione = trim(Request::post('specializzazione', '')) ?: $datiAttuali->getSpecializzazione();
             // se non è stato scelto un nuovo file la foto resta quella di prima; se invece
             // ne arriva una nuova, quella vecchia (se c'era) va tolta dal disco: non serve più
             $nomeFoto = $datiAttuali->getFotoProfilo();
@@ -90,7 +88,7 @@ class CProfilomeccanico {
 
             $meccanicoAggiornato = new EMeccanico(
                 null, '', '', '', '', '', null, null,
-                $idM, $nuovaSpecializzazione, $nomeFoto, $datiAttuali->getStatus()
+                $idM, $nuovaSpecializzazione, $nomeFoto
             );
 
             if (!$pm->update($meccanicoAggiornato)) {

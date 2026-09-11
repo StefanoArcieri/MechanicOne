@@ -80,7 +80,7 @@ class CGestiscimeccanici {
 
             $nuovoMeccanico = new EMeccanico(
                 null, $nome, $cognome, $email, $password, 'meccanico', null, null,
-                $nuovoId, $specializzazione !== '' ? $specializzazione : null, null, 'approvato'
+                $nuovoId, $specializzazione !== '' ? $specializzazione : null, null
             );
 
             if (!$pm->store($nuovoMeccanico)) {

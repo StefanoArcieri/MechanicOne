@@ -5,7 +5,7 @@ require_once __DIR__ . '/../Entity/EPrenotazione.php';
 require_once __DIR__ . '/../Foundation/Session.php';
 require_once __DIR__ . '/../Foundation/Request.php';
 require_once __DIR__ . '/../View/VPrenotazione.php';
-require_once __DIR__ . '/CGarage.php';
+require_once __DIR__ . '/CVeicolo.php';
 require_once __DIR__ . '/CVisualizzapreventivi.php';
 
 class CRichiediprenotazione {
@@ -13,8 +13,8 @@ class CRichiediprenotazione {
     // per il form ci servono veicoli e preventivi accettati, che vivono in altri due controller: li richiamiamo diretti
     public function nuovo($params = []) {
         $view = new VPrenotazione();
-        $veicoli = (new CGarage())->getVeicoliPersonali();
-        $preventiviAccettati = $this->getPreventiviAccettati();
+        $veicoli = array_map(function ($v) { return $v->toArray(); }, (new CVeicolo())->getVeicoliPersonali());
+        $preventiviAccettati = array_map(function ($p) { return $p->toArray(); }, $this->getPreventiviAccettati());
         $view->mostraForm($veicoli, $preventiviAccettati);
     }
 
@@ -68,8 +68,8 @@ class CRichiediprenotazione {
                 throw new Exception("Errore durante il salvataggio della prenotazione.");
             }
         } catch (Exception $e) {
-            $veicoli = (new CGarage())->getVeicoliPersonali();
-            $preventiviAccettati = $this->getPreventiviAccettati();
+            $veicoli = array_map(function ($v) { return $v->toArray(); }, (new CVeicolo())->getVeicoliPersonali());
+            $preventiviAccettati = array_map(function ($p) { return $p->toArray(); }, $this->getPreventiviAccettati());
             (new VPrenotazione())->mostraForm($veicoli, $preventiviAccettati, $e->getMessage());
             return;
         }

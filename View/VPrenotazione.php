@@ -4,17 +4,34 @@ require_once __DIR__ . '/View.php';
 
 class VPrenotazione extends View {
 
+    private static $mesi = [
+        1 => 'Gennaio', 2 => 'Febbraio', 3 => 'Marzo', 4 => 'Aprile',
+        5 => 'Maggio', 6 => 'Giugno', 7 => 'Luglio', 8 => 'Agosto',
+        9 => 'Settembre', 10 => 'Ottobre', 11 => 'Novembre', 12 => 'Dicembre',
+    ];
+
     public function mostraForm($veicoli, $preventiviAccettati, $errore = '') {
+        // $veicoli/$preventiviAccettati arrivano già come array (conversione fatta dal Control)
         $this->renderTemplate('utente/richiediprenotazione.tpl', [
-            'titolo' => 'Richiedi una prenotazione',
-            'veicoli' => array_map(function ($v) { return $v->toArray(); }, $veicoli),
-            'preventiviAccettati' => array_map(function ($p) { return $p->toArray(); }, $preventiviAccettati),
+            'veicoli' => $veicoli,
+            'preventiviAccettati' => $preventiviAccettati,
             'oggi' => date('Y-m-d'),
             'errore' => $errore,
         ]);
     }
 
-    public function mostraLista($prenotazioni, $errore = '') {
+    // Il cliente vede solo le proprie, raggruppate per stato; admin/meccanico vedono tutte,
+    // raggruppate per mese — stessa fusione già fatta per i preventivi (VGestiscipreventivi
+    // non esiste più, era la stessa idea applicata lì).
+    public function mostraLista($prenotazioni, $errore = '', $meccanici = []) {
+        if (Session::get('ruolo') === 'cliente') {
+            $this->mostraListaCliente($prenotazioni, $errore);
+            return;
+        }
+        $this->mostraListaStaff($prenotazioni, $errore, $meccanici);
+    }
+
+    private function mostraListaCliente($prenotazioni, $errore) {
         $categorie = $this->raggruppaPerStato($prenotazioni, ['in attesa', 'accettata', 'conclusa', 'cancellata']);
 
         $sezioni = [
@@ -24,9 +41,6 @@ class VPrenotazione extends View {
             ],
             [
                 'label' => 'Confermate', 'classe' => 'accettata', 'items' => $categorie['accettata'],
-                // una volta confermata (dall'admin o dal meccanico che la prende in carico), il cliente
-                // non può più proporre di spostarla: può ancora farlo solo mentre è 'in attesa'.
-                // Può comunque ancora annullarla: quello resta un permesso separato.
                 'modificabile' => false, 'cancellabile' => true, 'vuoto' => 'Nessuna prenotazione confermata al momento.',
             ],
             [
@@ -40,9 +54,52 @@ class VPrenotazione extends View {
         ];
 
         $this->renderTemplate('utente/visualizzaprenotazioni.tpl', [
-            'titolo' => 'Le tue prenotazioni',
             'sezioni' => $sezioni,
             'oggi' => date('Y-m-d'),
+            'errore' => $errore,
+        ]);
+    }
+
+    // Raggruppa per mese (più recente prima); dentro ogni mese, le prenotazioni ancora "vive"
+    // (in attesa/accettata) sono sempre visibili, quelle concluse/cancellate dello stesso mese
+    // stanno dietro una tendina in fondo.
+    private function mostraListaStaff($prenotazioni, $errore, $meccanici) {
+        $mesi = [];
+
+        foreach ($prenotazioni as $p) {
+            if (empty($p['data'])) continue;
+            $ts = strtotime($p['data']);
+            $chiave = date('Y-m', $ts);
+
+            if (!isset($mesi[$chiave])) {
+                $mesi[$chiave] = [
+                    'label' => self::$mesi[(int) date('n', $ts)] . ' ' . date('Y', $ts),
+                    'attive' => [],
+                    'archiviate' => [],
+                ];
+            }
+
+            if (in_array($p['stato'], ['in attesa', 'accettata'], true)) {
+                $mesi[$chiave]['attive'][] = $p;
+            } else {
+                $mesi[$chiave]['archiviate'][] = $p;
+            }
+        }
+
+        krsort($mesi); // chiave "Y-m": ordine decrescente = dal mese più recente al più vecchio
+
+        foreach ($mesi as &$mese) {
+            // attive: la più urgente (data più vicina) per prima
+            usort($mese['attive'], function ($a, $b) { return strcmp($a['data'] . $a['ora'], $b['data'] . $b['ora']); });
+            // archiviate: la più recente per prima, coerente col resto della pagina
+            usort($mese['archiviate'], function ($a, $b) { return strcmp($b['data'] . $b['ora'], $a['data'] . $a['ora']); });
+        }
+        unset($mese);
+
+        $ruolo = Session::get('ruolo');
+        $this->renderTemplate($ruolo . '/gestisciprenotazioni.tpl', [
+            'mesi' => array_values($mesi),
+            'meccanici' => $meccanici,
             'errore' => $errore,
         ]);
     }

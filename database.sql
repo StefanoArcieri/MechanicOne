@@ -46,7 +46,6 @@ CREATE TABLE `meccanici` (
    `idM` int(11) NOT NULL,
    `specializzazione` varchar(200) DEFAULT NULL,
    `foto_profilo` varchar(255) DEFAULT NULL,
-   `status` enum('in attesa','approvato', 'licenziato') DEFAULT 'in attesa',
    PRIMARY KEY (`idM`),
    CONSTRAINT `fk_meccanico_utente` FOREIGN KEY (`idM`) REFERENCES `utenti` (`idU`) ON DELETE CASCADE
 );
@@ -69,7 +68,6 @@ CREATE TABLE `preventivi` (
    `idV` int(11) NOT NULL,
    `idS` int(11) NOT NULL,
    `descrizione` varchar(200) NOT NULL,
-   `descrizione_proposta` varchar(200) DEFAULT NULL,
    `costo` int(11) DEFAULT NULL,
    `stato` enum('inviato','accettato','rifiutato','svolto') DEFAULT 'inviato',
    `pdf` varchar(50) DEFAULT NULL,
@@ -87,9 +85,7 @@ CREATE TABLE `prenotazioni` (
    `idU` int(11) NOT NULL,
    `idV` int(11) NOT NULL,
    `data` date NOT NULL,
-   `data_proposta` date DEFAULT NULL,
    `ora` time NOT NULL,
-   `ora_proposta` time DEFAULT NULL,
    `stato` enum('in attesa','accettata','conclusa','cancellata') DEFAULT 'in attesa',
    PRIMARY KEY (`idPren`),
    CONSTRAINT `fk_prenotazioni_preventivi` FOREIGN KEY (`idPrev`) REFERENCES `preventivi` (`idPrev`) ON DELETE CASCADE,
