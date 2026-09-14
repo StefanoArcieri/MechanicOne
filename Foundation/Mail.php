@@ -3,11 +3,18 @@
 require_once __DIR__ . '/../vendor/phpmailer/PHPMailer.php';
 require_once __DIR__ . '/../vendor/phpmailer/SMTP.php';
 require_once __DIR__ . '/../vendor/phpmailer/Exception.php';
+require_once __DIR__ . '/PersistentManager.php';
 
 use PHPMailer\PHPMailer\PHPMailer;
 
 class Mail {
     public static function inviaConfermaEmail($email, $token) {
+        // rileva il dominio vero della richiesta (localhost in sviluppo, il dominio
+        // pubblico una volta online) invece di scriverlo fisso: altrimenti un'email
+        // generata dal sito online conterrebbe comunque un link a "localhost".
+        $host = $_SERVER['HTTP_HOST'] ?? 'localhost';
+        $link = "http://$host/MechanicOne/utente/confermaEmail/" . $token;
+
         $mail = new PHPMailer(true);
         try {
             $mail->isSMTP();
@@ -21,7 +28,7 @@ class Mail {
             $mail->setFrom('stefanoarcieri04@gmail.com', 'MechanicOne');
             $mail->addAddress($email);
             $mail->Subject = 'Conferma la tua email - MechanicOne';
-            $mail->Body    = 'Clicca qui per confermare: http://localhost/MechanicOne/utente/confermaEmail/' . $token;
+            $mail->Body    = 'Clicca qui per confermare: ' . $link;
 
             $mail->send();
         } catch (Exception $e) {
