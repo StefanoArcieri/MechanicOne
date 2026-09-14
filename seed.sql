@@ -19,14 +19,14 @@ SET FOREIGN_KEY_CHECKS = 1;
 -- UTENTI (idU: 1-3 clienti, 4-6 meccanici — stessi 3 nomi, email diversa tra cliente e
 -- meccanico dello stesso nome — 7 admin)
 -- =========================================================
-INSERT INTO utenti (nome, cognome, email, password, ruolo, ultimo_accesso, data_registrazione) VALUES
-('Stefano', 'Arcieri', 'stefano.arcieri@example.com', '$2y$10$5X2KhZ8HXgCz8v4DK7oEROzEiqfYEBCFJs4AMYe4U8HotCrgtOAZ2', 'cliente', '2026-09-08 09:12:00', '2026-03-10 10:00:00'),
-('Anya', 'Nucci', 'anya.nucci@example.com', '$2y$10$5X2KhZ8HXgCz8v4DK7oEROzEiqfYEBCFJs4AMYe4U8HotCrgtOAZ2', 'cliente', '2026-09-07 18:40:00', '2026-04-02 11:30:00'),
-('Elisa', 'Perinetti', 'elisa.perinetti@example.com', '$2y$10$5X2KhZ8HXgCz8v4DK7oEROzEiqfYEBCFJs4AMYe4U8HotCrgtOAZ2', 'cliente', '2026-09-08 21:05:00', '2026-05-15 09:15:00'),
-('Stefano', 'Arcieri', 'stefano.arcieri@mechanicone.it', '$2y$10$5X2KhZ8HXgCz8v4DK7oEROzEiqfYEBCFJs4AMYe4U8HotCrgtOAZ2', 'meccanico', '2026-09-09 08:00:00', '2026-01-20 08:00:00'),
-('Anya', 'Nucci', 'anya.nucci@mechanicone.it', '$2y$10$5X2KhZ8HXgCz8v4DK7oEROzEiqfYEBCFJs4AMYe4U8HotCrgtOAZ2', 'meccanico', '2026-09-09 07:50:00', '2026-02-11 08:00:00'),
-('Elisa', 'Perinetti', 'elisa.perinetti@mechanicone.it', '$2y$10$5X2KhZ8HXgCz8v4DK7oEROzEiqfYEBCFJs4AMYe4U8HotCrgtOAZ2', 'meccanico', '2026-09-09 12:00:00', '2026-06-01 08:00:00'),
-('Marco', 'Bellini', 'admin@mechanicone.it', '$2y$10$5X2KhZ8HXgCz8v4DK7oEROzEiqfYEBCFJs4AMYe4U8HotCrgtOAZ2', 'admin', '2026-09-09 08:30:00', '2026-01-01 08:00:00');
+INSERT INTO utenti (nome, cognome, email, password, ruolo, ultimo_accesso, data_registrazione, email_verificata) VALUES
+('Stefano', 'Arcieri', 'stefano.arcieri@example.com', '$2y$10$5X2KhZ8HXgCz8v4DK7oEROzEiqfYEBCFJs4AMYe4U8HotCrgtOAZ2', 'cliente', '2026-09-08 09:12:00', '2026-03-10 10:00:00', 1),
+('Anya', 'Nucci', 'anya.nucci@example.com', '$2y$10$5X2KhZ8HXgCz8v4DK7oEROzEiqfYEBCFJs4AMYe4U8HotCrgtOAZ2', 'cliente', '2026-09-07 18:40:00', '2026-04-02 11:30:00', 1),
+('Elisa', 'Perinetti', 'elisa.perinetti@example.com', '$2y$10$5X2KhZ8HXgCz8v4DK7oEROzEiqfYEBCFJs4AMYe4U8HotCrgtOAZ2', 'cliente', '2026-09-08 21:05:00', '2026-05-15 09:15:00', 1),
+('Stefano', 'Arcieri', 'stefano.arcieri@mechanicone.it', '$2y$10$5X2KhZ8HXgCz8v4DK7oEROzEiqfYEBCFJs4AMYe4U8HotCrgtOAZ2', 'meccanico', '2026-09-09 08:00:00', '2026-01-20 08:00:00', 1),
+('Anya', 'Nucci', 'anya.nucci@mechanicone.it', '$2y$10$5X2KhZ8HXgCz8v4DK7oEROzEiqfYEBCFJs4AMYe4U8HotCrgtOAZ2', 'meccanico', '2026-09-09 07:50:00', '2026-02-11 08:00:00', 1),
+('Elisa', 'Perinetti', 'elisa.perinetti@mechanicone.it', '$2y$10$5X2KhZ8HXgCz8v4DK7oEROzEiqfYEBCFJs4AMYe4U8HotCrgtOAZ2', 'meccanico', '2026-09-09 12:00:00', '2026-06-01 08:00:00', 1),
+('Marco', 'Bellini', 'admin@mechanicone.it', '$2y$10$5X2KhZ8HXgCz8v4DK7oEROzEiqfYEBCFJs4AMYe4U8HotCrgtOAZ2', 'admin', '2026-09-09 08:30:00', '2026-01-01 08:00:00', 1);
 
 -- =========================================================
 -- MECCANICI (idM = idU del meccanico corrispondente: 4 Stefano, 5 Anya, 6 Elisa)

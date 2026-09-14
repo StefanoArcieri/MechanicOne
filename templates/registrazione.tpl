@@ -37,7 +37,7 @@
         </div>
 
         <button type="submit" class="form-submit form-submit--primary">
-            Registrati e Accedi
+            Registrati
         </button>
     </form>
 

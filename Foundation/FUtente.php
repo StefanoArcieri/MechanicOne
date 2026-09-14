@@ -9,7 +9,7 @@ class FUtente {
         if (!$row) return null;
         return new EUtente(
             $row['idU'], $row['nome'], $row['cognome'], $row['email'], $row['password'],
-            $row['ruolo'], $row['ultimo_accesso'], $row['data_registrazione']
+            $row['ruolo'], $row['ultimo_accesso'], $row['data_registrazione'], $row['email_verificata'], $row['token_verifica']
         );
     }
 
@@ -30,8 +30,8 @@ class FUtente {
     
     public function store($utente, $pdo) {
         try {
-            $query = "INSERT INTO utenti (nome, cognome, email, password, ruolo, ultimo_accesso, data_registrazione)
-                    VALUES (:nome, :cognome, :email, :password, :ruolo, :ultimo_accesso, :data_registrazione);";
+            $query = "INSERT INTO utenti (nome, cognome, email, password, ruolo, ultimo_accesso, data_registrazione, email_verificata, token_verifica)
+                    VALUES (:nome, :cognome, :email, :password, :ruolo, :ultimo_accesso, :data_registrazione, :email_verificata, :token_verifica);";
             $stmt = $pdo->prepare($query);
             $stmt->execute([
                 ':nome' => $utente->getNome(),
@@ -40,7 +40,9 @@ class FUtente {
                 ':password' => password_hash($utente->getPassword(), PASSWORD_DEFAULT),
                 ':ruolo' => $utente->getRuolo(),
                 ':ultimo_accesso' => $utente->getUltimoAccesso(),
-                ':data_registrazione' => $utente->getDataRegistrazione()
+                ':data_registrazione' => $utente->getDataRegistrazione(),
+                ':email_verificata' => $utente->getEmailVerificata(),
+                ':token_verifica' => $utente->getToken()
             ]);
             return (int) $pdo->lastInsertId();
         } catch (PDOException $e) {
@@ -52,7 +54,7 @@ class FUtente {
         public function update($utente, $pdo) {
             try {
                 $query = "UPDATE utenti SET nome = :nome, cognome = :cognome, email = :email, password = :password,
-                ruolo = :ruolo, ultimo_accesso = :ultimo_accesso, data_registrazione = :data_registrazione WHERE idU = :idU;";
+                ruolo = :ruolo, ultimo_accesso = :ultimo_accesso, data_registrazione = :data_registrazione, email_verificata = :email_verificata, token_verifica = :token_verifica WHERE idU = :idU;";
                 $stmt = $pdo->prepare($query);
                 // Se arriva già un hash bcrypt (caso tipico: hai ricaricato l'utente dal DB e stai
                 // aggiornando solo altri campi) lo lasciamo com'è; se arriva una password nuova in
@@ -68,7 +70,9 @@ class FUtente {
                     ':password' => $passwordDaSalvare,
                     ':ruolo' => $utente->getRuolo(),
                     ':ultimo_accesso' => $utente->getUltimoAccesso(),
-                    ':data_registrazione' => $utente->getDataRegistrazione()
+                    ':data_registrazione' => $utente->getDataRegistrazione(),
+                    ':email_verificata' => $utente->getEmailVerificata(),
+                    ':token_verifica' => $utente->getToken()
                 ]);
             } catch (PDOException $e) {
                 error_log($e->getMessage());
@@ -119,7 +123,9 @@ class FUtente {
                     $row['password'],
                     $row['ruolo'],
                     $row['ultimo_accesso'],
-                    $row['data_registrazione']
+                    $row['data_registrazione'],
+                    $row['email_verificata'],
+                    $row['token_verifica']
                 );
             }
             return null;

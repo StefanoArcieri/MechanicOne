@@ -4,6 +4,7 @@ require_once __DIR__ . '/../View/VUtente.php';
 require_once __DIR__ . '/../Foundation/Session.php';
 require_once __DIR__ . '/../Foundation/Request.php';
 require_once __DIR__ . '/../Foundation/Cookie.php';
+require_once __DIR__ . '/../Foundation/Mail.php';
 require_once __DIR__ . '/../Foundation/PersistentManager.php';
 require_once __DIR__ . '/../Foundation/FUtente.php';
 require_once __DIR__ . '/../Entity/EUtente.php';
@@ -92,6 +93,9 @@ class CUtente {
                 $utente = $pm->verificaLogin($email, $password);
 
                 if ($utente !== null) {
+                    if ($utente -> getEmailVerificata() == 0) {
+                        throw new Exception("Email non confermata. Controlla la tua casella di posta e clicca sul link di conferma.");
+                    }
                     // prima di scrivere qualunque dato in sessione: nuovo id di sessione, per non
                     // ereditare un id che l'attaccante potrebbe aver fissato prima del login
                     Session::regenerate();
@@ -237,7 +241,9 @@ class CUtente {
                     throw new Exception("La password deve avere almeno 8 caratteri.");
                 }
 
-                $nuovoUtente = new EUtente(null, $nome, $cognome, $email, $password, 'cliente', null, date('Y-m-d H:i:s'));
+                $token = bin2hex(random_bytes(32)); // genera un token casuale per la verifica email
+
+                $nuovoUtente = new EUtente(null, $nome, $cognome, $email, $password, 'cliente', null, date('Y-m-d H:i:s'), 0, $token);
 
                 $pm = PersistentManager::getInstance();
                 $nuovoId = $pm->store($nuovoUtente);
@@ -245,16 +251,11 @@ class CUtente {
                 if (!$nuovoId) {
                     throw new Exception("Impossibile registrarsi. Forse questa email è già nel nostro database?");
                 }
+                
 
-                // Auto-login: appena registrato l'utente resta già dentro, non deve rifare il login.
-                // Anche qui: nuovo id di sessione prima di scrivere i dati, stesso motivo del login.
-                Session::regenerate();
-                Session::set('idU', $nuovoId);
-                Session::set('nome', $nome);
-                Session::set('ruolo', 'cliente');
-
-                header('Location: /MechanicOne/utente/home');
-                exit;
+                Mail::inviaConfermaEmail($email, $token);
+                $vUtente->mostraControllaEmail($email);
+                return;
 
             } catch (Exception $e) {
                 $errore = $e->getMessage();
@@ -263,6 +264,31 @@ class CUtente {
 
         $vUtente->mostraFormRegistrazione($errore);
     }
+
+    public function confermaEmail($token) {
+    $pm = PersistentManager::getInstance();
+    $utente = $pm->load('EUtente', 'token_verifica', $token);
+
+    if (!$utente) {
+        throw new Exception("Link di conferma non valido o già usato.");
+    }
+
+    $utente->setEmailVerificata(1);
+    $utente->setToken(null);
+
+    if (!$pm->update($utente)) {
+        throw new Exception("Impossibile confermare l'email.");
+    }
+
+    // stesso identico auto-login che prima stava in registrazione()
+    Session::regenerate();
+    Session::set('idU', $utente->getId());
+    Session::set('nome', $utente->getNome());
+    Session::set('ruolo', $utente->getRuolo());
+
+    header('Location: /MechanicOne/utente/home?msg=email_confermata');
+    exit;
+}
 
     public function logout() {
         Session::destroy();

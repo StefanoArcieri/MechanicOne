@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 5.8.0, created on 2026-09-06 16:38:01
+/* Smarty version 5.8.0, created on 2026-09-14 11:34:23
   from 'file:registrazione.tpl' */
 
 /* @var \Smarty\Template $_smarty_tpl */
 if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
   'version' => '5.8.0',
-  'unifunc' => 'content_6a9d7ac992b3e9_40016013',
+  'unifunc' => 'content_6aa7bf9f2a74d2_00438887',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     'e9c45eb5474529a5860b6f1ac0c4ea9d199bf8de' => 
     array (
       0 => 'registrazione.tpl',
-      1 => 1788539995,
+      1 => 1789378451,
       2 => 'file',
     ),
   ),
@@ -20,23 +20,23 @@ if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
   array (
   ),
 ))) {
-function content_6a9d7ac992b3e9_40016013 (\Smarty\Template $_smarty_tpl) {
+function content_6aa7bf9f2a74d2_00438887 (\Smarty\Template $_smarty_tpl) {
 $_smarty_current_dir = 'C:\\xampp\\htdocs\\MechanicOne\\templates';
 $_smarty_tpl->getInheritance()->init($_smarty_tpl, true);
 ?>
 
 
 <?php 
-$_smarty_tpl->getInheritance()->instanceBlock($_smarty_tpl, 'Block_20251680576a9d7ac9920168_09367450', 'title');
+$_smarty_tpl->getInheritance()->instanceBlock($_smarty_tpl, 'Block_3341158076aa7bf9f2974a7_07199872', 'title');
 ?>
 
 
 <?php 
-$_smarty_tpl->getInheritance()->instanceBlock($_smarty_tpl, 'Block_19846564936a9d7ac99262d6_83631235', 'content');
+$_smarty_tpl->getInheritance()->instanceBlock($_smarty_tpl, 'Block_9284519186aa7bf9f2a1689_14310206', 'content');
 $_smarty_tpl->getInheritance()->endChild($_smarty_tpl, 'layouts/base.tpl', $_smarty_current_dir);
 }
 /* {block 'title'} */
-class Block_20251680576a9d7ac9920168_09367450 extends \Smarty\Runtime\Block
+class Block_3341158076aa7bf9f2974a7_07199872 extends \Smarty\Runtime\Block
 {
 public function callBlock(\Smarty\Template $_smarty_tpl) {
 $_smarty_current_dir = 'C:\\xampp\\htdocs\\MechanicOne\\templates';
@@ -46,7 +46,7 @@ Registrazione - MechanicOne<?php
 }
 /* {/block 'title'} */
 /* {block 'content'} */
-class Block_19846564936a9d7ac99262d6_83631235 extends \Smarty\Runtime\Block
+class Block_9284519186aa7bf9f2a1689_14310206 extends \Smarty\Runtime\Block
 {
 public function callBlock(\Smarty\Template $_smarty_tpl) {
 $_smarty_current_dir = 'C:\\xampp\\htdocs\\MechanicOne\\templates';
@@ -87,7 +87,7 @@ $_smarty_current_dir = 'C:\\xampp\\htdocs\\MechanicOne\\templates';
         </div>
 
         <button type="submit" class="form-submit form-submit--primary">
-            Registrati e Accedi
+            Registrati
         </button>
     </form>
 

@@ -11,6 +11,7 @@ try {
     require_once __DIR__ . '/View/VErrori.php';
     $vErrori = new VErrori();
     http_response_code(500);
-    $vErrori->errore(500, $e->getMessage());
+    error_log($e);
+    $vErrori->errore(500, 'Si è verificato un errore imprevisto. Riprovare più tardi.');
 }
 ?>

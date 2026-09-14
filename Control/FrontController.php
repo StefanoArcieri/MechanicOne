@@ -79,8 +79,10 @@ class FrontController {
         try {
             return $real_controller->$method(...$params);
         } catch (Throwable $e) {
+            error_log($e);
             $errorController = new CErrori();
-            return $errorController->mostraErrore(500, $e->getMessage());
+            $messaggio = $e instanceof Exception ? $e->getMessage() : 'Si è verificato un errore imprevisto. Riprovare più tardi.';
+            return $errorController->mostraErrore(500, $messaggio);
         }
     }
 }

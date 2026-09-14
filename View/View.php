@@ -72,6 +72,7 @@ class View {
         'password_aggiornata'     => 'Password aggiornata con successo.',
         'meccanico_creato'        => 'Account meccanico creato.',
         'meccanico_eliminato'     => 'Meccanico eliminato.',
+        'email_confermata'        => 'Email confermata! Benvenuto in MechanicOne.',
     ];
 
     protected function initializeCommonData() {

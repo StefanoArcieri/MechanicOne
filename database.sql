@@ -24,8 +24,10 @@ CREATE TABLE `utenti` (
    `email` varchar(100) NOT NULL,
    `password` varchar(255) NOT NULL,
    `ruolo` enum('cliente','meccanico','admin') NOT NULL DEFAULT 'cliente',
-   `ultimo_accesso` timestamp NULL DEFAULT NULL, 
-   `data_registrazione` timestamp DEFAULT CURRENT_TIMESTAMP, 
+   `ultimo_accesso` timestamp NULL DEFAULT NULL,
+   `data_registrazione` timestamp DEFAULT CURRENT_TIMESTAMP,
+   `email_verificata` tinyint(1) NOT NULL DEFAULT 0,
+   `token_verifica` varchar(64) DEFAULT NULL,
    PRIMARY KEY (`idU`),
    UNIQUE KEY `email` (`email`)
 );

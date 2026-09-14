@@ -21,6 +21,7 @@ class AccessControl {
             'registrazione' => 'public',
             'logout' => 'public',
             'dashboardUtente' => ['cliente'],
+            'confermaEmail' => 'public',
         ],
 
         // ===== VEICOLO — solo lato cliente, nessuna gestione staff per ora =====

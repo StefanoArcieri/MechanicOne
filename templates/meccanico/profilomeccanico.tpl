@@ -1,10 +1,10 @@
 {extends file='layouts/base.tpl'}
 
-{block name='title'}{$titolo|default:'Profilo meccanico'} - MechanicOne{/block}
+{block name='title'}Profilo meccanico - MechanicOne{/block}
 
 {block name='content'}
 <div class="auth-panel auth-panel--mechanic">
-    <h1 class="auth-title">{$titolo|default:'Profilo meccanico'}</h1>
+    <h1 class="auth-title">Profilo meccanico</h1>
 
     {if $errore}
         <div class="form-alert"><strong>Errore:</strong> {$errore}</div>
